@@ -1,0 +1,15 @@
+pandas==2.3.3
+numpy==2.2.6
+matplotlib==3.10.9
+seaborn==0.13.2
+scikit-learn==1.7.2
+xgboost==3.2.0
+lightgbm==4.6.0
+catboost==1.2.10
+geopandas==1.1.0
+geobr==0.2.2
+shapely==2.1.0
+pyogrio==0.12.1
+requests==2.34.2
+urllib3==2.7.0
+ipykernel==7.2.0
