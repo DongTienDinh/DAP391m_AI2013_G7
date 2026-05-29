@@ -32,7 +32,7 @@ from catboost                 import CatBoostRegressor
 
 warnings.filterwarnings('ignore')
 
-# Giao diện màu sắc và hằng số hiển thị
+# Color theme and display constants
 C = {
     "bg":      "#F7F9FC",
     "panel":   "#FFFFFF",
@@ -51,7 +51,7 @@ _RAW_COLORS = [
 
 
 def _make_bar_colors(highlight_idx, worst_idx=None):
-    """Trả về list màu, highlight mô hình tốt nhất / tệ nhất."""
+    """Return list of colors, highlighting the best / worst models."""
     cols = list(_RAW_COLORS)
     if worst_idx is not None:
         cols[worst_idx] = C["worst"]
@@ -60,7 +60,7 @@ def _make_bar_colors(highlight_idx, worst_idx=None):
 
 
 def _bar_labels(ax, bars, values, fmt, offset_frac=0.015, fs=7.5):
-    """Ghi nhãn số lên đầu mỗi cột."""
+    """Draw numeric labels on top of each bar."""
     ylim = ax.get_ylim()
     dy   = (ylim[1] - ylim[0]) * offset_frac
     for bar, v in zip(bars, values):
@@ -73,7 +73,7 @@ def _bar_labels(ax, bars, values, fmt, offset_frac=0.015, fs=7.5):
 
 
 def _rank_asc(vals):
-    """Rank tăng dần (nhỏ hơn = rank tốt hơn = số nhỏ hơn)."""
+    """Rank ascending (smaller = better rank = smaller rank value)."""
     order = np.argsort(vals)
     ranks = np.empty_like(order)
     ranks[order] = np.arange(1, len(vals) + 1)
@@ -86,7 +86,7 @@ def _rank_desc(vals):
 
 
 def get_project_paths():
-    """Tự động phân giải thư mục gốc của dự án chứa thư mục 'src'"""
+    """Automatically resolve the project root directory containing 'src'"""
     current_dir = Path(__file__).resolve().parent
     project_root = current_dir
     for parent in current_dir.parents:
@@ -97,21 +97,21 @@ def get_project_paths():
 
 
 def load_and_prepare_data(data_path):
-    """Nạp dữ liệu đặc trưng tuần và chuẩn hóa mã bang, sắp xếp theo thời gian"""
+    """Load weekly feature data, encode state codes, and sort by time"""
     print(f"\n1. LOADING DATA from {data_path}...")
     df = pd.read_csv(data_path)
-    print(f"   Dữ liệu thô: {df.shape}")
+    print(f"   Raw data: {df.shape}")
     
-    # Mã hóa customer_state thành mã số
+    # Encode customer_state into numeric codes
     df['state_code'] = df['customer_state'].astype('category').cat.codes
     
-    # Sắp xếp theo year_week để đảm bảo tính tuần tự thời gian cho TimeSeriesSplit
+    # Sort by year_week to ensure chronological order for TimeSeriesSplit
     df = df.sort_values('year_week').reset_index(drop=True)
     return df
 
 
 def add_dynamic_features(df):
-    """Tính toán các đặc trưng động phụ thuộc vào bang"""
+    """Calculate state-dependent dynamic features"""
     grp = df.groupby('customer_state')
     df['revenue_std_4']   = grp['revenue'].transform(lambda x: x.shift(1).rolling(4, min_periods=2).std()).fillna(0)
     df['revenue_momentum'] = (df['revenue_lag_1'] - df['revenue_lag_4']).fillna(0)
@@ -119,11 +119,11 @@ def add_dynamic_features(df):
 
 
 def select_features(df, log_target=True):
-    """Lựa chọn các cột đặc trưng và biến đổi log cho target để khử phân phối lệch"""
+    """Select feature columns and apply log transformation to target to reduce skewness"""
     exclude = [
         'customer_state', 'year_week', 'target_next_revenue',
         'sales_per_capita', 'orders_per_capita',
-        # Loại bỏ các cột đa cộng tuyến nặng hoặc rò rỉ dữ liệu
+        # Remove columns with high multicollinearity or data leakage
         'payment_value',          # corr=1.0000 with revenue
         'unique_customers',       # corr=1.0000 with order_count
         'item_count',             # corr=0.9994 with order_count
@@ -141,7 +141,7 @@ def select_features(df, log_target=True):
     
     if log_target:
         y_model = np.log1p(y)
-        print(f"   Áp dụng log1p(target). Skewness sau biến đổi: {pd.Series(y_model).skew():.3f}")
+        print(f"   Applied log1p(target). Skewness after transformation: {pd.Series(y_model).skew():.3f}")
     else:
         y_model = y
         
@@ -149,7 +149,7 @@ def select_features(df, log_target=True):
 
 
 def get_model_definitions(random_state=42):
-    """Định nghĩa 9 thuật toán mô hình hóa từ baseline tuyến tính đến Boosting"""
+    """Define 9 modeling algorithms from linear baseline to Boosting"""
     return {
         "Linear Regression (Baseline)": Pipeline([
             ('scaler', StandardScaler()),
@@ -225,13 +225,13 @@ def get_model_definitions(random_state=42):
 
 
 def evaluate_models_walk_forward(models, X, y_model, y, log_target=True):
-    """Đánh giá mô hình qua Walk-Forward CV dùng TimeSeriesSplit"""
+    """Evaluate models via Walk-Forward CV using TimeSeriesSplit"""
     print("\n3. WALK-FORWARD CROSS-VALIDATION (TimeSeriesSplit, N=5)...")
     tscv = TimeSeriesSplit(n_splits=5)
     results = {}
     
     for name, model in models.items():
-        print(f"   Huấn luyện {name}...")
+        print(f"   Training {name}...")
         fold_rmse, fold_mae, fold_r2, fold_mape = [], [], [], []
         t0 = time.time()
         
@@ -249,7 +249,7 @@ def evaluate_models_walk_forward(models, X, y_model, y, log_target=True):
                 y_pred = y_pred_log
                 y_true = y_val
                 
-            y_pred = np.maximum(y_pred, 0) # Ngăn doanh thu âm
+            y_pred = np.maximum(y_pred, 0) # Prevent negative revenue
             
             rmse = np.sqrt(mean_squared_error(y_true, y_pred))
             mae  = mean_absolute_error(y_true, y_pred)
@@ -279,8 +279,8 @@ def evaluate_models_walk_forward(models, X, y_model, y, log_target=True):
 
 
 def print_leaderboard(results):
-    """In bảng xếp hạng mô hình chi tiết lên Console"""
-    print("\n4. BẢNG XẾP HẠNG MÔ HÌNH (CV mean ± std):")
+    """Print detailed model leaderboard to Console"""
+    print("\n4. MODEL LEADERBOARD (CV mean ± std):")
     summary_rows = []
     for name, res in results.items():
         summary_rows.append({
@@ -296,7 +296,7 @@ def print_leaderboard(results):
 
 
 def plot_and_save_dashboard(results, fi_models, feature_cols, output_path, project_root):
-    """Sinh Dashboard báo cáo so sánh kết quả mô hình và lưu ra file ảnh"""
+    """Generate model comparison dashboard and save as image file"""
     print(f"\n5. GENERATING EVALUATION DASHBOARD -> {output_path}...")
     
     name_mapping = {
@@ -320,14 +320,14 @@ def plot_and_save_dashboard(results, fi_models, feature_cols, output_path, proje
     
     FOLD_RMSE = {name_mapping[k]: results[k]['RMSE'] for k in results.keys()}
     
-    # Định nghĩa mô hình tốt nhất / tệ nhất tự động
+    # Automatically define the best / worst models
     BEST_MODEL  = name_mapping[min(results, key=lambda n: np.mean(results[n]['RMSE']))]
     WORST_MODEL = name_mapping[max(results, key=lambda n: np.mean(results[n]['RMSE']))]
     
     tree_models = ['Random Forest', 'Gradient Boosting', 'XGBoost', 'LightGBM', 'CatBoost']
     BEST_FI_MODEL = min([n for n in tree_models if n in results], key=lambda n: np.mean(results[n]['RMSE']))
     
-    # Feature Importance của mô hình cây tốt nhất
+    # Feature Importance of the best tree model
     m = fi_models[BEST_FI_MODEL]
     if hasattr(m, 'feature_importances_'):
         importances = m.feature_importances_
@@ -364,7 +364,7 @@ def plot_and_save_dashboard(results, fi_models, feature_cols, output_path, proje
     
     fig.text(0.5, 0.975, "Model Selection — Weekly Revenue Forecasting",
              ha="center", va="top", fontsize=18, fontweight="bold", color=C["text"])
-    fig.text(0.5, 0.950, "So sanh 9 mo hinh qua Cross-Validation 5-Fold  |  Don vi doanh thu: VND",
+    fig.text(0.5, 0.950, "Compare 9 models via 5-Fold Cross-Validation  |  Revenue Unit: VND",
              ha="center", va="top", fontsize=10, color=C["sub"])
              
     gs = gridspec.GridSpec(2, 3, figure=fig, top=0.91, bottom=0.07, hspace=0.52, wspace=0.38, left=0.07, right=0.97)
@@ -380,7 +380,7 @@ def plot_and_save_dashboard(results, fi_models, feature_cols, output_path, proje
     cols_a = _make_bar_colors(BEST_IDX, WORST_IDX)
     bars_a = ax1.bar(MODEL_NAMES, RMSE_MEANS, color=cols_a, **BAR_KW)
     ax1.errorbar(range(len(MODEL_NAMES)), RMSE_MEANS, yerr=RMSE_STDS, fmt="none", ecolor="#4A5568", capsize=5, capthick=1.5, elinewidth=1.5, zorder=4)
-    ax1.set_title("① CV RMSE  (thap hon = tot hon)")
+    ax1.set_title("① CV RMSE  (lower = better)")
     ax1.set_ylabel("RMSE (VND)")
     ax1.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{x/1000:.0f}K"))
     ax1.set_xticks(range(len(MODEL_NAMES)))
@@ -400,7 +400,7 @@ def plot_and_save_dashboard(results, fi_models, feature_cols, output_path, proje
     bars_b = ax2.bar(MODEL_NAMES, R2_MEANS, color=cols_b, **BAR_KW)
     ax2.errorbar(range(len(MODEL_NAMES)), R2_MEANS, yerr=R2_STDS, fmt="none", ecolor="#4A5568", capsize=5, capthick=1.5, elinewidth=1.5, zorder=4)
     ax2.axhline(0, color="#4A5568", linewidth=1, linestyle="--", alpha=0.5)
-    ax2.set_title("② CV R²  (cao hon = tot hon)")
+    ax2.set_title("② CV R²  (higher = better)")
     ax2.set_ylabel("R² Score")
     ax2.set_xticks(range(len(MODEL_NAMES)))
     ax2.set_xticklabels(MODEL_NAMES, rotation=35, ha="right")
@@ -414,7 +414,7 @@ def plot_and_save_dashboard(results, fi_models, feature_cols, output_path, proje
     ax3 = fig.add_subplot(gs[0, 2])
     cols_c = _make_bar_colors(MAPE_MEANS.index(min(MAPE_MEANS)), WORST_IDX)
     bars_c = ax3.bar(MODEL_NAMES, MAPE_MEANS, color=cols_c, **BAR_KW)
-    ax3.set_title("③ CV MAPE %  (thap hon = tot hon)")
+    ax3.set_title("③ CV MAPE %  (lower = better)")
     ax3.set_ylabel("MAPE (%)")
     ax3.set_xticks(range(len(MODEL_NAMES)))
     ax3.set_xticklabels(MODEL_NAMES, rotation=35, ha="right")
@@ -448,7 +448,7 @@ def plot_and_save_dashboard(results, fi_models, feature_cols, output_path, proje
         ms    = 6   if (is_best or is_worst) else 4
         ax4.plot(folds, FOLD_RMSE[name], marker="o", color=_RAW_COLORS[i] if not is_worst else C["worst"], linewidth=lw, alpha=alpha, markersize=ms, label=name, zorder=3 if (is_best or is_worst) else 2)
     ax4.set_yscale("log")
-    ax4.set_title("④ RMSE qua tung Fold — Do on dinh (Log Scale)")
+    ax4.set_title("④ RMSE per Fold — Stability (Log Scale)")
     ax4.set_xlabel("CV Fold")
     ax4.set_ylabel("RMSE (log)")
     ax4.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{x/1000:.0f}K"))
@@ -464,8 +464,8 @@ def plot_and_save_dashboard(results, fi_models, feature_cols, output_path, proje
     overall = rank_r + rank_q + rank_m
     sorted_idx = np.argsort(overall)
     
-    ax5.text(0.5, 0.97, "⑤ Bang xep hang tong hop", transform=ax5.transAxes, ha="center", va="top", fontsize=11, fontweight="bold", color=C["text"])
-    ax5.text(0.5, 0.89, "Tong rank = RMSE rank + R2 rank + MAPE rank", transform=ax5.transAxes, ha="center", va="top", fontsize=8, color=C["sub"])
+    ax5.text(0.5, 0.97, "⑤ Overall Leaderboard", transform=ax5.transAxes, ha="center", va="top", fontsize=11, fontweight="bold", color=C["text"])
+    ax5.text(0.5, 0.89, "Total Rank = RMSE Rank + R2 Rank + MAPE Rank", transform=ax5.transAxes, ha="center", va="top", fontsize=8, color=C["sub"])
     
     COLS_X  = [0.04, 0.14, 0.42, 0.57, 0.72, 0.89]
     COL_HDR = ["#",  "Model", "RMSE",  "R2",   "MAPE",  "Score"]
@@ -530,29 +530,29 @@ def plot_and_save_dashboard(results, fi_models, feature_cols, output_path, proje
 
 
 def make_predictions_for_future(best_model_name, models, df_train, feature_cols, X_train, y_train_model, pred_path, output_csv_path):
-    """Nạp dữ liệu prediction_data, ghép nối động để tính rolling, dự báo và lưu kết quả"""
+    """Load prediction_data, merge dynamically to compute rolling features, make predictions and save results"""
     print(f"\n6. FUTURE PREDICTIONS USING BEST MODEL ({best_model_name})...")
     
     if not pred_path.exists():
-        print(f"   [Error] Không tìm thấy tệp dữ liệu dự đoán: {pred_path}!")
+        print(f"   [Error] Prediction data file not found: {pred_path}!")
         return
         
     df_pred = pd.read_csv(pred_path)
     
-    # Ghép nối với tập huấn luyện để tính các đặc trưng rolling chính xác
+    # Merge with training set to calculate accurate rolling features
     df_combined = pd.concat([df_train, df_pred], ignore_index=True)
     df_combined = df_combined.sort_values(['customer_state', 'year_week']).reset_index(drop=True)
     
-    # Tính lại các đặc trưng động trên tập gộp
+    # Recalculate dynamic features on the merged set
     df_combined['state_code'] = df_combined['customer_state'].astype('category').cat.codes
     df_combined = add_dynamic_features(df_combined)
     
-    # Trích xuất phần dòng dữ liệu cần dự đoán (các dòng có target_next_revenue bằng NaN)
+    # Extract rows to predict (rows where target_next_revenue is NaN)
     df_pred_final = df_combined[df_combined['target_next_revenue'].isna()].copy()
     
-    # Huấn luyện lại mô hình tốt nhất trên toàn bộ dữ liệu huấn luyện
+    # Retrain the best model on the entire training dataset
     best_model = models[best_model_name]
-    print(f"   Đang fit mô hình {best_model_name} trên toàn bộ dữ liệu...")
+    print(f"   Fitting model {best_model_name} on entire dataset...")
     best_model.fit(X_train, y_train_model)
     
     # Dự báo
@@ -567,38 +567,38 @@ def make_predictions_for_future(best_model_name, models, df_train, feature_cols,
     })
     df_result = df_result.sort_values(by='predicted_next_week_revenue', ascending=False).reset_index(drop=True)
     
-    print("\n   Dự đoán doanh thu tuần kế tiếp (Top 5 bang):")
+    print("\n   Predicted revenue for next week (Top 5 states):")
     print(df_result.head(5).to_string(index=False))
     
     df_result.to_csv(output_csv_path, index=False)
-    print(f"   Đã lưu kết quả dự đoán vào: {output_csv_path}")
+    print(f"   Saved predictions to: {output_csv_path}")
 
 
 def main():
-    # 1. Khởi tạo đường dẫn
+    # 1. Initialize paths
     project_root = get_project_paths()
     data_path = project_root / 'data' / 'processed' / 'olist' / 'features_weekly.csv'
     pred_path = project_root / 'data' / 'processed' / 'olist' / 'prediction_data.csv'
     dashboard_path = project_root / 'reports' / 'model_comparison.png'
     output_predictions_path = project_root / 'data' / 'processed' / 'olist' / 'predicted_next_week_revenue.csv'
     
-    # 2. Nạp dữ liệu
+    # 2. Load data
     df = load_and_prepare_data(data_path)
     df = add_dynamic_features(df)
     
-    # 3. Lựa chọn đặc trưng & Biến đổi log target
+    # 3. Feature selection & log target transformation
     X, y, y_model, feature_cols = select_features(df, log_target=True)
     
-    # 4. Định nghĩa các mô hình
+    # 4. Define models
     models = get_model_definitions(random_state=42)
     
-    # 5. Đánh giá Walk-Forward CV
+    # 5. Evaluate Walk-Forward CV
     results = evaluate_models_walk_forward(models, X, y_model, y, log_target=True)
     
-    # 6. In Leaderboard
+    # 6. Print Leaderboard
     print_leaderboard(results)
     
-    # 7. Huấn luyện toàn bộ dữ liệu để lấy Feature Importance
+    # 7. Train on entire dataset to get Feature Importance
     fi_models = {}
     tree_models_list = ['Random Forest', 'Gradient Boosting', 'XGBoost', 'LightGBM', 'CatBoost']
     print("\nFitting tree models for Feature Importance analysis...")
@@ -608,10 +608,10 @@ def main():
             m.fit(X, y_model)
             fi_models[name] = m
             
-    # 8. Vẽ Dashboard so sánh
+    # 8. Plot comparison Dashboard
     plot_and_save_dashboard(results, fi_models, feature_cols, dashboard_path, project_root)
     
-    # 9. Tìm mô hình tốt nhất để dự báo tương lai
+    # 9. Find best model to make future predictions
     best_model_name = min(results, key=lambda n: np.mean(results[n]['RMSE']))
     make_predictions_for_future(best_model_name, models, df, feature_cols, X, y_model, pred_path, output_predictions_path)
     

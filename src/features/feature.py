@@ -13,7 +13,7 @@ sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 warnings.filterwarnings('ignore')
 
 # =====================================================================
-# CẤU HÌNH ĐƯỜNG DẪN
+# PATH CONFIGURATION
 # =====================================================================
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed" / "olist"
@@ -24,8 +24,8 @@ OUTPUT_FILE_NOTEBOOKS = PROJECT_ROOT / "notebooks" / "features_weekly.csv"
 
 
 def load_data():
-    """Load tất cả các file CSV đã processed."""
-    print("1. Loading processed data từ CSV...")
+    """Load all processed CSV files."""
+    print("1. Loading processed data from CSV...")
 
     orders = pd.read_csv(PROCESSED_DIR / "orders.csv", parse_dates=[
         'order_purchase_timestamp',
@@ -40,10 +40,10 @@ def load_data():
     customers = pd.read_csv(PROCESSED_DIR / "customers.csv")
     sellers = pd.read_csv(PROCESSED_DIR / "sellers.csv")
 
-    # Load dữ liệu dân số IBGE
+    # Load IBGE population data
     population = pd.read_csv(POPULATION_FILE)
 
-    # Load dữ liệu GDP IBGE
+    # Load IBGE GDP data
     gdp_data = pd.read_csv(GDP_FILE)
 
     print(f"   Orders:    {orders.shape}")
@@ -60,20 +60,20 @@ def load_data():
 
 
 def prepare_orders(orders, customers):
-    """Tạo các cột thời gian và merge customer_state."""
-    print("2. Tạo các cột thời gian...")
+    """Create time columns and merge customer_state."""
+    print("2. Creating time columns...")
 
-    # Tính delivery_time_days (vì CSV không có sẵn cột này)
+    # Calculate delivery_time_days (since this column is not available in CSV)
     orders['delivery_time_days'] = (
         orders['order_delivered_customer_date'] - orders['order_delivered_carrier_date']
     ).dt.total_seconds() / 86400.0
 
-    # Tính is_late
+    # Calculate is_late
     orders['is_late'] = (
         orders['order_delivered_customer_date'] > orders['order_estimated_delivery_date']
     ).astype(float)
 
-    # Tạo year_week, year_int, month
+    # Create year_week, year_int, month
     orders['year_week'] = orders['order_purchase_timestamp'].dt.to_period('W')
     orders['year_int'] = orders['order_purchase_timestamp'].dt.year
     orders['month'] = orders['order_purchase_timestamp'].dt.month
@@ -89,10 +89,10 @@ def prepare_orders(orders, customers):
 
 
 def build_base(orders, items, payments, reviews, products, sellers):
-    """Merge tất cả bảng thành base table."""
-    print("3. Gộp các bảng (Merge)...")
+    """Merge all tables into a base table."""
+    print("3. Merging tables (Merge)...")
 
-    # --- Pre-aggregate items theo order_id ---
+    # --- Pre-aggregate items by order_id ---
     items_agg = items.groupby('order_id').agg(
         total_price=('price', 'sum'),
         total_freight=('freight_value', 'sum'),
@@ -116,16 +116,16 @@ def build_base(orders, items, payments, reviews, products, sellers):
     ).reset_index()
     reviews_agg['is_positive_sentiment'] = (reviews_agg['avg_review_score'] >= 4).astype(float)
 
-    # --- Merge vào orders ---
+    # --- Merge into orders ---
     base = orders.merge(items_agg, on='order_id', how='left')
     base = base.merge(payments_agg, on='order_id', how='left')
     base = base.merge(reviews_agg, on='order_id', how='left')
 
-    # --- Explode để lấy product_id riêng lẻ cho category_diversity ---
-    # Lưu ý: Không explode toàn bộ, chỉ cần unique product_id + seller_id per order
-    # Ta giữ nguyên base, nhưng cần seller_id và product_category để aggregate
+    # --- Explode to get individual product_id for category_diversity ---
+    # Note: Do not explode entirely, only unique product_id + seller_id per order
+    # Keep base as is, but need seller_id and product_category to aggregate
 
-    # Merge seller_state thông qua items (lấy seller đầu tiên hoặc hết)
+    # Merge seller_state via items (get first seller or all)
     items_seller = items[['order_id', 'seller_id', 'product_id']].drop_duplicates()
     items_seller = items_seller.merge(sellers[['seller_id', 'seller_state']], on='seller_id', how='left')
     items_seller = items_seller.merge(products[['product_id', 'product_category_name']], on='product_id', how='left')
@@ -134,10 +134,10 @@ def build_base(orders, items, payments, reviews, products, sellers):
 
 
 def aggregate_weekly(base, items_seller):
-    """Aggregate theo state + year_week."""
-    print("4. Aggregate theo state và year_week...")
+    """Aggregate by state + year_week."""
+    print("4. Aggregating by state and year_week...")
 
-    # --- Aggregate chính từ base (order-level) ---
+    # --- Main aggregation from base (order-level) ---
     df = (base.groupby(['customer_state', 'year_week', 'year_int', 'month'])
           .agg(
               revenue=('revenue', 'sum'),
@@ -153,8 +153,8 @@ def aggregate_weekly(base, items_seller):
               payment_value=('payment_value', 'sum'),
           ).reset_index())
 
-    # --- Aggregate seller & category diversity từ items_seller ---
-    # Merge order-level info (customer_state, year_week) vào items_seller
+    # --- Aggregate seller & category diversity from items_seller ---
+    # Merge order-level info (customer_state, year_week) into items_seller
     order_info = base[['order_id', 'customer_state', 'year_week']].drop_duplicates()
     items_merged = items_seller.merge(order_info, on='order_id', how='left')
 
@@ -169,8 +169,8 @@ def aggregate_weekly(base, items_seller):
 
 
 def reindex_fill_gaps(df):
-    """Re-indexing để điền các tuần trống (Gap Problem)."""
-    print("   -> Thực hiện Re-indexing để điền các tuần trống...")
+    """Re-indexing to fill empty weeks (Gap Problem)."""
+    print("   -> Performing Re-indexing to fill empty weeks...")
 
     all_states = df['customer_state'].unique()
     all_weeks = pd.period_range(start=df['year_week'].min(), end=df['year_week'].max(), freq='W')
@@ -182,7 +182,7 @@ def reindex_fill_gaps(df):
 
     df = grid.merge(df, on=['customer_state', 'year_week'], how='left')
 
-    # Điền 0 cho các cột đếm/tổng khi tuần trống = không có đơn hàng
+    # Fill 0 for count/sum columns when week is empty = no orders
     fill_0_cols = [
         'revenue', 'order_count', 'item_count', 'unique_customers',
         'late_delivery_sum', 'unique_sellers', 'category_diversity',
@@ -191,11 +191,11 @@ def reindex_fill_gaps(df):
     ]
     df[fill_0_cols] = df[fill_0_cols].fillna(0)
 
-    # Khôi phục year_int và month
+    # Restore year_int and month
     df['year_int'] = df['year_week'].dt.year
     df['month'] = df['year_week'].dt.month
 
-    # Xử lý avg_review_score
+    # Process avg_review_score
     mask_has_orders = df['order_count'] > 0
     median_score = df.loc[mask_has_orders, 'avg_review_score'].median()
     df.loc[mask_has_orders, 'avg_review_score'] = df.loc[mask_has_orders, 'avg_review_score'].fillna(median_score)
@@ -205,8 +205,8 @@ def reindex_fill_gaps(df):
 
 
 def create_derived_features(df):
-    """Tạo features phái sinh."""
-    print("5. Tạo features phái sinh...")
+    """Create derived features."""
+    print("5. Creating derived features...")
 
     df['avg_order_value'] = (df['revenue'] / df['order_count'].replace(0, np.nan)).fillna(0)
     df['late_delivery_rate'] = (df['late_delivery_sum'] / df['order_count'].replace(0, np.nan)).fillna(0)
@@ -218,8 +218,8 @@ def create_derived_features(df):
 
 
 def add_seasonality(df):
-    """Thêm Seasonality features (sin/cos encoding)."""
-    print("6. Thêm Seasonality features...")
+    """Add Seasonality features (sin/cos encoding)."""
+    print("6. Adding Seasonality features...")
 
     week_of_year = df['year_week'].dt.week.astype(float)
     df['week_of_year'] = week_of_year.astype(int)
@@ -232,8 +232,8 @@ def add_seasonality(df):
 
 
 def add_population_features(df, population, gdp_data):
-    """Thêm Demographic features từ IBGE Population CSV và GDP CSV thật."""
-    print("7. Thêm Demographic features từ IBGE Population + GDP...")
+    """Add Demographic features from real IBGE Population CSV and GDP CSV."""
+    print("7. Adding Demographic features from IBGE Population + GDP...")
 
     # Population
     population_clean = (population
@@ -254,7 +254,7 @@ def add_population_features(df, population, gdp_data):
     df['gdp_per_capita'] = df['gdp'] / df['population']
     df['purchasing_power_index'] = df['gdp_per_capita'] / df['gdp_per_capita'].mean()
 
-    # Forward fill / Back fill cho các năm chưa có dữ liệu IBGE
+    # Forward fill / Back fill for years without IBGE data
     ibge_cols = ['population', 'gdp', 'gdp_per_capita', 'purchasing_power_index']
     df = df.sort_values(['customer_state', 'year_week'])
     df[ibge_cols] = df.groupby('customer_state')[ibge_cols].ffill().bfill()
@@ -263,8 +263,8 @@ def add_population_features(df, population, gdp_data):
 
 
 def add_penetration_features(df):
-    """Tạo Penetration features (per capita) từ population."""
-    print("8. Tạo Penetration features...")
+    """Create Penetration features (per capita) from population."""
+    print("8. Creating Penetration features...")
 
     df['sales_per_capita'] = df['revenue'] / df['population']
     df['orders_per_capita'] = df['order_count'] / df['population']
@@ -276,13 +276,13 @@ def add_penetration_features(df):
 
 
 def add_growth_lag_rolling(df):
-    """Tính Growth, Lag, Rolling, EWM features."""
-    print("9. Tính Growth, Lag, Rolling...")
+    """Calculate Growth, Lag, Rolling, EWM features."""
+    print("9. Calculating Growth, Lag, Rolling...")
 
     df = df.sort_values(['customer_state', 'year_week']).reset_index(drop=True)
     grp = df.groupby('customer_state')
 
-    # --- Growth (thay inf bằng 0) ---
+    # --- Growth (replace inf with 0) ---
     df['revenue_growth_1w'] = grp['revenue'].pct_change(1).replace([np.inf, -np.inf], 0).round(4).fillna(0)
     df['revenue_growth_4w'] = grp['revenue'].pct_change(4).replace([np.inf, -np.inf], 0).round(4).fillna(0)
     df['order_growth_1w'] = grp['order_count'].pct_change(1).replace([np.inf, -np.inf], 0).round(4).fillna(0)
@@ -295,11 +295,11 @@ def add_growth_lag_rolling(df):
     df['orders_lag_1'] = grp['order_count'].shift(1)
     df['customers_lag_1'] = grp['unique_customers'].shift(1)
 
-    # Fill null hợp lý cho lag dài (fallback về lag gần hơn)
+    # Fill null reasonably for long lags (fallback to closer lags)
     df['revenue_lag_4'] = df['revenue_lag_4'].fillna(df['revenue_lag_2']).fillna(df['revenue_lag_1'])
     df['revenue_lag_8'] = df['revenue_lag_8'].fillna(df['revenue_lag_4']).fillna(df['revenue_lag_1'])
 
-    # --- Rolling / EWM (shift(1) để tránh data leakage) ---
+    # --- Rolling / EWM (shift(1) to avoid data leakage) ---
     df['revenue_rolling_4'] = grp['revenue'].transform(lambda x: x.shift(1).rolling(4, min_periods=2).mean())
     df['revenue_rolling_8'] = grp['revenue'].transform(lambda x: x.shift(1).rolling(8, min_periods=4).mean())
     df['revenue_rolling_12'] = grp['revenue'].transform(lambda x: x.shift(1).rolling(12, min_periods=6).mean())
@@ -317,8 +317,8 @@ def add_growth_lag_rolling(df):
 
 
 def cleanup_and_save(df):
-    """Dọn dẹp và lưu 1 file features_weekly.csv duy nhất (kèm target_next_revenue)."""
-    print("10. Dọn dẹp và lưu file...")
+    """Clean up and save a single features_weekly.csv file (including target_next_revenue)."""
+    print("10. Cleaning up and saving file...")
 
     # Drop rows with NaNs in core lags or target
     df = df.dropna(subset=['revenue_lag_1', 'revenue_lag_2', 'target_next_revenue'])
@@ -345,27 +345,27 @@ def cleanup_and_save(df):
     ]
     df = df[final_cols]
 
-    # Lưu toàn bộ ra các file kết quả (bao gồm target_next_revenue)
+    # Save all to result files (including target_next_revenue)
     df.to_csv(OUTPUT_FILE_PROCESSED, index=False)
     df.to_csv(OUTPUT_FILE_NOTEBOOKS, index=False)
-    print(f"\n✅ Đã lưu file: {OUTPUT_FILE_PROCESSED}")
-    print(f"✅ Đã lưu file: {OUTPUT_FILE_NOTEBOOKS}")
-    print(f"📊 Kích thước cuối cùng: {df.shape[0]} dòng, {df.shape[1]} cột")
+    print(f"\n✅ Saved file: {OUTPUT_FILE_PROCESSED}")
+    print(f"✅ Saved file: {OUTPUT_FILE_NOTEBOOKS}")
+    print(f"📊 Final shape: {df.shape[0]} rows, {df.shape[1]} columns")
 
-    # Thống kê Null
+    # Null statistics
     null_cols = df.isnull().sum()
     null_cols = null_cols[null_cols > 0]
     if len(null_cols) > 0:
-        print("\n⚠️ Các cột còn Null (bao gồm lag đầu & target cuối - điều này bình thường):")
+        print("\n⚠️ Remaining Null columns (includes initial lags & final target - this is normal):")
         print(null_cols)
     else:
-        print("\n✅ Không còn dữ liệu Null trong pipeline.")
+        print("\n✅ No Null data remaining in the pipeline.")
 
     return df
 
 
 def main():
-    print("🚀 Bắt đầu tạo weekly features (từ CSV + IBGE Population)...\n")
+    print("🚀 Starting weekly features generation (from CSV + IBGE Population)...\n")
 
     # 1. Load data
     orders, items, payments, reviews, products, customers, sellers, population, gdp_data = load_data()
@@ -400,9 +400,9 @@ def main():
     # 11. Cleanup & Save
     df = cleanup_and_save(df)
 
-    # --- In tóm tắt features ---
+    # --- Print features summary ---
     print("\n" + "=" * 60)
-    print("📋 DANH SÁCH FEATURES CUỐI CÙNG:")
+    print("📋 FINAL FEATURES LIST:")
     print("=" * 60)
     for i, col in enumerate(df.columns, 1):
         print(f"   {i:2d}. {col}")

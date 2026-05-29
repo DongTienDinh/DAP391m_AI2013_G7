@@ -4,11 +4,11 @@ import shutil
 import pandas as pd
 from pathlib import Path
 
-# Cấu hình encoding utf-8 cho stdout trên console Windows để tránh UnicodeEncodeError
+# Configure utf-8 encoding for stdout on Windows console to avoid UnicodeEncodeError
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
-# Thêm project root vào PYTHONPATH để chạy độc lập không bị lỗi import
+# Add project root to PYTHONPATH for standalone execution to avoid import errors
 project_root = Path(__file__).resolve().parents[2]
 if str(project_root) not in sys.path:
     sys.path.append(str(project_root))
@@ -18,8 +18,8 @@ from src.utils.system_utils import print_section_header
 
 def download_raw_data_if_missing(raw_dir: Path) -> None:
     """
-    Kiểm tra nếu dữ liệu thô của Olist chưa tồn tại đầy đủ,
-    sẽ tiến hành tải xuống tự động từ Kaggle sử dụng kagglehub và lưu vào raw_dir.
+    Check if Olist raw data does not fully exist,
+    automatically download it from Kaggle using kagglehub and save to raw_dir.
     """
     required_files = [
         'olist_customers_dataset.csv',
@@ -41,13 +41,13 @@ def download_raw_data_if_missing(raw_dir: Path) -> None:
                 missing_files.append(f)
                 
     if not missing_files:
-        print("-> Dữ liệu thô Olist đã tồn tại đầy đủ trong thư mục raw.")
+        print("-> Olist raw data already fully exists in raw directory.")
         return
 
-    print("-> Phát hiện thiếu dữ liệu thô Olist. Tiến hành tải xuống tự động từ Kaggle...")
+    print("-> Missing Olist raw data detected. Downloading automatically from Kaggle...")
     raw_dir.mkdir(parents=True, exist_ok=True)
     
-    # Thực hiện vá lỗi xung đột kagglesdk/kagglehub nếu có
+    # Apply hotfix for kagglesdk/kagglehub conflicts if any
     try:
         import kagglesdk.kaggle_env
         if not hasattr(kagglesdk.kaggle_env, 'get_web_endpoint') and hasattr(kagglesdk.kaggle_env, 'get_endpoint'):
@@ -58,29 +58,29 @@ def download_raw_data_if_missing(raw_dir: Path) -> None:
     import kagglehub
     downloaded_path = kagglehub.dataset_download("olistbr/brazilian-ecommerce")
     
-    print(f"-> Đang sao chép các tệp dữ liệu từ {downloaded_path} vào {raw_dir}...")
+    print(f"-> Copying data files from {downloaded_path} into {raw_dir}...")
     for file_name in os.listdir(downloaded_path):
         downloaded_file = os.path.join(downloaded_path, file_name)
         dest_file = raw_dir / file_name
         
         if os.path.isfile(downloaded_file):
             shutil.copy(downloaded_file, dest_file)
-            print(f"   Đã lưu: {dest_file}")
+            print(f"   Saved: {dest_file}")
             
-    print("-> Tải xuống dữ liệu thô thành công!")
+    print("-> Downloaded raw data successfully!")
 
 
 def load_raw_data(raw_dir: Path) -> dict:
     """
-    Đọc tất cả 8 tệp tin CSV thô từ thư mục raw_dir.
+    Read all 8 raw CSV files from raw_dir.
     
     Args:
-        raw_dir (Path): Thư mục chứa dữ liệu thô từ Kaggle.
+        raw_dir (Path): Directory containing raw data from Kaggle.
         
     Returns:
-        dict: Một dictionary chứa các DataFrame tương ứng với tên bảng.
+        dict: A dictionary containing DataFrames corresponding to table names.
     """
-    print(f"-> Đang tải dữ liệu thô từ: {raw_dir}...")
+    print(f"-> Loading raw data from: {raw_dir}...")
     datasets = {
         'customers': pd.read_csv(raw_dir / 'olist_customers_dataset.csv'),
         'geolocation': pd.read_csv(raw_dir / 'olist_geolocation_dataset.csv'),
@@ -92,18 +92,18 @@ def load_raw_data(raw_dir: Path) -> dict:
         'sellers': pd.read_csv(raw_dir / 'olist_sellers_dataset.csv')
     }
     for name, df in datasets.items():
-        print(f"   Đã tải bảng '{name}': {df.shape[0]:,} dòng × {df.shape[1]} cột")
+        print(f"   Loaded table '{name}': {df.shape[0]:,} rows × {df.shape[1]} columns")
     return datasets
 
 
 def clean_orders(orders_df: pd.DataFrame) -> pd.DataFrame:
     """
-    Làm sạch dữ liệu bảng orders:
-    - Chỉ giữ các đơn hàng đã được giao (status == 'delivered').
-    - Loại bỏ cột 'order_approved_at'.
-    - Loại bỏ các dòng thiếu thông tin ngày giao cho vận chuyển/khách hàng.
+    Clean orders table data:
+    - Only keep delivered orders (status == 'delivered').
+    - Drop 'order_approved_at' column.
+    - Drop rows missing carrier/customer delivery date.
     """
-    print("-> Đang làm sạch dữ liệu bảng: orders...")
+    print("-> Cleaning data for table: orders...")
     cleaned_df = (
         orders_df[orders_df['order_status'] == 'delivered']
         .drop(columns=['order_approved_at'])
@@ -115,10 +115,10 @@ def clean_orders(orders_df: pd.DataFrame) -> pd.DataFrame:
 
 def clean_products(products_df: pd.DataFrame) -> pd.DataFrame:
     """
-    Làm sạch dữ liệu bảng products:
-    - Loại bỏ dòng thiếu danh mục sản phẩm, trọng lượng, kích thước.
+    Clean products table data:
+    - Drop rows missing product category, weight, or dimensions.
     """
-    print("-> Đang làm sạch dữ liệu bảng: products...")
+    print("-> Cleaning data for table: products...")
     cleaned_df = (
         products_df
         .dropna(subset=[
@@ -135,10 +135,10 @@ def clean_products(products_df: pd.DataFrame) -> pd.DataFrame:
 
 def clean_reviews(reviews_df: pd.DataFrame) -> pd.DataFrame:
     """
-    Làm sạch dữ liệu bảng order_reviews:
-    - Bỏ cột nội dung bình luận chi tiết để giảm bộ nhớ (title & message).
+    Clean order_reviews table data:
+    - Drop detailed review comment columns to save memory (title & message).
     """
-    print("-> Đang làm sạch dữ liệu bảng: order_reviews...")
+    print("-> Cleaning data for table: order_reviews...")
     cleaned_df = (
         reviews_df
         .drop(columns=['review_comment_title', 'review_comment_message'])
@@ -149,69 +149,69 @@ def clean_reviews(reviews_df: pd.DataFrame) -> pd.DataFrame:
 
 def save_cleaned_data(datasets: dict, processed_dir: Path) -> None:
     """
-    Lưu các bộ dữ liệu đã làm sạch và các bộ dữ liệu thô còn lại sang thư mục processed.
+    Save cleaned datasets and remaining raw datasets to the processed directory.
     
     Args:
-        datasets (dict): Dictionary chứa các DataFrame đã được tiền xử lý.
-        processed_dir (Path): Thư mục đích để lưu trữ.
+        datasets (dict): Dictionary containing preprocessed DataFrames.
+        processed_dir (Path): Target directory for storage.
     """
     processed_dir.mkdir(parents=True, exist_ok=True)
-    print(f"-> Đang lưu trữ dữ liệu sạch vào thư mục: {processed_dir}...")
+    print(f"-> Saving clean data to directory: {processed_dir}...")
     
-    # 3 bảng được làm sạch cụ thể
+    # 3 specifically cleaned tables
     datasets['orders'].to_csv(processed_dir / 'orders.csv', index=False)
     datasets['products'].to_csv(processed_dir / 'products.csv', index=False)
     datasets['order_reviews'].to_csv(processed_dir / 'order_reviews.csv', index=False)
     
-    # Các bảng khác được copy trực tiếp từ raw sang processed theo đúng đặc tả notebook
+    # Other tables copied directly from raw to processed as per notebook specs
     datasets['customers'].to_csv(processed_dir / 'customers.csv', index=False)
     datasets['order_items'].to_csv(processed_dir / 'order_items.csv', index=False)
     datasets['order_payments'].to_csv(processed_dir / 'order_payments.csv', index=False)
     datasets['sellers'].to_csv(processed_dir / 'sellers.csv', index=False)
     
-    print("   Lưu trữ hoàn tất.")
+    print("   Storage completed.")
 
 
 def main():
-    print_section_header("BẮT ĐẦU QUY TRÌNH TIỀN XỬ LÝ & LÀM SẠCH DỮ LIỆU")
+    print_section_header("STARTING PREPROCESSING & DATA CLEANING PIPELINE")
     
     raw_olist_dir = project_root / "data/raw/olist"
     processed_olist_dir = project_root / "data/processed/olist"
     
-    # 0. Tải dữ liệu từ Kaggle nếu chưa tồn tại
+    # 0. Download data from Kaggle if it doesn't exist
     download_raw_data_if_missing(raw_olist_dir)
     
-    # 1. Đọc dữ liệu
+    # 1. Load data
     raw_datasets = load_raw_data(raw_olist_dir)
     
-    # 2. Xử lý làm sạch các bảng
+    # 2. Clean tables
     cleaned_datasets = {}
     cleaned_datasets['orders'] = clean_orders(raw_datasets['orders'])
     cleaned_datasets['products'] = clean_products(raw_datasets['products'])
     cleaned_datasets['order_reviews'] = clean_reviews(raw_datasets['order_reviews'])
     
-    # Lưu các bảng khác
+    # Save other tables
     cleaned_datasets['customers'] = raw_datasets['customers']
     cleaned_datasets['order_items'] = raw_datasets['order_items']
     cleaned_datasets['order_payments'] = raw_datasets['order_payments']
     cleaned_datasets['sellers'] = raw_datasets['sellers']
     
-    # 3. Thống kê kết quả trước và sau khi làm sạch
-    print_section_header("THỐNG KÊ BIẾN ĐỔI DÒNG DỮ LIỆU")
-    print(f"  orders   : {len(raw_datasets['orders']):,} -> {len(cleaned_datasets['orders']):,} dòng")
-    print(f"  products : {len(raw_datasets['products']):,} -> {len(cleaned_datasets['products']):,} dòng")
-    print(f"  reviews  : {raw_datasets['order_reviews'].shape[1]} cột -> {cleaned_datasets['order_reviews'].shape[1]} cột")
+    # 3. Statistics of results before and after cleaning
+    print_section_header("DATA ROW TRANSFORMATION STATISTICS")
+    print(f"  orders   : {len(raw_datasets['orders']):,} -> {len(cleaned_datasets['orders']):,} rows")
+    print(f"  products : {len(raw_datasets['products']):,} -> {len(cleaned_datasets['products']):,} rows")
+    print(f"  reviews  : {raw_datasets['order_reviews'].shape[1]} columns -> {cleaned_datasets['order_reviews'].shape[1]} columns")
     
-    print("\n  Kiểm tra giá trị Null còn lại:")
+    print("\n  Check remaining Null values:")
     for name in ['orders', 'products', 'order_reviews']:
         n_nulls = cleaned_datasets[name].isnull().sum().sum()
-        status = "⚠️  vẫn còn {} nulls".format(n_nulls) if n_nulls > 0 else "✅  ĐÃ SẠCH"
-        print(f"  - Bảng {name:15s}: {status}")
+        status = "⚠️  still has {} nulls".format(n_nulls) if n_nulls > 0 else "✅  CLEANED"
+        print(f"  - Table {name:15s}: {status}")
         
-    # 4. Ghi dữ liệu sạch ra ổ đĩa
+    # 4. Write clean data to disk
     save_cleaned_data(cleaned_datasets, processed_olist_dir)
     
-    print_section_header("QUY TRÌNH HOÀN THÀNH THÀNH CÔNG")
+    print_section_header("PIPELINE COMPLETED SUCCESSFULLY")
 
 
 if __name__ == "__main__":
