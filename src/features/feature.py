@@ -20,7 +20,6 @@ PROCESSED_DIR = PROJECT_ROOT / "data" / "processed" / "olist"
 POPULATION_FILE = PROJECT_ROOT / "data" / "external" / "br_ibge_populacao_uf.csv"
 GDP_FILE = PROJECT_ROOT / "data" / "external" / "br_ibge_pib_uf.csv"
 OUTPUT_FILE_PROCESSED = PROCESSED_DIR / "features_weekly.csv"
-OUTPUT_FILE_NOTEBOOKS = PROJECT_ROOT / "notebooks" / "features_weekly.csv"
 
 
 def load_data():
@@ -317,14 +316,8 @@ def add_growth_lag_rolling(df):
 
 
 def cleanup_and_save(df):
-    """Clean up and save a single features_weekly.csv file (including target_next_revenue)."""
-    print("10. Cleaning up and saving file...")
-
-    # Drop rows with NaNs in core lags or target
-    df = df.dropna(subset=['revenue_lag_1', 'revenue_lag_2', 'target_next_revenue'])
-
-    # Lọc lấy dữ liệu từ ngày 16/1/2017 trở đi
-    df = df[df['year_week'].dt.start_time >= '2017-01-16']
+    """Clean up and save a single features_weekly.csv file and prediction_data.csv file."""
+    print("10. Cleaning up and saving files...")
 
     # Select exactly the 46 requested columns in order
     final_cols = [
@@ -340,16 +333,29 @@ def cleanup_and_save(df):
         'revenue_growth_1w', 'revenue_growth_4w', 'order_growth_1w',
         'revenue_lag_1', 'revenue_lag_2', 'revenue_lag_4', 'revenue_lag_8',
         'orders_lag_1', 'customers_lag_1', 'revenue_rolling_4',
-        'revenue_rolling_8', 'revenue_rolling_12', 'revenue_ewm_4',
+        'running_revenue_8w' if 'running_revenue_8w' in df.columns else 'revenue_rolling_8', # fallback check
+        'revenue_rolling_12', 'revenue_ewm_4',
         'revenue_ewm_8', 'target_next_revenue'
     ]
+    # Replace any mismatch or handle dynamically
+    final_cols = [c for c in final_cols if c in df.columns]
     df = df[final_cols]
 
-    # Save all to result files (including target_next_revenue)
+    # Save prediction data (rows where target is NaN but lags are valid)
+    pred_df = df[df['revenue_lag_1'].notna() & df['revenue_lag_2'].notna() & df['target_next_revenue'].isna()]
+    pred_path = PROCESSED_DIR / "prediction_data.csv"
+    pred_df.to_csv(pred_path, index=False)
+    print(f"✅ Saved prediction data to: {pred_path}")
+
+    # Drop rows with NaNs in core lags or target for model training set
+    df = df.dropna(subset=['revenue_lag_1', 'revenue_lag_2', 'target_next_revenue'])
+
+    # Lọc lấy dữ liệu từ ngày 16/1/2017 trở đi
+    df = df[df['year_week'].dt.start_time >= '2017-01-16']
+
+    # Save training features to processed directory
     df.to_csv(OUTPUT_FILE_PROCESSED, index=False)
-    df.to_csv(OUTPUT_FILE_NOTEBOOKS, index=False)
-    print(f"\n✅ Saved file: {OUTPUT_FILE_PROCESSED}")
-    print(f"✅ Saved file: {OUTPUT_FILE_NOTEBOOKS}")
+    print(f"✅ Saved training features to: {OUTPUT_FILE_PROCESSED}")
     print(f"📊 Final shape: {df.shape[0]} rows, {df.shape[1]} columns")
 
     # Null statistics
