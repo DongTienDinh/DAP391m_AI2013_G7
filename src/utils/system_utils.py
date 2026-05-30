@@ -6,7 +6,7 @@ project_root = Path(__file__).resolve().parents[2]
 
 def print_section_header(title: str, width: int = 70) -> None:
     """
-    In tiêu đề section đẹp.
+    Print a nice section header.
     """
     
     print("\n" + "=" * width)
