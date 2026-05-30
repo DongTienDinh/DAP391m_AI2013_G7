@@ -55,8 +55,8 @@ Transaction data covering 2016–2018, comprising 8 core tables:
 | `product_category_name_translation.csv` | Portuguese to English category name mapping |
 
 ### IBGE Socioeconomic Data *(External)*
-> 🔗 Population: [sidra.ibge.gov.br/tabela/6579](https://basedosdados.org/dataset/d30222ad-7a5c-4778-a1ec-f0785371d1ca?table=b99f0017-e587-477e-8cfb-05fb5d1005b8)
-> 🔗 GDP: [ibge.gov.br — Contas Regionais](https://basedosdados.org/dataset/fcf025ca-8b19-4131-8e2d-5ddb12492347?table=93007431-7ce9-42ee-8740-8c2274d345ad)
+> 🔗 Population: [br_ibge_populacao (Base dos Dados)](https://basedosdados.org/dataset/d30222ad-7a5c-4778-a1ec-f0785371d1ca?table=b99f0017-e587-477e-8cfb-05fb5d1005b8)
+> 🔗 GDP: [br_ibge_pib (Base dos Dados)](https://basedosdados.org/dataset/fcf025ca-8b19-4131-8e2d-5ddb12492347?table=93007431-7ce9-42ee-8740-8c2274d345ad)
 
 | File | Description |
 |---|---|
