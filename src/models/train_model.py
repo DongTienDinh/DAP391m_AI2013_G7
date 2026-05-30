@@ -4,9 +4,14 @@ import io
 import time
 import warnings
 import json
+import random
 from pathlib import Path
 import numpy as np
 import pandas as pd
+
+# Set global random seeds for absolute reproducibility
+random.seed(42)
+np.random.seed(42)
 
 # Force UTF-8 stdout and stderr encoding for safe terminal logs
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
