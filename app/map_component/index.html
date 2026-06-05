@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        #map-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        #plotly-map {
+            width: 100%;
+            height: 100%;
+        }
+        /* Floating zoom controls – top-right corner */
+        #zoom-controls {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            overflow: hidden;
+            border: 1px solid #d1d5db;
+        }
+        .zoom-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: transparent;
+            color: #374151;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.15s ease, color 0.15s ease;
+            user-select: none;
+            line-height: 1;
+        }
+        .zoom-btn:hover {
+            background: #e5e7eb;
+            color: #111827;
+        }
+        .zoom-btn:active {
+            background: #d1d5db;
+        }
+        .zoom-divider {
+            height: 1px;
+            background: #d1d5db;
+            margin: 0 6px;
+        }
+    </style>
+    <!-- Plotly.js 3.6.0 to match Plotly Python 6.8.0 (uses MapLibre, no Mapbox token needed) -->
+    <script src="https://cdn.plot.ly/plotly-3.6.0.min.js"></script>
+</head>
+<body>
+    <div id="map-container">
+        <div id="plotly-map"></div>
+        <div id="zoom-controls">
+            <button class="zoom-btn" id="zoom-in" title="Zoom In">+</button>
+            <div class="zoom-divider"></div>
+            <button class="zoom-btn" id="zoom-out" title="Zoom Out">−</button>
+        </div>
+    </div>
+    <script>
+        function sendMessageToStreamlitClient(type, data) {
+            try {
+                const outData = Object.assign({
+                    isStreamlitMessage: true,
+                    type: type,
+                }, data);
+                window.parent.postMessage(outData, "*");
+            } catch (err) {
+                console.log("[MapComponent] Error postMessage: " + err.message);
+            }
+        }
+
+        try {
+            sendMessageToStreamlitClient("streamlit:componentReady", { apiVersion: 1 });
+        } catch (err) {
+            console.log("[MapComponent] Init error: " + err.message);
+        }
+
+        var currentFigJson = null;
+        var plotDiv = document.getElementById('plotly-map');
+
+        // Helper: find the map zoom key in the layout (handles both 'map' and 'mapbox')
+        function getMapKey(layout) {
+            if (layout.map) return 'map';
+            if (layout.mapbox) return 'mapbox';
+            return 'map';
+        }
+
+        // Zoom controls
+        document.getElementById('zoom-in').addEventListener('click', function() {
+            var layout = plotDiv._fullLayout;
+            var key = getMapKey(layout);
+            if (layout && layout[key]) {
+                var currentZoom = layout[key].zoom || 3;
+                var relayoutObj = {};
+                relayoutObj[key + '.zoom'] = Math.min(currentZoom + 0.7, 12);
+                Plotly.relayout(plotDiv, relayoutObj);
+            }
+        });
+
+        document.getElementById('zoom-out').addEventListener('click', function() {
+            var layout = plotDiv._fullLayout;
+            var key = getMapKey(layout);
+            if (layout && layout[key]) {
+                var currentZoom = layout[key].zoom || 3;
+                var relayoutObj = {};
+                relayoutObj[key + '.zoom'] = Math.max(currentZoom - 0.7, 1.5);
+                Plotly.relayout(plotDiv, relayoutObj);
+            }
+        });
+
+        // Listen for data from Streamlit
+        window.addEventListener("message", function(event) {
+            try {
+                if (event.data && event.data.type === "streamlit:render") {
+                    var args = event.data.args;
+                    if (args && args.fig_json) {
+                        if (args.fig_json === currentFigJson) {
+                            return;
+                        }
+                        currentFigJson = args.fig_json;
+                        var figData = JSON.parse(args.fig_json);
+
+                        // Override to light/bright map style
+                        figData.layout.paper_bgcolor = '#f0f4f8';
+                        figData.layout.plot_bgcolor = '#f0f4f8';
+                        figData.layout.clickmode = 'event+select';
+                        figData.layout.dragmode = 'pan';
+
+                        Plotly.newPlot(plotDiv, figData.data, figData.layout, {
+                            displayModeBar: false,
+                            responsive: true,
+                            scrollZoom: true
+                        }).then(function() {
+                            // Set iframe height dynamically from layout, default to 520
+                            sendMessageToStreamlitClient("streamlit:setFrameHeight", {
+                                height: figData.layout.height || 520
+                            });
+
+                            // Bind native click handler
+                            plotDiv.on('plotly_click', function(clickData) {
+                                try {
+                                    if (clickData && clickData.points && clickData.points.length > 0) {
+                                        var point = clickData.points[0];
+                                        var stateCode = null;
+                                        // Resolve from choropleth customdata or text-label fallback
+                                        if (point.customdata && point.customdata.length > 0) {
+                                            stateCode = point.customdata[0];
+                                        } else if (point.text && point.text.length === 2) {
+                                            stateCode = point.text;
+                                        }
+                                        if (stateCode && stateCode.length === 2) {
+                                            sendMessageToStreamlitClient("streamlit:setComponentValue", {
+                                                value: {
+                                                    state: stateCode,
+                                                    timestamp: Date.now()
+                                                }
+                                            });
+                                        }
+                                    }
+                                } catch (clickErr) {
+                                    console.log("[MapComponent] Click error: " + clickErr.message);
+                                }
+                            });
+                        }).catch(function(plotErr) {
+                            console.log("[MapComponent] Plotly error: " + plotErr.message);
+                        });
+                    }
+                }
+            } catch (err) {
+                console.log("[MapComponent] Render error: " + err.message);
+            }
+        });
+    </script>
+</body>
+</html>

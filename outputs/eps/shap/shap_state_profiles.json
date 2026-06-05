@@ -1,0 +1,2430 @@
+{
+  "metadata": {
+    "model": "Random Forest",
+    "n_estimators": 300,
+    "n_samples": 2600,
+    "n_features": 35,
+    "generated_at": "2026-06-05T23:51:41.043774",
+    "shap_method": "TreeExplainer"
+  },
+  "global_feature_importance": [
+    {
+      "feature": "unique_sellers",
+      "mean_abs_shap": 0.727241,
+      "rank": 1
+    },
+    {
+      "feature": "category_diversity",
+      "mean_abs_shap": 0.571468,
+      "rank": 2
+    },
+    {
+      "feature": "population",
+      "mean_abs_shap": 0.276943,
+      "rank": 3
+    },
+    {
+      "feature": "revenue_lag_4",
+      "mean_abs_shap": 0.173042,
+      "rank": 4
+    },
+    {
+      "feature": "revenue_rolling_8",
+      "mean_abs_shap": 0.107714,
+      "rank": 5
+    },
+    {
+      "feature": "avg_delivery_time",
+      "mean_abs_shap": 0.075146,
+      "rank": 6
+    },
+    {
+      "feature": "revenue_rolling_4",
+      "mean_abs_shap": 0.054097,
+      "rank": 7
+    },
+    {
+      "feature": "order_count",
+      "mean_abs_shap": 0.04163,
+      "rank": 8
+    },
+    {
+      "feature": "week_sin",
+      "mean_abs_shap": 0.029376,
+      "rank": 9
+    },
+    {
+      "feature": "revenue_momentum",
+      "mean_abs_shap": 0.028292,
+      "rank": 10
+    },
+    {
+      "feature": "revenue_lag_2",
+      "mean_abs_shap": 0.028257,
+      "rank": 11
+    },
+    {
+      "feature": "seller_density",
+      "mean_abs_shap": 0.027013,
+      "rank": 12
+    },
+    {
+      "feature": "revenue_lag_8",
+      "mean_abs_shap": 0.025764,
+      "rank": 13
+    },
+    {
+      "feature": "order_growth_1w",
+      "mean_abs_shap": 0.024762,
+      "rank": 14
+    },
+    {
+      "feature": "penetration_gap",
+      "mean_abs_shap": 0.022388,
+      "rank": 15
+    },
+    {
+      "feature": "revenue",
+      "mean_abs_shap": 0.020381,
+      "rank": 16
+    },
+    {
+      "feature": "revenue_growth_4w",
+      "mean_abs_shap": 0.019966,
+      "rank": 17
+    },
+    {
+      "feature": "gdp_per_capita",
+      "mean_abs_shap": 0.019574,
+      "rank": 18
+    },
+    {
+      "feature": "revenue_growth_1w",
+      "mean_abs_shap": 0.018673,
+      "rank": 19
+    },
+    {
+      "feature": "orders_lag_1",
+      "mean_abs_shap": 0.017808,
+      "rank": 20
+    },
+    {
+      "feature": "revenue_std_4",
+      "mean_abs_shap": 0.017215,
+      "rank": 21
+    },
+    {
+      "feature": "state_code",
+      "mean_abs_shap": 0.014003,
+      "rank": 22
+    },
+    {
+      "feature": "week_cos",
+      "mean_abs_shap": 0.013733,
+      "rank": 23
+    },
+    {
+      "feature": "avg_order_value",
+      "mean_abs_shap": 0.013085,
+      "rank": 24
+    },
+    {
+      "feature": "revenue_lag_1",
+      "mean_abs_shap": 0.012137,
+      "rank": 25
+    },
+    {
+      "feature": "seller_customer_ratio",
+      "mean_abs_shap": 0.011495,
+      "rank": 26
+    },
+    {
+      "feature": "month_sin",
+      "mean_abs_shap": 0.011308,
+      "rank": 27
+    },
+    {
+      "feature": "avg_freight_value",
+      "mean_abs_shap": 0.010853,
+      "rank": 28
+    },
+    {
+      "feature": "customer_seller_ratio",
+      "mean_abs_shap": 0.010167,
+      "rank": 29
+    },
+    {
+      "feature": "week_of_year",
+      "mean_abs_shap": 0.009589,
+      "rank": 30
+    },
+    {
+      "feature": "avg_review_score",
+      "mean_abs_shap": 0.009448,
+      "rank": 31
+    },
+    {
+      "feature": "avg_installments",
+      "mean_abs_shap": 0.009095,
+      "rank": 32
+    },
+    {
+      "feature": "positive_review_rate",
+      "mean_abs_shap": 0.005734,
+      "rank": 33
+    },
+    {
+      "feature": "month_cos",
+      "mean_abs_shap": 0.004557,
+      "rank": 34
+    },
+    {
+      "feature": "late_delivery_rate",
+      "mean_abs_shap": 0.004198,
+      "rank": 35
+    }
+  ],
+  "state_profiles": {
+    "AC": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 1.261889,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.970633,
+          "rank": 2
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.759076,
+          "rank": 3
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.225853,
+          "rank": 4
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.194346,
+          "rank": 5
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.145182,
+          "rank": 6
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.111979,
+          "rank": 7
+        },
+        {
+          "feature": "revenue_std_4",
+          "mean_abs_shap": 0.073939,
+          "rank": 8
+        },
+        {
+          "feature": "revenue_lag_8",
+          "mean_abs_shap": 0.073539,
+          "rank": 9
+        },
+        {
+          "feature": "revenue_growth_4w",
+          "mean_abs_shap": 0.073365,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 4.534022,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.7824,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.4127,
+            "eps_weight": 0.2197,
+            "alignment": 0.807
+          },
+          "GP": {
+            "shap_weight": 0.0196,
+            "eps_weight": 0.2519,
+            "alignment": 0.7677
+          },
+          "PG": {
+            "shap_weight": 0.1949,
+            "eps_weight": 0.4345,
+            "alignment": 0.7604
+          },
+          "MMI": {
+            "shap_weight": 0.2908,
+            "eps_weight": 0.0938,
+            "alignment": 0.803
+          }
+        },
+        "insight": "Moderate alignment — unique_sellers is the strongest RF predictor for AC, partially consistent with EPS component weights. Some divergence in PG component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "AL": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 0.524278,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.415403,
+          "rank": 2
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.314953,
+          "rank": 3
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.14278,
+          "rank": 4
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.114116,
+          "rank": 5
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.054783,
+          "rank": 6
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.049201,
+          "rank": 7
+        },
+        {
+          "feature": "gdp_per_capita",
+          "mean_abs_shap": 0.048041,
+          "rank": 8
+        },
+        {
+          "feature": "seller_density",
+          "mean_abs_shap": 0.037008,
+          "rank": 9
+        },
+        {
+          "feature": "week_sin",
+          "mean_abs_shap": 0.033491,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 2.097572,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.7868,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.419,
+            "eps_weight": 0.229,
+            "alignment": 0.81
+          },
+          "GP": {
+            "shap_weight": 0.019,
+            "eps_weight": 0.3485,
+            "alignment": 0.6705
+          },
+          "PG": {
+            "shap_weight": 0.1883,
+            "eps_weight": 0.3371,
+            "alignment": 0.8512
+          },
+          "MMI": {
+            "shap_weight": 0.2744,
+            "eps_weight": 0.0854,
+            "alignment": 0.811
+          }
+        },
+        "insight": "Moderate alignment — unique_sellers is the strongest RF predictor for AL, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "AM": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 1.038129,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.77308,
+          "rank": 2
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.357336,
+          "rank": 3
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.20916,
+          "rank": 4
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.145934,
+          "rank": 5
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.144501,
+          "rank": 6
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.096726,
+          "rank": 7
+        },
+        {
+          "feature": "gdp_per_capita",
+          "mean_abs_shap": 0.07097,
+          "rank": 8
+        },
+        {
+          "feature": "seller_density",
+          "mean_abs_shap": 0.062435,
+          "rank": 9
+        },
+        {
+          "feature": "week_sin",
+          "mean_abs_shap": 0.058684,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 3.512187,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.7383,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.416,
+            "eps_weight": 0.199,
+            "alignment": 0.783
+          },
+          "GP": {
+            "shap_weight": 0.0164,
+            "eps_weight": 0.1539,
+            "alignment": 0.8625
+          },
+          "PG": {
+            "shap_weight": 0.1328,
+            "eps_weight": 0.561,
+            "alignment": 0.5718
+          },
+          "MMI": {
+            "shap_weight": 0.3149,
+            "eps_weight": 0.0861,
+            "alignment": 0.7712
+          }
+        },
+        "insight": "Moderate alignment — unique_sellers is the strongest RF predictor for AM, partially consistent with EPS component weights. Some divergence in PG component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "AP": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 1.341386,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 1.037135,
+          "rank": 2
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.921158,
+          "rank": 3
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.261435,
+          "rank": 4
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.234965,
+          "rank": 5
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.148471,
+          "rank": 6
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.127541,
+          "rank": 7
+        },
+        {
+          "feature": "order_count",
+          "mean_abs_shap": 0.068246,
+          "rank": 8
+        },
+        {
+          "feature": "revenue_lag_2",
+          "mean_abs_shap": 0.065605,
+          "rank": 9
+        },
+        {
+          "feature": "revenue_std_4",
+          "mean_abs_shap": 0.06316,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 4.84481,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.7485,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.4023,
+            "eps_weight": 0.1537,
+            "alignment": 0.7513
+          },
+          "GP": {
+            "shap_weight": 0.0167,
+            "eps_weight": 0.14,
+            "alignment": 0.8766
+          },
+          "PG": {
+            "shap_weight": 0.2077,
+            "eps_weight": 0.6046,
+            "alignment": 0.6032
+          },
+          "MMI": {
+            "shap_weight": 0.2867,
+            "eps_weight": 0.1018,
+            "alignment": 0.8151
+          }
+        },
+        "insight": "Moderate alignment — unique_sellers is the strongest RF predictor for AP, partially consistent with EPS component weights. Some divergence in PG component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "BA": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 0.704004,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.596031,
+          "rank": 2
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.147875,
+          "rank": 3
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.145758,
+          "rank": 4
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.071966,
+          "rank": 5
+        },
+        {
+          "feature": "order_count",
+          "mean_abs_shap": 0.043744,
+          "rank": 6
+        },
+        {
+          "feature": "revenue_momentum",
+          "mean_abs_shap": 0.035918,
+          "rank": 7
+        },
+        {
+          "feature": "revenue_lag_2",
+          "mean_abs_shap": 0.034009,
+          "rank": 8
+        },
+        {
+          "feature": "orders_lag_1",
+          "mean_abs_shap": 0.031738,
+          "rank": 9
+        },
+        {
+          "feature": "order_growth_1w",
+          "mean_abs_shap": 0.029919,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 2.104289,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.751,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.5006,
+            "eps_weight": 0.3024,
+            "alignment": 0.8018
+          },
+          "GP": {
+            "shap_weight": 0.0242,
+            "eps_weight": 0.3612,
+            "alignment": 0.663
+          },
+          "PG": {
+            "shap_weight": 0.0819,
+            "eps_weight": 0.2818,
+            "alignment": 0.8001
+          },
+          "MMI": {
+            "shap_weight": 0.3509,
+            "eps_weight": 0.0547,
+            "alignment": 0.7038
+          }
+        },
+        "insight": "Moderate alignment — unique_sellers is the strongest RF predictor for BA, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "CE": {
+      "top_features": [
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.302068,
+          "rank": 1
+        },
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 0.293785,
+          "rank": 2
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.172348,
+          "rank": 3
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.138837,
+          "rank": 4
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.093287,
+          "rank": 5
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.049104,
+          "rank": 6
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.040243,
+          "rank": 7
+        },
+        {
+          "feature": "revenue_momentum",
+          "mean_abs_shap": 0.029434,
+          "rank": 8
+        },
+        {
+          "feature": "week_sin",
+          "mean_abs_shap": 0.027385,
+          "rank": 9
+        },
+        {
+          "feature": "order_count",
+          "mean_abs_shap": 0.02569,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 1.441731,
+      "dominant_feature": "category_diversity",
+      "alignment": {
+        "overall_score": 0.7814,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.4989,
+            "eps_weight": 0.2276,
+            "alignment": 0.7287
+          },
+          "GP": {
+            "shap_weight": 0.0274,
+            "eps_weight": 0.3471,
+            "alignment": 0.6803
+          },
+          "PG": {
+            "shap_weight": 0.1473,
+            "eps_weight": 0.2895,
+            "alignment": 0.8578
+          },
+          "MMI": {
+            "shap_weight": 0.2315,
+            "eps_weight": 0.1358,
+            "alignment": 0.9043
+          }
+        },
+        "insight": "Moderate alignment — category_diversity is the strongest RF predictor for CE, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "DF": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 0.444783,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.431411,
+          "rank": 2
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.163026,
+          "rank": 3
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.129915,
+          "rank": 4
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.066379,
+          "rank": 5
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.060663,
+          "rank": 6
+        },
+        {
+          "feature": "penetration_gap",
+          "mean_abs_shap": 0.03794,
+          "rank": 7
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.034667,
+          "rank": 8
+        },
+        {
+          "feature": "order_count",
+          "mean_abs_shap": 0.032812,
+          "rank": 9
+        },
+        {
+          "feature": "seller_density",
+          "mean_abs_shap": 0.030216,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 1.726994,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.7384,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.4926,
+            "eps_weight": 0.2696,
+            "alignment": 0.777
+          },
+          "GP": {
+            "shap_weight": 0.0233,
+            "eps_weight": 0.4568,
+            "alignment": 0.5665
+          },
+          "PG": {
+            "shap_weight": 0.1057,
+            "eps_weight": 0.254,
+            "alignment": 0.8517
+          },
+          "MMI": {
+            "shap_weight": 0.2901,
+            "eps_weight": 0.0196,
+            "alignment": 0.7295
+          }
+        },
+        "insight": "Moderate alignment — unique_sellers is the strongest RF predictor for DF, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "ES": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 0.407323,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.379624,
+          "rank": 2
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.179629,
+          "rank": 3
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.131632,
+          "rank": 4
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.073747,
+          "rank": 5
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.051191,
+          "rank": 6
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.041989,
+          "rank": 7
+        },
+        {
+          "feature": "order_count",
+          "mean_abs_shap": 0.033802,
+          "rank": 8
+        },
+        {
+          "feature": "penetration_gap",
+          "mean_abs_shap": 0.03255,
+          "rank": 9
+        },
+        {
+          "feature": "revenue_momentum",
+          "mean_abs_shap": 0.028435,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 1.651807,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.8087,
+        "verdict": "HIGH",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.5068,
+            "eps_weight": 0.313,
+            "alignment": 0.8062
+          },
+          "GP": {
+            "shap_weight": 0.0253,
+            "eps_weight": 0.4386,
+            "alignment": 0.5867
+          },
+          "PG": {
+            "shap_weight": 0.108,
+            "eps_weight": 0.1258,
+            "alignment": 0.9822
+          },
+          "MMI": {
+            "shap_weight": 0.2769,
+            "eps_weight": 0.1225,
+            "alignment": 0.8456
+          }
+        },
+        "insight": "SHAP drivers align with EPS ranking — unique_sellers consistently supports the GP signal."
+      }
+    },
+    "GO": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 0.4234,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.411283,
+          "rank": 2
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.144665,
+          "rank": 3
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.130932,
+          "rank": 4
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.06542,
+          "rank": 5
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.041536,
+          "rank": 6
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.030839,
+          "rank": 7
+        },
+        {
+          "feature": "order_count",
+          "mean_abs_shap": 0.030761,
+          "rank": 8
+        },
+        {
+          "feature": "revenue_momentum",
+          "mean_abs_shap": 0.028779,
+          "rank": 9
+        },
+        {
+          "feature": "week_sin",
+          "mean_abs_shap": 0.025157,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 1.623591,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.7646,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.5097,
+            "eps_weight": 0.267,
+            "alignment": 0.7573
+          },
+          "GP": {
+            "shap_weight": 0.0281,
+            "eps_weight": 0.4395,
+            "alignment": 0.5886
+          },
+          "PG": {
+            "shap_weight": 0.1022,
+            "eps_weight": 0.2008,
+            "alignment": 0.9014
+          },
+          "MMI": {
+            "shap_weight": 0.2866,
+            "eps_weight": 0.0927,
+            "alignment": 0.8061
+          }
+        },
+        "insight": "Moderate alignment — unique_sellers is the strongest RF predictor for GO, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "MA": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 0.24031,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.215999,
+          "rank": 2
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.209262,
+          "rank": 3
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.137256,
+          "rank": 4
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.129143,
+          "rank": 5
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.049299,
+          "rank": 6
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.038103,
+          "rank": 7
+        },
+        {
+          "feature": "week_sin",
+          "mean_abs_shap": 0.028681,
+          "rank": 8
+        },
+        {
+          "feature": "revenue_momentum",
+          "mean_abs_shap": 0.024123,
+          "rank": 9
+        },
+        {
+          "feature": "gdp_per_capita",
+          "mean_abs_shap": 0.021435,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 1.383165,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.7623,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.4693,
+            "eps_weight": 0.2193,
+            "alignment": 0.75
+          },
+          "GP": {
+            "shap_weight": 0.0244,
+            "eps_weight": 0.3426,
+            "alignment": 0.6818
+          },
+          "PG": {
+            "shap_weight": 0.186,
+            "eps_weight": 0.3838,
+            "alignment": 0.8022
+          },
+          "MMI": {
+            "shap_weight": 0.2099,
+            "eps_weight": 0.0543,
+            "alignment": 0.8444
+          }
+        },
+        "insight": "Moderate alignment — unique_sellers is the strongest RF predictor for MA, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "MG": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 1.379321,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.964563,
+          "rank": 2
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.262785,
+          "rank": 3
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.138054,
+          "rank": 4
+        },
+        {
+          "feature": "order_count",
+          "mean_abs_shap": 0.070119,
+          "rank": 5
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.065778,
+          "rank": 6
+        },
+        {
+          "feature": "revenue_lag_2",
+          "mean_abs_shap": 0.05326,
+          "rank": 7
+        },
+        {
+          "feature": "order_growth_1w",
+          "mean_abs_shap": 0.050941,
+          "rank": 8
+        },
+        {
+          "feature": "orders_lag_1",
+          "mean_abs_shap": 0.047745,
+          "rank": 9
+        },
+        {
+          "feature": "revenue_momentum",
+          "mean_abs_shap": 0.046849,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 3.411424,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.7828,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.4676,
+            "eps_weight": 0.3582,
+            "alignment": 0.8906
+          },
+          "GP": {
+            "shap_weight": 0.0219,
+            "eps_weight": 0.5216,
+            "alignment": 0.5003
+          },
+          "PG": {
+            "shap_weight": 0.0509,
+            "eps_weight": 0.0189,
+            "alignment": 0.9679
+          },
+          "MMI": {
+            "shap_weight": 0.4181,
+            "eps_weight": 0.1013,
+            "alignment": 0.6832
+          }
+        },
+        "insight": "Moderate alignment — unique_sellers is the strongest RF predictor for MG, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "MS": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 0.330184,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.293158,
+          "rank": 2
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.212803,
+          "rank": 3
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.149237,
+          "rank": 4
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.09602,
+          "rank": 5
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.069053,
+          "rank": 6
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.044963,
+          "rank": 7
+        },
+        {
+          "feature": "week_sin",
+          "mean_abs_shap": 0.035496,
+          "rank": 8
+        },
+        {
+          "feature": "seller_density",
+          "mean_abs_shap": 0.033416,
+          "rank": 9
+        },
+        {
+          "feature": "penetration_gap",
+          "mean_abs_shap": 0.030213,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 1.614314,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.7613,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.4449,
+            "eps_weight": 0.2274,
+            "alignment": 0.7824
+          },
+          "GP": {
+            "shap_weight": 0.0252,
+            "eps_weight": 0.4084,
+            "alignment": 0.6168
+          },
+          "PG": {
+            "shap_weight": 0.1643,
+            "eps_weight": 0.3214,
+            "alignment": 0.8429
+          },
+          "MMI": {
+            "shap_weight": 0.2393,
+            "eps_weight": 0.0429,
+            "alignment": 0.8036
+          }
+        },
+        "insight": "Moderate alignment — unique_sellers is the strongest RF predictor for MS, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "MT": {
+      "top_features": [
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.250996,
+          "rank": 1
+        },
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 0.232185,
+          "rank": 2
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.185789,
+          "rank": 3
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.140445,
+          "rank": 4
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.103495,
+          "rank": 5
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.046567,
+          "rank": 6
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.033021,
+          "rank": 7
+        },
+        {
+          "feature": "revenue_momentum",
+          "mean_abs_shap": 0.025391,
+          "rank": 8
+        },
+        {
+          "feature": "seller_density",
+          "mean_abs_shap": 0.025177,
+          "rank": 9
+        },
+        {
+          "feature": "week_sin",
+          "mean_abs_shap": 0.02495,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 1.34548,
+      "dominant_feature": "category_diversity",
+      "alignment": {
+        "overall_score": 0.7296,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.4927,
+            "eps_weight": 0.2212,
+            "alignment": 0.7285
+          },
+          "GP": {
+            "shap_weight": 0.0255,
+            "eps_weight": 0.4166,
+            "alignment": 0.6089
+          },
+          "PG": {
+            "shap_weight": 0.1671,
+            "eps_weight": 0.3622,
+            "alignment": 0.8048
+          },
+          "MMI": {
+            "shap_weight": 0.2125,
+            "eps_weight": 0.0,
+            "alignment": 0.7875
+          }
+        },
+        "insight": "Moderate alignment — category_diversity is the strongest RF predictor for MT, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "PA": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 0.213362,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.198398,
+          "rank": 2
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.173499,
+          "rank": 3
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.132562,
+          "rank": 4
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.105716,
+          "rank": 5
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.04837,
+          "rank": 6
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.035249,
+          "rank": 7
+        },
+        {
+          "feature": "revenue_momentum",
+          "mean_abs_shap": 0.030306,
+          "rank": 8
+        },
+        {
+          "feature": "week_sin",
+          "mean_abs_shap": 0.03015,
+          "rank": 9
+        },
+        {
+          "feature": "revenue_lag_8",
+          "mean_abs_shap": 0.022319,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 1.258172,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.7883,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.4856,
+            "eps_weight": 0.2439,
+            "alignment": 0.7583
+          },
+          "GP": {
+            "shap_weight": 0.0313,
+            "eps_weight": 0.3281,
+            "alignment": 0.7032
+          },
+          "PG": {
+            "shap_weight": 0.1658,
+            "eps_weight": 0.3289,
+            "alignment": 0.837
+          },
+          "MMI": {
+            "shap_weight": 0.2044,
+            "eps_weight": 0.0992,
+            "alignment": 0.8948
+          }
+        },
+        "insight": "Moderate alignment — unique_sellers is the strongest RF predictor for PA, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "PB": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 0.353274,
+          "rank": 1
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.268451,
+          "rank": 2
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.264722,
+          "rank": 3
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.140823,
+          "rank": 4
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.11254,
+          "rank": 5
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.048526,
+          "rank": 6
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.047921,
+          "rank": 7
+        },
+        {
+          "feature": "gdp_per_capita",
+          "mean_abs_shap": 0.031584,
+          "rank": 8
+        },
+        {
+          "feature": "week_sin",
+          "mean_abs_shap": 0.030404,
+          "rank": 9
+        },
+        {
+          "feature": "seller_density",
+          "mean_abs_shap": 0.030191,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 1.646967,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.8431,
+        "verdict": "HIGH",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.4259,
+            "eps_weight": 0.2795,
+            "alignment": 0.8536
+          },
+          "GP": {
+            "shap_weight": 0.0232,
+            "eps_weight": 0.3401,
+            "alignment": 0.6831
+          },
+          "PG": {
+            "shap_weight": 0.1984,
+            "eps_weight": 0.1042,
+            "alignment": 0.9058
+          },
+          "MMI": {
+            "shap_weight": 0.2463,
+            "eps_weight": 0.2763,
+            "alignment": 0.9701
+          }
+        },
+        "insight": "SHAP drivers align with EPS ranking — unique_sellers consistently supports the GP signal."
+      }
+    },
+    "PE": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 0.346798,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.327906,
+          "rank": 2
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.161711,
+          "rank": 3
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.161001,
+          "rank": 4
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.068478,
+          "rank": 5
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.040307,
+          "rank": 6
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.035411,
+          "rank": 7
+        },
+        {
+          "feature": "revenue_momentum",
+          "mean_abs_shap": 0.032919,
+          "rank": 8
+        },
+        {
+          "feature": "order_count",
+          "mean_abs_shap": 0.028938,
+          "rank": 9
+        },
+        {
+          "feature": "revenue_lag_8",
+          "mean_abs_shap": 0.02505,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 1.485409,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.7747,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.5074,
+            "eps_weight": 0.2669,
+            "alignment": 0.7595
+          },
+          "GP": {
+            "shap_weight": 0.0287,
+            "eps_weight": 0.343,
+            "alignment": 0.6857
+          },
+          "PG": {
+            "shap_weight": 0.1257,
+            "eps_weight": 0.2927,
+            "alignment": 0.833
+          },
+          "MMI": {
+            "shap_weight": 0.2573,
+            "eps_weight": 0.0974,
+            "alignment": 0.8401
+          }
+        },
+        "insight": "Moderate alignment — unique_sellers is the strongest RF predictor for PE, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "PI": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 0.424652,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.334904,
+          "rank": 2
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.299538,
+          "rank": 3
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.140261,
+          "rank": 4
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.102982,
+          "rank": 5
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.050413,
+          "rank": 6
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.049702,
+          "rank": 7
+        },
+        {
+          "feature": "seller_density",
+          "mean_abs_shap": 0.034788,
+          "rank": 8
+        },
+        {
+          "feature": "gdp_per_capita",
+          "mean_abs_shap": 0.030898,
+          "rank": 9
+        },
+        {
+          "feature": "week_sin",
+          "mean_abs_shap": 0.030861,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 1.812139,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.7997,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.4205,
+            "eps_weight": 0.2652,
+            "alignment": 0.8447
+          },
+          "GP": {
+            "shap_weight": 0.0192,
+            "eps_weight": 0.3333,
+            "alignment": 0.6858
+          },
+          "PG": {
+            "shap_weight": 0.1998,
+            "eps_weight": 0.3444,
+            "alignment": 0.8554
+          },
+          "MMI": {
+            "shap_weight": 0.2628,
+            "eps_weight": 0.057,
+            "alignment": 0.7943
+          }
+        },
+        "insight": "Moderate alignment — unique_sellers is the strongest RF predictor for PI, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "PR": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 0.946023,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.755807,
+          "rank": 2
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.143576,
+          "rank": 3
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.13889,
+          "rank": 4
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.068815,
+          "rank": 5
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.063889,
+          "rank": 6
+        },
+        {
+          "feature": "order_count",
+          "mean_abs_shap": 0.053126,
+          "rank": 7
+        },
+        {
+          "feature": "orders_lag_1",
+          "mean_abs_shap": 0.03767,
+          "rank": 8
+        },
+        {
+          "feature": "order_growth_1w",
+          "mean_abs_shap": 0.036766,
+          "rank": 9
+        },
+        {
+          "feature": "revenue_momentum",
+          "mean_abs_shap": 0.036738,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 2.58314,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.7592,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.4701,
+            "eps_weight": 0.3252,
+            "alignment": 0.8551
+          },
+          "GP": {
+            "shap_weight": 0.0227,
+            "eps_weight": 0.4474,
+            "alignment": 0.5752
+          },
+          "PG": {
+            "shap_weight": 0.066,
+            "eps_weight": 0.1917,
+            "alignment": 0.8743
+          },
+          "MMI": {
+            "shap_weight": 0.3805,
+            "eps_weight": 0.0357,
+            "alignment": 0.6552
+          }
+        },
+        "insight": "Moderate alignment — unique_sellers is the strongest RF predictor for PR, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "RJ": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 1.404944,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.982997,
+          "rank": 2
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.301586,
+          "rank": 3
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.138872,
+          "rank": 4
+        },
+        {
+          "feature": "order_count",
+          "mean_abs_shap": 0.072103,
+          "rank": 5
+        },
+        {
+          "feature": "revenue_lag_2",
+          "mean_abs_shap": 0.055555,
+          "rank": 6
+        },
+        {
+          "feature": "order_growth_1w",
+          "mean_abs_shap": 0.049345,
+          "rank": 7
+        },
+        {
+          "feature": "orders_lag_1",
+          "mean_abs_shap": 0.047344,
+          "rank": 8
+        },
+        {
+          "feature": "revenue_momentum",
+          "mean_abs_shap": 0.043785,
+          "rank": 9
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.043325,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 3.462393,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.7881,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.4786,
+            "eps_weight": 0.3488,
+            "alignment": 0.8702
+          },
+          "GP": {
+            "shap_weight": 0.021,
+            "eps_weight": 0.4749,
+            "alignment": 0.5461
+          },
+          "PG": {
+            "shap_weight": 0.0505,
+            "eps_weight": 0.0801,
+            "alignment": 0.9704
+          },
+          "MMI": {
+            "shap_weight": 0.4204,
+            "eps_weight": 0.0962,
+            "alignment": 0.6758
+          }
+        },
+        "insight": "Moderate alignment — unique_sellers is the strongest RF predictor for RJ, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "RN": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 0.432683,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.34563,
+          "rank": 2
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.29349,
+          "rank": 3
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.146769,
+          "rank": 4
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.118828,
+          "rank": 5
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.052983,
+          "rank": 6
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.04784,
+          "rank": 7
+        },
+        {
+          "feature": "seller_density",
+          "mean_abs_shap": 0.028868,
+          "rank": 8
+        },
+        {
+          "feature": "order_count",
+          "mean_abs_shap": 0.026562,
+          "rank": 9
+        },
+        {
+          "feature": "week_sin",
+          "mean_abs_shap": 0.026422,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 1.832672,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.8262,
+        "verdict": "HIGH",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.444,
+            "eps_weight": 0.1923,
+            "alignment": 0.7483
+          },
+          "GP": {
+            "shap_weight": 0.0218,
+            "eps_weight": 0.3777,
+            "alignment": 0.6441
+          },
+          "PG": {
+            "shap_weight": 0.1823,
+            "eps_weight": 0.1584,
+            "alignment": 0.9762
+          },
+          "MMI": {
+            "shap_weight": 0.2617,
+            "eps_weight": 0.2716,
+            "alignment": 0.9901
+          }
+        },
+        "insight": "SHAP drivers align with EPS ranking — unique_sellers consistently supports the GP signal."
+      }
+    },
+    "RO": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 0.715646,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.571335,
+          "rank": 2
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.374725,
+          "rank": 3
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.13786,
+          "rank": 4
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.123435,
+          "rank": 5
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.061202,
+          "rank": 6
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.057046,
+          "rank": 7
+        },
+        {
+          "feature": "gdp_per_capita",
+          "mean_abs_shap": 0.042742,
+          "rank": 8
+        },
+        {
+          "feature": "seller_density",
+          "mean_abs_shap": 0.039818,
+          "rank": 9
+        },
+        {
+          "feature": "order_count",
+          "mean_abs_shap": 0.039166,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 2.569254,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.7909,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.4186,
+            "eps_weight": 0.2429,
+            "alignment": 0.8243
+          },
+          "GP": {
+            "shap_weight": 0.0158,
+            "eps_weight": 0.3275,
+            "alignment": 0.6883
+          },
+          "PG": {
+            "shap_weight": 0.1787,
+            "eps_weight": 0.3359,
+            "alignment": 0.8428
+          },
+          "MMI": {
+            "shap_weight": 0.2971,
+            "eps_weight": 0.0937,
+            "alignment": 0.7966
+          }
+        },
+        "insight": "Moderate alignment — unique_sellers is the strongest RF predictor for RO, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "RR": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 1.47193,
+          "rank": 1
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 1.236995,
+          "rank": 2
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 1.140966,
+          "rank": 3
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.346475,
+          "rank": 4
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.283451,
+          "rank": 5
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.150015,
+          "rank": 6
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.140055,
+          "rank": 7
+        },
+        {
+          "feature": "order_count",
+          "mean_abs_shap": 0.073068,
+          "rank": 8
+        },
+        {
+          "feature": "revenue_std_4",
+          "mean_abs_shap": 0.070892,
+          "rank": 9
+        },
+        {
+          "feature": "gdp_per_capita",
+          "mean_abs_shap": 0.066996,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 5.576224,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.6778,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.3723,
+            "eps_weight": 0.0,
+            "alignment": 0.6277
+          },
+          "GP": {
+            "shap_weight": 0.0118,
+            "eps_weight": 0.0,
+            "alignment": 0.9882
+          },
+          "PG": {
+            "shap_weight": 0.245,
+            "eps_weight": 0.8719,
+            "alignment": 0.3731
+          },
+          "MMI": {
+            "shap_weight": 0.2728,
+            "eps_weight": 0.1281,
+            "alignment": 0.8553
+          }
+        },
+        "insight": "Critical misalignment on PG component (EPS weight=0.87, SHAP weight=0.24) — EPS assigns high importance to PG but RF finds negligible signal for RR. This state may be overranked on PG due to data sparsity."
+      }
+    },
+    "RS": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 1.000873,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.752332,
+          "rank": 2
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.154078,
+          "rank": 3
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.134692,
+          "rank": 4
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.061561,
+          "rank": 5
+        },
+        {
+          "feature": "order_count",
+          "mean_abs_shap": 0.05495,
+          "rank": 6
+        },
+        {
+          "feature": "revenue_momentum",
+          "mean_abs_shap": 0.042912,
+          "rank": 7
+        },
+        {
+          "feature": "revenue_lag_2",
+          "mean_abs_shap": 0.040529,
+          "rank": 8
+        },
+        {
+          "feature": "orders_lag_1",
+          "mean_abs_shap": 0.040473,
+          "rank": 9
+        },
+        {
+          "feature": "order_growth_1w",
+          "mean_abs_shap": 0.038321,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 2.615947,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.7561,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.475,
+            "eps_weight": 0.2902,
+            "alignment": 0.8152
+          },
+          "GP": {
+            "shap_weight": 0.0242,
+            "eps_weight": 0.447,
+            "alignment": 0.5772
+          },
+          "PG": {
+            "shap_weight": 0.064,
+            "eps_weight": 0.1785,
+            "alignment": 0.8856
+          },
+          "MMI": {
+            "shap_weight": 0.3972,
+            "eps_weight": 0.0843,
+            "alignment": 0.6871
+          }
+        },
+        "insight": "Moderate alignment — unique_sellers is the strongest RF predictor for RS, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "SC": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 0.749446,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.630107,
+          "rank": 2
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.158824,
+          "rank": 3
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.119987,
+          "rank": 4
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.056721,
+          "rank": 5
+        },
+        {
+          "feature": "order_count",
+          "mean_abs_shap": 0.043027,
+          "rank": 6
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.041221,
+          "rank": 7
+        },
+        {
+          "feature": "revenue_momentum",
+          "mean_abs_shap": 0.035398,
+          "rank": 8
+        },
+        {
+          "feature": "order_growth_1w",
+          "mean_abs_shap": 0.033157,
+          "rank": 9
+        },
+        {
+          "feature": "orders_lag_1",
+          "mean_abs_shap": 0.033103,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 2.215202,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.7665,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.49,
+            "eps_weight": 0.2737,
+            "alignment": 0.7836
+          },
+          "GP": {
+            "shap_weight": 0.026,
+            "eps_weight": 0.4603,
+            "alignment": 0.5657
+          },
+          "PG": {
+            "shap_weight": 0.0707,
+            "eps_weight": 0.1468,
+            "alignment": 0.9239
+          },
+          "MMI": {
+            "shap_weight": 0.3581,
+            "eps_weight": 0.1192,
+            "alignment": 0.7611
+          }
+        },
+        "insight": "Moderate alignment — unique_sellers is the strongest RF predictor for SC, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      }
+    },
+    "SE": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 0.569274,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.437604,
+          "rank": 2
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.312096,
+          "rank": 3
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.146686,
+          "rank": 4
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.109094,
+          "rank": 5
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.051483,
+          "rank": 6
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.046398,
+          "rank": 7
+        },
+        {
+          "feature": "order_count",
+          "mean_abs_shap": 0.03136,
+          "rank": 8
+        },
+        {
+          "feature": "seller_density",
+          "mean_abs_shap": 0.031197,
+          "rank": 9
+        },
+        {
+          "feature": "week_sin",
+          "mean_abs_shap": 0.029373,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 2.101561,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.8023,
+        "verdict": "HIGH",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.4267,
+            "eps_weight": 0.2622,
+            "alignment": 0.8356
+          },
+          "GP": {
+            "shap_weight": 0.0169,
+            "eps_weight": 0.4584,
+            "alignment": 0.5585
+          },
+          "PG": {
+            "shap_weight": 0.1751,
+            "eps_weight": 0.1196,
+            "alignment": 0.9445
+          },
+          "MMI": {
+            "shap_weight": 0.2909,
+            "eps_weight": 0.1598,
+            "alignment": 0.8688
+          }
+        },
+        "insight": "SHAP drivers align with EPS ranking — unique_sellers consistently supports the GP signal."
+      }
+    },
+    "SP": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 1.908631,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 1.231534,
+          "rank": 2
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.532644,
+          "rank": 3
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.20985,
+          "rank": 4
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.138276,
+          "rank": 5
+        },
+        {
+          "feature": "order_count",
+          "mean_abs_shap": 0.096047,
+          "rank": 6
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.073826,
+          "rank": 7
+        },
+        {
+          "feature": "revenue_lag_2",
+          "mean_abs_shap": 0.062515,
+          "rank": 8
+        },
+        {
+          "feature": "orders_lag_1",
+          "mean_abs_shap": 0.050452,
+          "rank": 9
+        },
+        {
+          "feature": "order_growth_1w",
+          "mean_abs_shap": 0.049004,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 4.729527,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.847,
+        "verdict": "HIGH",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.4697,
+            "eps_weight": 0.4523,
+            "alignment": 0.9825
+          },
+          "GP": {
+            "shap_weight": 0.0153,
+            "eps_weight": 0.3941,
+            "alignment": 0.6212
+          },
+          "PG": {
+            "shap_weight": 0.0372,
+            "eps_weight": 0.0,
+            "alignment": 0.9628
+          },
+          "MMI": {
+            "shap_weight": 0.4186,
+            "eps_weight": 0.1536,
+            "alignment": 0.7351
+          }
+        },
+        "insight": "SHAP drivers align with EPS ranking — unique_sellers consistently supports the PD signal."
+      }
+    },
+    "TO": {
+      "top_features": [
+        {
+          "feature": "unique_sellers",
+          "mean_abs_shap": 0.66836,
+          "rank": 1
+        },
+        {
+          "feature": "category_diversity",
+          "mean_abs_shap": 0.563404,
+          "rank": 2
+        },
+        {
+          "feature": "population",
+          "mean_abs_shap": 0.213085,
+          "rank": 3
+        },
+        {
+          "feature": "revenue_lag_4",
+          "mean_abs_shap": 0.146588,
+          "rank": 4
+        },
+        {
+          "feature": "revenue_rolling_8",
+          "mean_abs_shap": 0.12296,
+          "rank": 5
+        },
+        {
+          "feature": "avg_delivery_time",
+          "mean_abs_shap": 0.085518,
+          "rank": 6
+        },
+        {
+          "feature": "revenue_rolling_4",
+          "mean_abs_shap": 0.068577,
+          "rank": 7
+        },
+        {
+          "feature": "seller_density",
+          "mean_abs_shap": 0.043501,
+          "rank": 8
+        },
+        {
+          "feature": "week_sin",
+          "mean_abs_shap": 0.041016,
+          "rank": 9
+        },
+        {
+          "feature": "order_count",
+          "mean_abs_shap": 0.040599,
+          "rank": 10
+        }
+      ],
+      "total_mean_abs_shap": 2.433754,
+      "dominant_feature": "unique_sellers",
+      "alignment": {
+        "overall_score": 0.7609,
+        "verdict": "MEDIUM",
+        "per_component": {
+          "PD": {
+            "shap_weight": 0.4544,
+            "eps_weight": 0.2345,
+            "alignment": 0.78
+          },
+          "GP": {
+            "shap_weight": 0.0171,
+            "eps_weight": 0.401,
+            "alignment": 0.6161
+          },
+          "PG": {
+            "shap_weight": 0.1228,
+            "eps_weight": 0.2735,
+            "alignment": 0.8493
+          },
+          "MMI": {
+            "shap_weight": 0.2975,
+            "eps_weight": 0.091,
+            "alignment": 0.7935
+          }
+        },
+        "insight": "Moderate alignment — unique_sellers is the strongest RF predictor for TO, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      }
+    }
+  }
+}

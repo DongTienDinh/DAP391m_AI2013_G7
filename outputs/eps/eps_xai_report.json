@@ -1,0 +1,3327 @@
+{
+  "generated_at": "2026-06-05T21:24:30.989579",
+  "model_config": {
+    "gamma": 0.2,
+    "weights": {
+      "PD": 0.29390782005763966,
+      "GP": 0.25609217994236044,
+      "PG": 0.3,
+      "MMI": 0.15
+    },
+    "n_states": 27,
+    "optimisation_method": "SAW-Max-Entropy (SLSQP)"
+  },
+  "global_insights": {
+    "top_state": "SP",
+    "bottom_state": "PI",
+    "national_avg_eps": 32.68392917372942,
+    "most_common_driver": "GP",
+    "highest_lc_state": "PI",
+    "most_sparse_states": [
+      "AP",
+      "RR"
+    ],
+    "weight_summary": "Optimal component weights priority: PG (w=0.3000), PD (w=0.2939), GP (w=0.2561), MMI (w=0.1500)."
+  },
+  "state_explanations": [
+    {
+      "state": "SP",
+      "rank": 1,
+      "tier": "TOP",
+      "eps_score": 99.99999964195383,
+      "opp_score": 0.6498396137327498,
+      "components": {
+        "PD": {
+          "norm": 0.9999999998442156,
+          "weight": 0.29390782005763966,
+          "contrib": 0.2939078200118534,
+          "contrib_pct": 45.227747555064354,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.9999999997754548,
+          "weight": 0.25609217994236044,
+          "contrib": 0.25609217988485616,
+          "contrib_pct": 39.40852088315064,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.0,
+          "weight": 0.3,
+          "contrib": 0.0,
+          "contrib_pct": 0.0,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.6655974255736017,
+          "weight": 0.15,
+          "contrib": 0.09983961383604024,
+          "contrib_pct": 15.363731561785004,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "PD",
+      "weakest_component": "PG",
+      "lc_norm": 0.3545730837084979,
+      "risk_adj_factor": 0.9290853832583004,
+      "risk_penalty_abs": 0.04608312715143205,
+      "risk_penalty_pct": 7.091461674169958,
+      "data_sparse": false,
+      "pg_saturated": true,
+      "high_lc_flag": false,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": null,
+        "vs_below": {
+          "state": "AM",
+          "primary_component": "PD",
+          "diff": 0.19202075985609887,
+          "narrative": "ranks above AM primarily because PD contribution exceeds AM by 0.192 (0.294 vs 0.102), despite AM holding a logistics cost advantage"
+        },
+        "narrative_contrastive": "SP ranks above AM primarily because PD contribution exceeds AM by 0.192 (0.294 vs 0.102), despite AM holding a logistics cost advantage."
+      },
+      "margin": {
+        "gap_to_above": null,
+        "gap_to_below": 43.607749463118424,
+        "rank_stability": "STABLE",
+        "narrative_margin": "SP's rank #1 is STABLE — leading AM (#2) by 43.6 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.9898319780490965,
+        "new_rank": 1,
+        "narrative_whatif": "If SP's MMI_norm improved by 0.10, EPS would increase by ~5.0 pts; rank remains #1."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "revenue_lag_4"
+        ],
+        "alignment_verdict": "HIGH",
+        "alignment_score": 0.847,
+        "alignment_insight": "SHAP drivers align with EPS ranking — unique_sellers consistently supports the PD signal."
+      },
+      "summary": "SP (Rank #1, EPS=100.0) — primary driver: Predicted Demand (45% of OPP). Logistics penalty is 7.1%. [SHAP: HIGH, 0.85]",
+      "full_narrative": "SP ranks #1 with EPS=100.0. The dominant driver is Predicted Demand (PD=45% of OPP), while Penetration Gap is the weakest component (0%) — however, Penetration Gap (PG, 0%) carries reduced reliability — PG=0 reflects market saturation, not a data quality issue; further penetration yield diminishes without seller network deepening. Logistics risk (LC_norm=0.355) penalises the opportunity score by 7.1%. SP's rank #1 is STABLE — leading AM (#2) by 43.6 EPS points. RF model confirms this ranking — unique_sellers is the strongest predictive signal (SHAP alignment=0.85). SHAP drivers align with EPS ranking — unique_sellers consistently supports the PD signal.",
+      "gemini_narrative_brief": "SP ranks #1 with a perfect EPS of 100.0/100, driven by maximum Predicted Demand (45.2% of OPP) and Growth Potential (39.4%). High SHAP alignment (0.847) validates this rank via the unique_sellers driver. Action: Prioritize SP as the primary e-commerce market.",
+      "gemini_narrative_full": "SP ranks #1 out of 27 states with a top EPS of 100.0/100 (OPP: 0.6498), leading runner-up AM by 43.6 points. This leadership is highly stable, driven by Predicted Demand (45.2% of OPP, norm=1.000) and Growth Potential (39.4% of OPP, norm=1.000), offsetting a saturated Penetration Gap (0.0%). A 7.1% logistics cost penalty (LC_norm=0.355) marginally reduced the score. The Random Forest model confirms this ranking with a HIGH SHAP alignment score of 0.847, where the unique_sellers feature corroborates SP's massive demand signal. SP outpaces AM because its PD contribution exceeds AM’s by 0.192. Action: Aggressively scale operations in SP as the primary national hub.",
+      "rank_percentile": 96.29629629629629,
+      "above_national_avg": true
+    },
+    {
+      "state": "AM",
+      "rank": 2,
+      "tier": "TOP",
+      "eps_score": 56.39225017883541,
+      "opp_score": 0.5119490482498297,
+      "components": {
+        "PD": {
+          "norm": 0.3466633182328152,
+          "weight": 0.29390782005763966,
+          "contrib": 0.10188706015575452,
+          "contrib_pct": 19.901796966723516,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.3075785206156546,
+          "weight": 0.25609217994236044,
+          "contrib": 0.07876845384790924,
+          "contrib_pct": 15.385994781549133,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.9573335720194694,
+          "weight": 0.3,
+          "contrib": 0.2872000716058408,
+          "contrib_pct": 56.09934671969309,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.2939564176021671,
+          "weight": 0.15,
+          "contrib": 0.044093462640325064,
+          "contrib_pct": 8.612861532034254,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "PG",
+      "weakest_component": "MMI",
+      "lc_norm": 0.292863312399388,
+      "risk_adj_factor": 0.9414273375201224,
+      "risk_penalty_abs": 0.02998621881003185,
+      "risk_penalty_pct": 5.857266247987761,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": false,
+      "mmi_imputed": true,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "SP",
+          "primary_component": "PD",
+          "diff": 0.19202075985609887,
+          "narrative": "falls behind SP primarily because PD contribution is lower by 0.192 (0.102 vs 0.294), despite holding a logistics cost advantage"
+        },
+        "vs_below": {
+          "state": "RN",
+          "primary_component": "PG",
+          "diff": 0.19969426455882128,
+          "narrative": "ranks above RN primarily because PG contribution exceeds RN by 0.200 (0.287 vs 0.088)"
+        },
+        "narrative_contrastive": "AM falls behind SP primarily because PD contribution is lower by 0.192 (0.102 vs 0.294), despite holding a logistics cost advantage. AM ranks above RN primarily because PG contribution exceeds RN by 0.200 (0.287 vs 0.088)."
+      },
+      "margin": {
+        "gap_to_above": 43.607749463118424,
+        "gap_to_below": 1.6754826102239662,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "AM's rank #2 is FRAGILE — trailing SP (#1) by 43.6 pts and leading RN (#3) by 1.7 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 5.056116659386703,
+        "new_rank": 2,
+        "narrative_whatif": "If AM's MMI_norm improved by 0.10, EPS would increase by ~5.1 pts; rank remains #2."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "population"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7383,
+        "alignment_insight": "Moderate alignment — unique_sellers is the strongest RF predictor for AM, partially consistent with EPS component weights. Some divergence in PG component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "AM (Rank #2, EPS=56.4) — primary driver: Penetration Gap (56% of OPP). Logistics penalty is 5.9%. [SHAP: MEDIUM, 0.74]",
+      "full_narrative": "AM ranks #2 with EPS=56.4. The dominant driver is Penetration Gap (PG=56% of OPP), while Market Momentum Index is the weakest component (9%) — however, Market Momentum Index (MMI, 9%) carries reduced reliability because the MMI was imputed with the national median due to sparse seller count. Logistics risk (LC_norm=0.293) penalises the opportunity score by 5.9%. AM's rank #2 is FRAGILE — trailing SP (#1) by 43.6 pts and leading RN (#3) by 1.7 EPS points. RF model partially supports this ranking (SHAP alignment=0.74): top predictive features are unique_sellers, category_diversity, population. Moderate alignment — unique_sellers is the strongest RF predictor for AM, partially consistent with EPS component weights. Some divergence in PG component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "AM ranks #2 (EPS 56.4/100), driven by a high Penetration Gap (56.1% of OPP) offsetting a 5.9% logistics penalty. This rank is fragile, leading RN by only 1.7 points. Action: Prioritize expansion to capture the gap while monitoring unique seller metrics due to medium model alignment.",
+      "gemini_narrative_full": "Amazonas ranks #2 with an EPS of 56.4/100, driven by a dominant Penetration Gap (56.1% of OPP, norm=0.957). While logistics costs impose a 5.9% penalty, AM's position is highly fragile, leading RN by just 1.7 points and trailing SP by 43.6 points. AM outpaces RN primarily because its PG contribution is 0.200 higher, though it falls behind SP due to lower predicted demand. Data quality is strong with no sparse data flags. Random Forest evaluation shows medium alignment (0.738) with unique_sellers as the dominant driver, signaling partial consistency and some divergence in the PG component. Action: Aggressively target the penetration gap to secure this #2 spot, but validate local unique seller capacity to address the divergence identified by the machine learning model.",
+      "rank_percentile": 92.5925925925926,
+      "above_national_avg": true
+    },
+    {
+      "state": "RN",
+      "rank": 3,
+      "tier": "TOP",
+      "eps_score": 54.716767568611445,
+      "opp_score": 0.5523518789454144,
+      "components": {
+        "PD": {
+          "norm": 0.3613797094450371,
+          "weight": 0.29390782005763966,
+          "contrib": 0.10621232261605407,
+          "contrib_pct": 19.22910497178745,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.8146822342105035,
+          "weight": 0.25609217994236044,
+          "contrib": 0.2086337493192805,
+          "contrib_pct": 37.77189093981493,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.2916860234900651,
+          "weight": 0.3,
+          "contrib": 0.08750580704701953,
+          "contrib_pct": 15.842402349402926,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.9999999997537352,
+          "weight": 0.15,
+          "contrib": 0.14999999996306027,
+          "contrib_pct": 27.156601738994695,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "GP",
+      "weakest_component": "PG",
+      "lc_norm": 0.6795357109485479,
+      "risk_adj_factor": 0.8640928578102904,
+      "risk_penalty_abs": 0.07506856535058769,
+      "risk_penalty_pct": 13.590714218970959,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": false,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "AM",
+          "primary_component": "PG",
+          "diff": 0.19969426455882128,
+          "narrative": "falls behind AM primarily because PG contribution is lower by 0.200 (0.088 vs 0.287)"
+        },
+        "vs_below": {
+          "state": "MS",
+          "primary_component": "MMI",
+          "diff": 0.12859134586552368,
+          "narrative": "ranks above MS primarily because MMI contribution exceeds MS by 0.129 (0.150 vs 0.021), despite MS holding a logistics cost advantage"
+        },
+        "narrative_contrastive": "RN falls behind AM primarily because PG contribution is lower by 0.200 (0.088 vs 0.287). RN ranks above MS primarily because MMI contribution exceeds MS by 0.129 (0.150 vs 0.021), despite MS holding a logistics cost advantage."
+      },
+      "margin": {
+        "gap_to_above": 1.6754826102239662,
+        "gap_to_below": 10.835682129944914,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "RN's rank #3 is FRAGILE — trailing AM (#2) by 1.7 pts and leading MS (#4) by 10.8 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "PG",
+        "delta_eps": 9.281553737092729,
+        "new_rank": 2,
+        "narrative_whatif": "If RN's PG_norm improved by 0.10, EPS would increase by ~9.3 pts; rank becomes #2 (gap to SP is 36.0 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "population"
+        ],
+        "alignment_verdict": "HIGH",
+        "alignment_score": 0.8262,
+        "alignment_insight": "SHAP drivers align with EPS ranking — unique_sellers consistently supports the GP signal."
+      },
+      "summary": "RN (Rank #3, EPS=54.7) — primary driver: Growth Potential (38% of OPP). Logistics penalty is 13.6%. [SHAP: HIGH, 0.83]",
+      "full_narrative": "RN ranks #3 with EPS=54.7. The dominant driver is Growth Potential (GP=38% of OPP), while Penetration Gap is the weakest component (16%). Logistics risk (LC_norm=0.680) penalises the opportunity score by 13.6%. RN's rank #3 is FRAGILE — trailing AM (#2) by 1.7 pts and leading MS (#4) by 10.8 EPS points. RF model confirms this ranking — unique_sellers is the strongest predictive signal (SHAP alignment=0.83). SHAP drivers align with EPS ranking — unique_sellers consistently supports the GP signal.",
+      "gemini_narrative_brief": "RN ranks #3 (EPS 54.7/100), driven by strong Growth Potential (37.8% of opportunity), though penalized 13.6% by logistics risk. High SHAP alignment (0.826) validates this rank, driven by seller activity. Action: Address the weak Penetration Gap (15.8%) to overtake AM at #2.",
+      "gemini_narrative_full": "RN ranks #3 out of 27 with an EPS of 54.7/100, driven primarily by strong Growth Potential (37.8% of opportunity) and Market Momentum. However, a 13.6% logistics risk penalty and a weak Penetration Gap (15.8% contribution) cap its score. The Random Forest model shows HIGH alignment (0.826), confirming this ranking as unique seller metrics support the growth signal. RN’s #3 position is fragile, trailing AM (#2) by 1.7 points due to lower penetration. Conversely, RN leads MS (#4) by 10.8 points, powered by its momentum advantage. To secure the #2 spot, action should target expanding market penetration; a 0.10 improvement in its normalized penetration gap would boost the EPS by 9.3 points, overtaking AM.",
+      "rank_percentile": 88.88888888888889,
+      "above_national_avg": true
+    },
+    {
+      "state": "MS",
+      "rank": 4,
+      "tier": "TOP",
+      "eps_score": 43.88108543866653,
+      "opp_score": 0.4993847383141124,
+      "components": {
+        "PD": {
+          "norm": 0.3863278375961049,
+          "weight": 0.29390782005763966,
+          "contrib": 0.11354477257545303,
+          "contrib_pct": 22.73693284235561,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.7964000898736298,
+          "weight": 0.25609217994236044,
+          "contrib": 0.20395183512202963,
+          "contrib_pct": 40.84062236474359,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.5349315883969773,
+          "weight": 0.3,
+          "contrib": 0.1604794765190932,
+          "contrib_pct": 32.13543871221627,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.1427243606502439,
+          "weight": 0.15,
+          "contrib": 0.021408654097536586,
+          "contrib_pct": 4.287006080684542,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "GP",
+      "weakest_component": "MMI",
+      "lc_norm": 0.5242930785424141,
+      "risk_adj_factor": 0.8951413842915171,
+      "risk_penalty_abs": 0.052364792365560776,
+      "risk_penalty_pct": 10.485861570848282,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": false,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "RN",
+          "primary_component": "MMI",
+          "diff": 0.12859134586552368,
+          "narrative": "falls behind RN primarily because MMI contribution is lower by 0.129 (0.021 vs 0.150), despite holding a logistics cost advantage"
+        },
+        "vs_below": {
+          "state": "MT",
+          "primary_component": "MMI",
+          "diff": 0.021408654097536586,
+          "narrative": "ranks above MT primarily because MMI contribution exceeds MT by 0.021 (0.021 vs 0.000)"
+        },
+        "narrative_contrastive": "MS falls behind RN primarily because MMI contribution is lower by 0.129 (0.021 vs 0.150), despite holding a logistics cost advantage. MS ranks above MT primarily because MMI contribution exceeds MT by 0.021 (0.021 vs 0.000)."
+      },
+      "margin": {
+        "gap_to_above": 10.835682129944914,
+        "gap_to_below": 0.1372973806230391,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "MS's rank #4 is FRAGILE — trailing RN (#3) by 10.8 pts and leading MT (#5) by 0.1 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.807529006666151,
+        "new_rank": 4,
+        "narrative_whatif": "If MS's MMI_norm improved by 0.10, EPS would increase by ~4.8 pts; rank remains #4."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "population"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7613,
+        "alignment_insight": "Moderate alignment — unique_sellers is the strongest RF predictor for MS, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "MS (Rank #4, EPS=43.9) — primary driver: Growth Potential (41% of OPP). Logistics penalty is 10.5%. [SHAP: MEDIUM, 0.76]",
+      "full_narrative": "MS ranks #4 with EPS=43.9. The dominant driver is Growth Potential (GP=41% of OPP), while Market Momentum Index is the weakest component (4%). Logistics risk (LC_norm=0.524) penalises the opportunity score by 10.5%. MS's rank #4 is FRAGILE — trailing RN (#3) by 10.8 pts and leading MT (#5) by 0.1 EPS points. RF model partially supports this ranking (SHAP alignment=0.76): top predictive features are unique_sellers, category_diversity, population. Moderate alignment — unique_sellers is the strongest RF predictor for MS, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "Ranked #4 with an EPS of 43.9/100, MS's high-priority status is driven by strong Growth Potential (40.8% of OPP) but capped by weak Market Momentum (4.3%) and a 10.5% logistics penalty. RF models show medium alignment (0.761), validating the rank through unique seller dynamics.",
+      "gemini_narrative_full": "MS ranks #4 with an EPS of 43.9/100, though its position is fragile, leading MT by only 0.1 points. The primary driver is Growth Potential (norm=0.796, 40.8% of OPP), well above the 0.703 median. However, performance is hindered by weak Market Momentum (norm=0.143) and a 10.5% logistics risk penalty. A 0.10 improvement in MMI norm would boost EPS by ~4.8 points. Random Forest alignment is medium (0.761); while it confirms unique_sellers as the dominant driver, it suggests divergence in growth signals. Action: Secure MS's position against MT by expanding local seller diversity to stimulate momentum.",
+      "rank_percentile": 85.18518518518519,
+      "above_national_avg": true
+    },
+    {
+      "state": "MT",
+      "rank": 5,
+      "tier": "TOP",
+      "eps_score": 43.74378805804349,
+      "opp_score": 0.5117108861860102,
+      "components": {
+        "PD": {
+          "norm": 0.3851158555997929,
+          "weight": 0.29390782005763966,
+          "contrib": 0.11318856158896787,
+          "contrib_pct": 22.119631347421265,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.8323463929150907,
+          "weight": 0.25609217994236044,
+          "contrib": 0.21315740222878607,
+          "contrib_pct": 41.65582714441255,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.6178830745608543,
+          "weight": 0.3,
+          "contrib": 0.1853649223682563,
+          "contrib_pct": 36.22454150816618,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.0,
+          "weight": 0.15,
+          "contrib": 0.0,
+          "contrib_pct": 0.0,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "GP",
+      "weakest_component": "MMI",
+      "lc_norm": 0.6358512668301396,
+      "risk_adj_factor": 0.8728297466339721,
+      "risk_penalty_abs": 0.0650744030464296,
+      "risk_penalty_pct": 12.717025336602791,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": false,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "MS",
+          "primary_component": "MMI",
+          "diff": 0.021408654097536586,
+          "narrative": "falls behind MS primarily because MMI contribution is lower by 0.021 (0.000 vs 0.021)"
+        },
+        "vs_below": {
+          "state": "AL",
+          "primary_component": "GP",
+          "diff": 0.03316966989633907,
+          "narrative": "ranks above AL primarily because GP contribution exceeds AL by 0.033 (0.213 vs 0.180)"
+        },
+        "narrative_contrastive": "MT falls behind MS primarily because MMI contribution is lower by 0.021 (0.000 vs 0.021). MT ranks above AL primarily because GP contribution exceeds AL by 0.033 (0.213 vs 0.180)."
+      },
+      "margin": {
+        "gap_to_above": 0.1372973806230391,
+        "gap_to_below": 0.8527470783319089,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "MT's rank #5 is FRAGILE — trailing MS (#4) by 0.1 pts and leading AL (#6) by 0.9 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.687700067861904,
+        "new_rank": 4,
+        "narrative_whatif": "If MT's MMI_norm improved by 0.10, EPS would increase by ~4.7 pts; rank becomes #4 (gap to RN is 6.3 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "category_diversity",
+        "top_3_features": [
+          "category_diversity",
+          "unique_sellers",
+          "population"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7296,
+        "alignment_insight": "Moderate alignment — category_diversity is the strongest RF predictor for MT, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "MT (Rank #5, EPS=43.7) — primary driver: Growth Potential (42% of OPP). Logistics penalty is 12.7%. [SHAP: MEDIUM, 0.73]",
+      "full_narrative": "MT ranks #5 with EPS=43.7. The dominant driver is Growth Potential (GP=42% of OPP), while Market Momentum Index is the weakest component (0%). Logistics risk (LC_norm=0.636) penalises the opportunity score by 12.7%. MT's rank #5 is FRAGILE — trailing MS (#4) by 0.1 pts and leading AL (#6) by 0.9 EPS points. RF model partially supports this ranking (SHAP alignment=0.73): top predictive features are category_diversity, unique_sellers, population. Moderate alignment — category_diversity is the strongest RF predictor for MT, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "MT ranks #5 with an EPS of 43.7/100. Its strong Growth Potential (41.7% contribution) is penalized 12.7% by logistics risk. Zero Market Momentum leaves its rank fragile. RF alignment is medium (0.730), highlighting category diversity. Action: Target high-growth niches to secure this position.",
+      "gemini_narrative_full": "MT ranks #5 (EPS 43.7/100), signaling a high-priority but fragile market. The primary driver is Growth Potential (41.7% contribution, norm=0.832), but zero Market Momentum causes MT to trail MS (#4) by 0.1 points. Logistics risk (LC_norm=0.636) penalizes the score by 12.7%. No data sparsity flags are active, ensuring reliable metrics. Random Forest alignment is medium (0.730), identifying category_diversity as the dominant predictor but indicating the model captures growth signals beyond the EPS formula. Action: Protect this position against AL (#6, leading by 0.9) by expanding category diversity. A 0.10 improvement in normalized momentum would lift EPS by 4.7 points, securing rank #4.",
+      "rank_percentile": 81.48148148148148,
+      "above_national_avg": true
+    },
+    {
+      "state": "AL",
+      "rank": 6,
+      "tier": "HIGH",
+      "eps_score": 42.89104097971158,
+      "opp_score": 0.5164477796761656,
+      "components": {
+        "PD": {
+          "norm": 0.4024134522075634,
+          "weight": 0.29390782005763966,
+          "contrib": 0.11827246050019412,
+          "contrib_pct": 22.901146089611597,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.7028240080308483,
+          "weight": 0.25609217994236044,
+          "contrib": 0.179987732332447,
+          "contrib_pct": 34.85110003673689,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.5803137473439979,
+          "weight": 0.3,
+          "contrib": 0.17409412420319936,
+          "contrib_pct": 33.709918224910105,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.2939564176021671,
+          "weight": 0.15,
+          "contrib": 0.044093462640325064,
+          "contrib_pct": 8.53783564874139,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "GP",
+      "weakest_component": "MMI",
+      "lc_norm": 0.698937699663221,
+      "risk_adj_factor": 0.8602124600673557,
+      "risk_penalty_abs": 0.07219296462460743,
+      "risk_penalty_pct": 13.97875399326442,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": false,
+      "mmi_imputed": true,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "MT",
+          "primary_component": "GP",
+          "diff": 0.03316966989633907,
+          "narrative": "falls behind MT primarily because GP contribution is lower by 0.033 (0.180 vs 0.213)"
+        },
+        "vs_below": {
+          "state": "RS",
+          "primary_component": "PG",
+          "diff": 0.08571270702044433,
+          "narrative": "ranks above RS primarily because PG contribution exceeds RS by 0.086 (0.174 vs 0.088), despite RS holding a logistics cost advantage"
+        },
+        "narrative_contrastive": "AL falls behind MT primarily because GP contribution is lower by 0.033 (0.180 vs 0.213). AL ranks above RS primarily because PG contribution exceeds RS by 0.086 (0.174 vs 0.088), despite RS holding a logistics cost advantage."
+      },
+      "margin": {
+        "gap_to_above": 0.8527470783319089,
+        "gap_to_below": 2.224315645977775,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "AL's rank #6 is FRAGILE — trailing MT (#5) by 0.9 pts and leading RS (#7) by 2.2 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.619936502273731,
+        "new_rank": 4,
+        "narrative_whatif": "If AL's MMI_norm improved by 0.10, EPS would increase by ~4.6 pts; rank becomes #4 (gap to RN is 7.2 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "population"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7868,
+        "alignment_insight": "Moderate alignment — unique_sellers is the strongest RF predictor for AL, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "AL (Rank #6, EPS=42.9) — primary driver: Growth Potential (35% of OPP). Logistics penalty is 14.0%. [SHAP: MEDIUM, 0.79]",
+      "full_narrative": "AL ranks #6 with EPS=42.9. The dominant driver is Growth Potential (GP=35% of OPP), while Market Momentum Index is the weakest component (9%) — however, Market Momentum Index (MMI, 9%) carries reduced reliability because the MMI was imputed with the national median due to sparse seller count. Logistics risk (LC_norm=0.699) penalises the opportunity score by 14.0%. AL's rank #6 is FRAGILE — trailing MT (#5) by 0.9 pts and leading RS (#7) by 2.2 EPS points. RF model partially supports this ranking (SHAP alignment=0.79): top predictive features are unique_sellers, category_diversity, population. Moderate alignment — unique_sellers is the strongest RF predictor for AL, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "AL ranks #6 (EPS 42.9/100), driven by Growth Potential (34.9%) but penalized 14.0% by logistics. SHAP alignment is medium, validating the rank via seller concentration ('unique_sellers'). Action: Target market penetration and optimize logistics to protect this fragile rank.",
+      "gemini_narrative_full": "AL ranks #6 (EPS 42.9/100, OPP 0.5164), driven by Growth Potential (34.9% of OPP, norm=0.703) and Penetration Gap (33.7%), but penalized 14.0% by logistics costs (LC_norm=0.699). This rank is fragile: AL trails MT by 0.9 points due to lower GP contribution, but leads RS by 2.2 points because PG contribution exceeds RS by 0.086. Random Forest shows medium alignment (0.787), identifying 'unique_sellers' as the dominant driver, though some GP divergence suggests unmapped market signals. Action: Invest in targeted penetration campaigns while actively optimizing logistics to mitigate the 14.0% risk penalty.",
+      "rank_percentile": 77.77777777777779,
+      "above_national_avg": true
+    },
+    {
+      "state": "RS",
+      "rank": 7,
+      "tier": "HIGH",
+      "eps_score": 40.66672533373381,
+      "opp_score": 0.4952049563218653,
+      "components": {
+        "PD": {
+          "norm": 0.4890085275250435,
+          "weight": 0.29390782005763966,
+          "contrib": 0.14372343031448181,
+          "contrib_pct": 29.02301935384241,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.8644141090417079,
+          "weight": 0.25609217994236044,
+          "contrib": 0.22136969355742425,
+          "contrib_pct": 44.70264094318595,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.2946047239425168,
+          "weight": 0.3,
+          "contrib": 0.08838141718275504,
+          "contrib_pct": 17.84744196407241,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.2782027684480283,
+          "weight": 0.15,
+          "contrib": 0.041730415267204245,
+          "contrib_pct": 8.426897738899243,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "GP",
+      "weakest_component": "MMI",
+      "lc_norm": 0.5771601432572577,
+      "risk_adj_factor": 0.8845679713485485,
+      "risk_penalty_abs": 0.05716251270648637,
+      "risk_penalty_pct": 11.543202865145155,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": false,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "AL",
+          "primary_component": "PG",
+          "diff": 0.08571270702044433,
+          "narrative": "falls behind AL primarily because PG contribution is lower by 0.086 (0.088 vs 0.174), despite holding a logistics cost advantage"
+        },
+        "vs_below": {
+          "state": "PA",
+          "primary_component": "GP",
+          "diff": 0.05736800587709057,
+          "narrative": "ranks above PA primarily because GP contribution exceeds PA by 0.057 (0.221 vs 0.164)"
+        },
+        "narrative_contrastive": "RS falls behind AL primarily because PG contribution is lower by 0.086 (0.088 vs 0.174), despite holding a logistics cost advantage. RS ranks above PA primarily because GP contribution exceeds PA by 0.057 (0.221 vs 0.164)."
+      },
+      "margin": {
+        "gap_to_above": 2.224315645977775,
+        "gap_to_below": 0.09805801855404894,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "RS's rank #7 is FRAGILE — trailing AL (#6) by 2.2 pts and leading PA (#8) by 0.1 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.750742448748412,
+        "new_rank": 4,
+        "narrative_whatif": "If RS's MMI_norm improved by 0.10, EPS would increase by ~4.8 pts; rank becomes #4 (gap to RN is 9.3 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "revenue_lag_4"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7561,
+        "alignment_insight": "Moderate alignment — unique_sellers is the strongest RF predictor for RS, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "RS (Rank #7, EPS=40.7) — primary driver: Growth Potential (45% of OPP). Logistics penalty is 11.5%. [SHAP: MEDIUM, 0.76]",
+      "full_narrative": "RS ranks #7 with EPS=40.7. The dominant driver is Growth Potential (GP=45% of OPP), while Market Momentum Index is the weakest component (8%). Logistics risk (LC_norm=0.577) penalises the opportunity score by 11.5%. RS's rank #7 is FRAGILE — trailing AL (#6) by 2.2 pts and leading PA (#8) by 0.1 EPS points. RF model partially supports this ranking (SHAP alignment=0.76): top predictive features are unique_sellers, category_diversity, revenue_lag_4. Moderate alignment — unique_sellers is the strongest RF predictor for RS, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "RS ranks #7 (EPS 40.7/100), driven by strong Growth Potential (44.7% contribution) but penalized 11.5% for logistics. This position is fragile, leading PA by only 0.1 points. SHAP alignment is medium (0.756), reflecting model divergence in GP.",
+      "gemini_narrative_full": "RS ranks #7 with an EPS of 40.7/100 (OPP: 0.4952). Growth Potential is the dominant driver (GP norm 0.864; 44.7% contribution), offset by a weak Market Momentum (norm 0.278) and an 11.5% logistics risk penalty. This position is fragile: RS trails AL by 2.2 points due to a lower PG contribution (0.088 vs 0.174), and leads PA by just 0.1 points. SHAP alignment is Medium (0.756); while 'unique_sellers' is the dominant RF predictor, model divergence in GP suggests additional captured signals. Action: Prioritize merchant acquisition. Improving MMI_norm by 0.10 would boost EPS by ~4.8 points, rising RS to rank #4.",
+      "rank_percentile": 74.07407407407408,
+      "above_national_avg": true
+    },
+    {
+      "state": "PA",
+      "rank": 8,
+      "tier": "HIGH",
+      "eps_score": 40.56866731517976,
+      "opp_score": 0.4998831535601217,
+      "components": {
+        "PD": {
+          "norm": 0.4148067252990273,
+          "weight": 0.29390782005763966,
+          "contrib": 0.12191494037788528,
+          "contrib_pct": 24.388687538201342,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.6404009982547929,
+          "weight": 0.25609217994236044,
+          "contrib": 0.16400168768033369,
+          "contrib_pct": 32.80800453312515,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.5479795886906379,
+          "weight": 0.3,
+          "contrib": 0.16439387660719137,
+          "contrib_pct": 32.88646065313331,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.3304843259647425,
+          "weight": 0.15,
+          "contrib": 0.04957264889471137,
+          "contrib_pct": 9.916847275540201,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "PG",
+      "weakest_component": "MMI",
+      "lc_norm": 0.621290988513938,
+      "risk_adj_factor": 0.8757418022972123,
+      "risk_penalty_abs": 0.062114579723366536,
+      "risk_penalty_pct": 12.425819770278762,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": false,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "RS",
+          "primary_component": "GP",
+          "diff": 0.05736800587709057,
+          "narrative": "falls behind RS primarily because GP contribution is lower by 0.057 (0.164 vs 0.221)"
+        },
+        "vs_below": {
+          "state": "PR",
+          "primary_component": "PG",
+          "diff": 0.07156105494083727,
+          "narrative": "ranks above PR primarily because PG contribution exceeds PR by 0.072 (0.164 vs 0.093), despite PR holding a logistics cost advantage"
+        },
+        "narrative_contrastive": "PA falls behind RS primarily because GP contribution is lower by 0.057 (0.164 vs 0.221). PA ranks above PR primarily because PG contribution exceeds PR by 0.072 (0.164 vs 0.093), despite PR holding a logistics cost advantage."
+      },
+      "margin": {
+        "gap_to_above": 0.09805801855404894,
+        "gap_to_below": 2.6326301999459005,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "PA's rank #8 is FRAGILE — trailing RS (#7) by 0.1 pts and leading PR (#9) by 2.6 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.703339811126931,
+        "new_rank": 4,
+        "narrative_whatif": "If PA's MMI_norm improved by 0.10, EPS would increase by ~4.7 pts; rank becomes #4 (gap to RN is 9.4 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "population"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7883,
+        "alignment_insight": "Moderate alignment — unique_sellers is the strongest RF predictor for PA, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "PA (Rank #8, EPS=40.6) — primary driver: Penetration Gap (33% of OPP). Logistics penalty is 12.4%. [SHAP: MEDIUM, 0.79]",
+      "full_narrative": "PA ranks #8 with EPS=40.6. The dominant driver is Penetration Gap (PG=33% of OPP), while Market Momentum Index is the weakest component (10%). Logistics risk (LC_norm=0.621) penalises the opportunity score by 12.4%. PA's rank #8 is FRAGILE — trailing RS (#7) by 0.1 pts and leading PR (#9) by 2.6 EPS points. RF model partially supports this ranking (SHAP alignment=0.79): top predictive features are unique_sellers, category_diversity, population. Moderate alignment — unique_sellers is the strongest RF predictor for PA, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "PA ranks #8 with a 40.6 EPS, driven by its 32.9% Penetration Gap contribution but penalized 12.4% by logistics risk. This fragile position trails RS by 0.1 points. Action: Target the high penetration gap and optimize logistics to secure and improve PA's ranking.",
+      "gemini_narrative_full": "PA ranks #8 (EPS: 40.6/100), driven primarily by its Penetration Gap (32.9% of OPP, norm=0.548). However, high logistics costs (norm=0.621) impose a 12.4% risk penalty. PA's rank is fragile, trailing RS by 0.1 points due to a lower GP contribution (0.164 vs 0.221). SHAP alignment is MEDIUM (0.788); while unique_sellers is the dominant RF predictor, divergence in the GP component suggests the model captures signals beyond the EPS formula. Action: Capitalize on the penetration gap and optimize logistics to secure the position. A minor 0.10 improvement in Market Momentum would boost EPS by 4.7 points, lifting PA to rank #4.",
+      "rank_percentile": 70.37037037037037,
+      "above_national_avg": true
+    },
+    {
+      "state": "PR",
+      "rank": 9,
+      "tier": "HIGH",
+      "eps_score": 37.93603711523386,
+      "opp_score": 0.4842649973779813,
+      "components": {
+        "PD": {
+          "norm": 0.5358409386255168,
+          "weight": 0.29390782005763966,
+          "contrib": 0.15748784216906514,
+          "contrib_pct": 32.52100461973753,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.8460666221024856,
+          "weight": 0.25609217994236044,
+          "contrib": 0.2166710456306948,
+          "contrib_pct": 44.74224790225288,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.309442738887847,
+          "weight": 0.3,
+          "contrib": 0.0928328216663541,
+          "contrib_pct": 19.16983927580785,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.1151552527457822,
+          "weight": 0.15,
+          "contrib": 0.01727328791186733,
+          "contrib_pct": 3.566908202201755,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "GP",
+      "weakest_component": "MMI",
+      "lc_norm": 0.5559888875050697,
+      "risk_adj_factor": 0.888802222498986,
+      "risk_penalty_abs": 0.053849191429965866,
+      "risk_penalty_pct": 11.119777750101395,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": false,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "PA",
+          "primary_component": "PG",
+          "diff": 0.07156105494083727,
+          "narrative": "falls behind PA primarily because PG contribution is lower by 0.072 (0.093 vs 0.164), despite holding a logistics cost advantage"
+        },
+        "vs_below": {
+          "state": "RJ",
+          "primary_component": "PG",
+          "diff": 0.054711674197053306,
+          "narrative": "ranks above RJ primarily because PG contribution exceeds RJ by 0.055 (0.093 vs 0.038)"
+        },
+        "narrative_contrastive": "PR falls behind PA primarily because PG contribution is lower by 0.072 (0.093 vs 0.164), despite holding a logistics cost advantage. PR ranks above RJ primarily because PG contribution exceeds RJ by 0.055 (0.093 vs 0.038)."
+      },
+      "margin": {
+        "gap_to_above": 2.6326301999459005,
+        "gap_to_below": 0.9527092875349297,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "PR's rank #9 is FRAGILE — trailing PA (#8) by 2.6 pts and leading RJ (#10) by 1.0 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.773483298593263,
+        "new_rank": 7,
+        "narrative_whatif": "If PR's MMI_norm improved by 0.10, EPS would increase by ~4.8 pts; rank becomes #7 (gap to AL is 0.2 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "revenue_lag_4"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7592,
+        "alignment_insight": "Moderate alignment — unique_sellers is the strongest RF predictor for PR, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "PR (Rank #9, EPS=37.9) — primary driver: Growth Potential (45% of OPP). Logistics penalty is 11.1%. [SHAP: MEDIUM, 0.76]",
+      "full_narrative": "PR ranks #9 with EPS=37.9. The dominant driver is Growth Potential (GP=45% of OPP), while Market Momentum Index is the weakest component (4%). Logistics risk (LC_norm=0.556) penalises the opportunity score by 11.1%. PR's rank #9 is FRAGILE — trailing PA (#8) by 2.6 pts and leading RJ (#10) by 1.0 EPS points. RF model partially supports this ranking (SHAP alignment=0.76): top predictive features are unique_sellers, category_diversity, revenue_lag_4. Moderate alignment — unique_sellers is the strongest RF predictor for PR, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "PR ranks #9 with a fragile EPS of 37.9/100, driven by high growth potential (44.7% of opportunity) but penalized 11.1% by logistics risk. To secure its position, PR must address low market momentum and leverage its strong seller base.",
+      "gemini_narrative_full": "PR ranks #9 (EPS 37.9/100), a fragile position trailing PA by 2.6 points and leading RJ by 1.0. Strong growth potential (norm 0.846) drives 44.7% of PR's opportunity, though logistics risk penalizes the final score by 11.1%. Random Forest models show medium alignment (0.759), confirming 'unique_sellers' as the primary predictor but highlighting divergence in growth dynamics. PR falls behind PA due to a lower penetration contribution (by 0.072). To advance, PR must target its weak market momentum (norm 0.115); a 0.10 MMI improvement boosts EPS by ~4.8 points, elevating PR to rank #7. Prioritize expanding local merchant engagement.",
+      "rank_percentile": 66.66666666666666,
+      "above_national_avg": true
+    },
+    {
+      "state": "RJ",
+      "rank": 10,
+      "tier": "HIGH",
+      "eps_score": 36.98332782769893,
+      "opp_score": 0.475990169591856,
+      "components": {
+        "PD": {
+          "norm": 0.56486485552748,
+          "weight": 0.29390782005763966,
+          "contrib": 0.16601819831525522,
+          "contrib_pct": 34.878493070058504,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.8827129086094632,
+          "weight": 0.25609217994236044,
+          "contrib": 0.226055873029059,
+          "contrib_pct": 47.49171043235905,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.127070491564336,
+          "weight": 0.3,
+          "contrib": 0.0381211474693008,
+          "contrib_pct": 8.008809825208843,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.30529967185494,
+          "weight": 0.15,
+          "contrib": 0.045794950778241,
+          "contrib_pct": 9.620986672373608,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "GP",
+      "weakest_component": "PG",
+      "lc_norm": 0.5066829408958862,
+      "risk_adj_factor": 0.8986634118208228,
+      "risk_penalty_abs": 0.04823521979326665,
+      "risk_penalty_pct": 10.133658817917723,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": false,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "PR",
+          "primary_component": "PG",
+          "diff": 0.054711674197053306,
+          "narrative": "falls behind PR primarily because PG contribution is lower by 0.055 (0.038 vs 0.093)"
+        },
+        "vs_below": {
+          "state": "MA",
+          "primary_component": "PD",
+          "diff": 0.05702276296098177,
+          "narrative": "ranks above MA primarily because PD contribution exceeds MA by 0.057 (0.166 vs 0.109)"
+        },
+        "narrative_contrastive": "RJ falls behind PR primarily because PG contribution is lower by 0.055 (0.038 vs 0.093). RJ ranks above MA primarily because PD contribution exceeds MA by 0.057 (0.166 vs 0.109)."
+      },
+      "margin": {
+        "gap_to_above": 0.9527092875349297,
+        "gap_to_below": 0.02056390782222195,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "RJ's rank #10 is FRAGILE — trailing PR (#9) by 1.0 pts and leading MA (#11) by 0.0 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "PG",
+        "delta_eps": 9.652889283072788,
+        "new_rank": 4,
+        "narrative_whatif": "If RJ's PG_norm improved by 0.10, EPS would increase by ~9.7 pts; rank becomes #4 (gap to RN is 8.1 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "revenue_lag_4"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7881,
+        "alignment_insight": "Moderate alignment — unique_sellers is the strongest RF predictor for RJ, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "RJ (Rank #10, EPS=37.0) — primary driver: Growth Potential (47% of OPP). Logistics penalty is 10.1%. [SHAP: MEDIUM, 0.79]",
+      "full_narrative": "RJ ranks #10 with EPS=37.0. The dominant driver is Growth Potential (GP=47% of OPP), while Penetration Gap is the weakest component (8%). Logistics risk (LC_norm=0.507) penalises the opportunity score by 10.1%. RJ's rank #10 is FRAGILE — trailing PR (#9) by 1.0 pts and leading MA (#11) by 0.0 EPS points. RF model partially supports this ranking (SHAP alignment=0.79): top predictive features are unique_sellers, category_diversity, revenue_lag_4. Moderate alignment — unique_sellers is the strongest RF predictor for RJ, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "RJ ranks #10 with an EPS of 37.0/100. Strong Growth Potential (norm 0.883) drives the opportunity, but a weak Penetration Gap (norm 0.127) and 10.1% logistics penalty drag it down. Action: Target local penetration to unlock significant latent demand.",
+      "gemini_narrative_full": "RJ ranks #10 with an EPS of 37.0/100. Its score is driven by strong Growth Potential (norm 0.883, contributing 47.5% of pre-risk opportunity), but held back by a weak Penetration Gap (norm 0.127) and a 10.1% logistics risk penalty. RJ's rank is fragile, trailing PR by 1.0 point. Random Forest SHAP alignment is MEDIUM (0.788), showing partial consistency where 'unique_sellers' is the dominant predictor, though the model flags divergence in Growth Potential. What-if analysis reveals that improving RJ's PG_norm by 0.10 would boost EPS by ~9.7 points, elevating its rank to #4. Action: Focus on expanding seller diversity and local market penetration to capture this high-growth upside.",
+      "rank_percentile": 62.96296296296296,
+      "above_national_avg": true
+    },
+    {
+      "state": "MA",
+      "rank": 11,
+      "tier": "MID",
+      "eps_score": 36.96276391987671,
+      "opp_score": 0.4969941619503744,
+      "components": {
+        "PD": {
+          "norm": 0.3708490482930935,
+          "weight": 0.29390782005763966,
+          "contrib": 0.10899543535427345,
+          "contrib_pct": 21.93092871081991,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.6648726446853457,
+          "weight": 0.25609217994236044,
+          "contrib": 0.17026868496151262,
+          "contrib_pct": 34.25969518300181,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.6358114777170446,
+          "weight": 0.3,
+          "contrib": 0.19074344331511336,
+          "contrib_pct": 38.37941326444784,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.1799106554631663,
+          "weight": 0.15,
+          "contrib": 0.026986598319474947,
+          "contrib_pct": 5.429962841730443,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "PG",
+      "weakest_component": "MMI",
+      "lc_norm": 0.6971575436629335,
+      "risk_adj_factor": 0.8605684912674133,
+      "risk_penalty_abs": 0.06929664583202824,
+      "risk_penalty_pct": 13.94315087325867,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": false,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "RJ",
+          "primary_component": "PD",
+          "diff": 0.05702276296098177,
+          "narrative": "falls behind RJ primarily because PD contribution is lower by 0.057 (0.109 vs 0.166)"
+        },
+        "vs_below": {
+          "state": "SC",
+          "primary_component": "PG",
+          "diff": 0.12026403017167432,
+          "narrative": "ranks above SC primarily because PG contribution exceeds SC by 0.120 (0.191 vs 0.070), despite SC holding a logistics cost advantage"
+        },
+        "narrative_contrastive": "MA falls behind RJ primarily because PD contribution is lower by 0.057 (0.109 vs 0.166). MA ranks above SC primarily because PG contribution exceeds SC by 0.120 (0.191 vs 0.070), despite SC holding a logistics cost advantage."
+      },
+      "margin": {
+        "gap_to_above": 0.02056390782222195,
+        "gap_to_below": 0.24656643441312553,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "MA's rank #11 is FRAGILE — trailing RJ (#10) by 0.0 pts and leading SC (#12) by 0.2 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.621848615036491,
+        "new_rank": 7,
+        "narrative_whatif": "If MA's MMI_norm improved by 0.10, EPS would increase by ~4.6 pts; rank becomes #7 (gap to AL is 1.3 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "population"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7623,
+        "alignment_insight": "Moderate alignment — unique_sellers is the strongest RF predictor for MA, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "MA (Rank #11, EPS=37.0) — primary driver: Penetration Gap (38% of OPP). Logistics penalty is 13.9%. [SHAP: MEDIUM, 0.76]",
+      "full_narrative": "MA ranks #11 with EPS=37.0. The dominant driver is Penetration Gap (PG=38% of OPP), while Market Momentum Index is the weakest component (5%). Logistics risk (LC_norm=0.697) penalises the opportunity score by 13.9%. MA's rank #11 is FRAGILE — trailing RJ (#10) by 0.0 pts and leading SC (#12) by 0.2 EPS points. RF model partially supports this ranking (SHAP alignment=0.76): top predictive features are unique_sellers, category_diversity, population. Moderate alignment — unique_sellers is the strongest RF predictor for MA, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "MA ranks #11 (EPS 37.0/100), driven by a strong Penetration Gap (38.4% of opportunity). However, a 13.9% logistics risk penalty and weak market momentum (MMI norm 0.180) limit its score. Action: Target the high-potential penetration gap while optimizing regional supply chain networks.",
+      "gemini_narrative_full": "MA ranks #11 (EPS 37.0/100), primarily driven by its strong Penetration Gap (38.4% of opportunity, norm 0.636 vs 0.431 median). However, a 13.9% logistics penalty (norm 0.697) and weak Market Momentum (norm 0.180) hinder its score. This rank is fragile: MA trails RJ (#10) by 0.0 points due to lower demand contribution, but leads SC (#12) because its Penetration Gap contribution is 0.120 higher. Our machine learning model shows MEDIUM alignment (0.762 score), validating unique_sellers as the top predictor but indicating divergence in Growth Potential signals. Action: Prioritize MA’s penetration gap and optimize regional logistics. Improving Market Momentum by 0.10 would elevate EPS by 4.6 points to rank #7.",
+      "rank_percentile": 59.25925925925925,
+      "above_national_avg": true
+    },
+    {
+      "state": "SC",
+      "rank": 12,
+      "tier": "MID",
+      "eps_score": 36.71619748546358,
+      "opp_score": 0.4800209360105327,
+      "components": {
+        "PD": {
+          "norm": 0.4469359741443287,
+          "weight": 0.29390782005763966,
+          "contrib": 0.13135797786609724,
+          "contrib_pct": 27.36505181582642,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.8628005727690066,
+          "weight": 0.25609217994236044,
+          "contrib": 0.2209564795359321,
+          "contrib_pct": 46.030592201312615,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.2349313771447968,
+          "weight": 0.3,
+          "contrib": 0.07047941314343904,
+          "contrib_pct": 14.68257066643705,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.3815137697670958,
+          "weight": 0.15,
+          "contrib": 0.05722706546506436,
+          "contrib_pct": 11.921785316423923,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "GP",
+      "weakest_component": "MMI",
+      "lc_norm": 0.5521849174459739,
+      "risk_adj_factor": 0.8895630165108053,
+      "risk_penalty_abs": 0.053012064184663026,
+      "risk_penalty_pct": 11.043698348919479,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": false,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "MA",
+          "primary_component": "PG",
+          "diff": 0.12026403017167432,
+          "narrative": "falls behind MA primarily because PG contribution is lower by 0.120 (0.070 vs 0.191), despite holding a logistics cost advantage"
+        },
+        "vs_below": {
+          "state": "CE",
+          "primary_component": "GP",
+          "diff": 0.04616178612213892,
+          "narrative": "ranks above CE primarily because GP contribution exceeds CE by 0.046 (0.221 vs 0.175)"
+        },
+        "narrative_contrastive": "SC falls behind MA primarily because PG contribution is lower by 0.120 (0.070 vs 0.191), despite holding a logistics cost advantage. SC ranks above CE primarily because GP contribution exceeds CE by 0.046 (0.221 vs 0.175)."
+      },
+      "margin": {
+        "gap_to_above": 0.24656643441312553,
+        "gap_to_below": 1.0396922427048594,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "SC's rank #12 is FRAGILE — trailing MA (#11) by 0.2 pts and leading CE (#13) by 1.0 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.777569284689946,
+        "new_rank": 7,
+        "narrative_whatif": "If SC's MMI_norm improved by 0.10, EPS would increase by ~4.8 pts; rank becomes #7 (gap to AL is 1.4 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "revenue_lag_4"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7665,
+        "alignment_insight": "Moderate alignment — unique_sellers is the strongest RF predictor for SC, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "SC (Rank #12, EPS=36.7) — primary driver: Growth Potential (46% of OPP). Logistics penalty is 11.0%. [SHAP: MEDIUM, 0.77]",
+      "full_narrative": "SC ranks #12 with EPS=36.7. The dominant driver is Growth Potential (GP=46% of OPP), while Market Momentum Index is the weakest component (12%). Logistics risk (LC_norm=0.552) penalises the opportunity score by 11.0%. SC's rank #12 is FRAGILE — trailing MA (#11) by 0.2 pts and leading CE (#13) by 1.0 EPS points. RF model partially supports this ranking (SHAP alignment=0.77): top predictive features are unique_sellers, category_diversity, revenue_lag_4. Moderate alignment — unique_sellers is the strongest RF predictor for SC, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "Santa Catarina (SC) ranks #12 with an EPS of 36.7, driven by strong growth potential (GP: 46.0% of OPP) but limited by a low penetration gap (14.7%). Logistics costs penalize the score by 11.0%. Action: Focus on expansion to bridge the penetration gap and boost market momentum.",
+      "gemini_narrative_full": "SC ranks #12 (EPS 36.7/100), holding a fragile 1.0-point lead over CE and trailing MA by 0.2. SC's primary driver is Growth Potential (46.0% of OPP, norm 0.863), offset by a weak Market Momentum (11.9%) and an 11.0% logistics penalty. SHAP alignment is MEDIUM (0.766), indicating partial consistency as the RF model's top predictor (unique_sellers) diverges slightly from the GP component. Contrastive analysis shows SC lags MA due to a lower Penetration Gap contribution by 0.120. If SC’s Market Momentum norm improved by 0.10, EPS would rise by 4.8 points, boosting its rank to #7. Action: Leverage the local seller network to expand penetration and capture momentum.",
+      "rank_percentile": 55.55555555555556,
+      "above_national_avg": true
+    },
+    {
+      "state": "CE",
+      "rank": 13,
+      "tier": "MID",
+      "eps_score": 35.67650524275872,
+      "opp_score": 0.5035889356260919,
+      "components": {
+        "PD": {
+          "norm": 0.3900561555408946,
+          "weight": 0.29390782005763966,
+          "contrib": 0.11464055437508797,
+          "contrib_pct": 22.764708726683995,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.6825460014168915,
+          "weight": 0.25609217994236044,
+          "contrib": 0.17479469341379317,
+          "contrib_pct": 34.70979623420001,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.4859569638525202,
+          "weight": 0.3,
+          "contrib": 0.14578708915575606,
+          "contrib_pct": 28.949621177539342,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.4557773245430315,
+          "weight": 0.15,
+          "contrib": 0.06836659868145473,
+          "contrib_pct": 13.575873861576662,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "GP",
+      "weakest_component": "MMI",
+      "lc_norm": 0.7891739885554021,
+      "risk_adj_factor": 0.8421652022889196,
+      "risk_penalty_abs": 0.07948385778408251,
+      "risk_penalty_pct": 15.783479771108045,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": true,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "SC",
+          "primary_component": "GP",
+          "diff": 0.04616178612213892,
+          "narrative": "falls behind SC primarily because GP contribution is lower by 0.046 (0.175 vs 0.221)"
+        },
+        "vs_below": {
+          "state": "AC",
+          "primary_component": "GP",
+          "diff": 0.0564238604574448,
+          "narrative": "ranks above AC primarily because GP contribution exceeds AC by 0.056 (0.175 vs 0.118), despite AC holding a logistics cost advantage"
+        },
+        "narrative_contrastive": "CE falls behind SC primarily because GP contribution is lower by 0.046 (0.175 vs 0.221). CE ranks above AC primarily because GP contribution exceeds AC by 0.056 (0.175 vs 0.118), despite AC holding a logistics cost advantage."
+      },
+      "margin": {
+        "gap_to_above": 1.0396922427048594,
+        "gap_to_below": 2.425444207471557,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "CE's rank #13 is FRAGILE — trailing SC (#12) by 1.0 pts and leading AC (#14) by 2.4 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.523010209879686,
+        "new_rank": 9,
+        "narrative_whatif": "If CE's MMI_norm improved by 0.10, EPS would increase by ~4.5 pts; rank becomes #9 (gap to PA is 0.4 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "category_diversity",
+        "top_3_features": [
+          "category_diversity",
+          "unique_sellers",
+          "population"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7814,
+        "alignment_insight": "Moderate alignment — category_diversity is the strongest RF predictor for CE, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "CE (Rank #13, EPS=35.7) — primary driver: Growth Potential (35% of OPP). Logistics penalty is 15.8%. [SHAP: MEDIUM, 0.78]",
+      "full_narrative": "CE ranks #13 with EPS=35.7. The dominant driver is Growth Potential (GP=35% of OPP), while Market Momentum Index is the weakest component (14%). Logistics risk (LC_norm=0.789) penalises the opportunity score by 15.8%. CE's rank #13 is FRAGILE — trailing SC (#12) by 1.0 pts and leading AC (#14) by 2.4 EPS points. RF model partially supports this ranking (SHAP alignment=0.78): top predictive features are category_diversity, unique_sellers, population. Moderate alignment — category_diversity is the strongest RF predictor for CE, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "CE ranks #13 with an EPS of 35.7/100, driven by Growth Potential (34.7% of opportunity) but penalized 15.8% by high logistics costs. With medium ML alignment, stabilizing this fragile rank requires mitigating logistics risks and improving Market Momentum to unlock a potential rise to rank #9.",
+      "gemini_narrative_full": "CE ranks #13 with an EPS of 35.7/100, driven by Growth Potential (34.7% of opportunity) but penalized 15.8% by high logistics costs. This mid-tier rank is fragile: CE trails SC (#12) because its Growth Potential contribution is 0.046 lower, but leads AC (#14) because its GP exceeds AC’s by 0.056. The machine learning model shows medium alignment (0.781), confirming category diversity as the dominant predictor but highlighting some GP divergence. To secure this position and target rank #9, we must mitigate logistics risks and boost Market Momentum; a 0.10 improvement in momentum yields a 4.5-point EPS lift.",
+      "rank_percentile": 51.85185185185185,
+      "above_national_avg": true
+    },
+    {
+      "state": "AC",
+      "rank": 14,
+      "tier": "MID",
+      "eps_score": 33.251061035287165,
+      "opp_score": 0.4698856437891278,
+      "components": {
+        "PD": {
+          "norm": 0.3512782660393546,
+          "weight": 0.29390782005763966,
+          "contrib": 0.1032434294052543,
+          "contrib_pct": 21.972033146768624,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.4622196311616798,
+          "weight": 0.25609217994236044,
+          "contrib": 0.11837083295634837,
+          "contrib_pct": 25.191412957802573,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.6805930626240004,
+          "weight": 0.3,
+          "contrib": 0.20417791878720012,
+          "contrib_pct": 43.452682899763104,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.2939564176021671,
+          "weight": 0.15,
+          "contrib": 0.044093462640325064,
+          "contrib_pct": 9.383870995665712,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "PG",
+      "weakest_component": "MMI",
+      "lc_norm": 0.5592283707264474,
+      "risk_adj_factor": 0.8881543258547105,
+      "risk_penalty_abs": 0.05255467660078835,
+      "risk_penalty_pct": 11.184567414528948,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": false,
+      "mmi_imputed": true,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "CE",
+          "primary_component": "GP",
+          "diff": 0.0564238604574448,
+          "narrative": "falls behind CE primarily because GP contribution is lower by 0.056 (0.118 vs 0.175), despite holding a logistics cost advantage"
+        },
+        "vs_below": {
+          "state": "TO",
+          "primary_component": "PG",
+          "diff": 0.07173084793082024,
+          "narrative": "ranks above TO primarily because PG contribution exceeds TO by 0.072 (0.204 vs 0.132)"
+        },
+        "narrative_contrastive": "AC falls behind CE primarily because GP contribution is lower by 0.056 (0.118 vs 0.175), despite holding a logistics cost advantage. AC ranks above TO primarily because PG contribution exceeds TO by 0.072 (0.204 vs 0.132)."
+      },
+      "margin": {
+        "gap_to_above": 2.425444207471557,
+        "gap_to_below": 0.10268110747831116,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "AC's rank #14 is FRAGILE — trailing CE (#13) by 2.4 pts and leading TO (#15) by 0.1 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.770003628365757,
+        "new_rank": 9,
+        "narrative_whatif": "If AC's MMI_norm improved by 0.10, EPS would increase by ~4.8 pts; rank becomes #9 (gap to PA is 2.5 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "population"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7824,
+        "alignment_insight": "Moderate alignment — unique_sellers is the strongest RF predictor for AC, partially consistent with EPS component weights. Some divergence in PG component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "AC (Rank #14, EPS=33.3) — primary driver: Penetration Gap (43% of OPP). Logistics penalty is 11.2%. [SHAP: MEDIUM, 0.78]",
+      "full_narrative": "AC ranks #14 with EPS=33.3. The dominant driver is Penetration Gap (PG=43% of OPP), while Market Momentum Index is the weakest component (9%) — however, Market Momentum Index (MMI, 9%) carries reduced reliability because the MMI was imputed with the national median due to sparse seller count. Logistics risk (LC_norm=0.559) penalises the opportunity score by 11.2%. AC's rank #14 is FRAGILE — trailing CE (#13) by 2.4 pts and leading TO (#15) by 0.1 EPS points. RF model partially supports this ranking (SHAP alignment=0.78): top predictive features are unique_sellers, category_diversity, population. Moderate alignment — unique_sellers is the strongest RF predictor for AC, partially consistent with EPS component weights. Some divergence in PG component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "Acre (AC) ranks #14 with an EPS of 33.3/100, driven by a strong Penetration Gap (43.5% of OPP) but penalized 11.2% by logistics risk. To secure this fragile rank, action must focus on expanding local sellers to bridge the growth gap with Ceará.",
+      "gemini_narrative_full": "Acre (AC) ranks #14 out of 27 with an EPS of 33.3/100. Its primary driver is a strong Penetration Gap at 43.5% of OPP (norm=0.681, exceeding the 0.431 national median), while Market Momentum remains weak at 9.4%. Logistics risk penalizes the score by 11.2%. This rank is highly fragile; AC trails Ceará (#13) by 2.4 points due to lower Growth Potential (0.118 vs 0.175). Random Forest SHAP alignment is medium (0.782), showing partial consistency as the model prioritizes 'unique_sellers' over the formula's Penetration Gap focus. To optimize, improving market momentum by 0.10 would raise EPS by 4.8 points, lifting AC to #9. Action: Focus on seller acquisition to align with model-identified drivers and secure AC's market position.",
+      "rank_percentile": 48.148148148148145,
+      "above_national_avg": true
+    },
+    {
+      "state": "TO",
+      "rank": 15,
+      "tier": "MID",
+      "eps_score": 33.148379927808854,
+      "opp_score": 0.4842973461567431,
+      "components": {
+        "PD": {
+          "norm": 0.3863248302843242,
+          "weight": 0.29390782005763966,
+          "contrib": 0.11354388870300333,
+          "contrib_pct": 23.445077616893403,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.7583711615120265,
+          "weight": 0.25609217994236044,
+          "contrib": 0.1942129239570348,
+          "contrib_pct": 40.10200045452606,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.4414902361879329,
+          "weight": 0.3,
+          "contrib": 0.13244707085637988,
+          "contrib_pct": 27.348295816081823,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.2939564176021671,
+          "weight": 0.15,
+          "contrib": 0.044093462640325064,
+          "contrib_pct": 9.104626112498702,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "GP",
+      "weakest_component": "MMI",
+      "lc_norm": 0.694337489897685,
+      "risk_adj_factor": 0.861132502020463,
+      "risk_penalty_abs": 0.06725316073891666,
+      "risk_penalty_pct": 13.886749797953698,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": false,
+      "mmi_imputed": true,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "AC",
+          "primary_component": "PG",
+          "diff": 0.07173084793082024,
+          "narrative": "falls behind AC primarily because PG contribution is lower by 0.072 (0.132 vs 0.204)"
+        },
+        "vs_below": {
+          "state": "DF",
+          "primary_component": "MMI",
+          "diff": 0.03513815563675659,
+          "narrative": "ranks above DF primarily because MMI contribution exceeds DF by 0.035 (0.044 vs 0.009), despite DF holding a logistics cost advantage"
+        },
+        "narrative_contrastive": "TO falls behind AC primarily because PG contribution is lower by 0.072 (0.132 vs 0.204). TO ranks above DF primarily because MMI contribution exceeds DF by 0.035 (0.044 vs 0.009), despite DF holding a logistics cost advantage."
+      },
+      "margin": {
+        "gap_to_above": 0.10268110747831116,
+        "gap_to_below": 1.4612867715793634,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "TO's rank #15 is FRAGILE — trailing AC (#14) by 0.1 pts and leading DF (#16) by 1.5 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.624877729530745,
+        "new_rank": 10,
+        "narrative_whatif": "If TO's MMI_norm improved by 0.10, EPS would increase by ~4.6 pts; rank becomes #10 (gap to PR is 0.2 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "population"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7609,
+        "alignment_insight": "Moderate alignment — unique_sellers is the strongest RF predictor for TO, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "TO (Rank #15, EPS=33.1) — primary driver: Growth Potential (40% of OPP). Logistics penalty is 13.9%. [SHAP: MEDIUM, 0.76]",
+      "full_narrative": "TO ranks #15 with EPS=33.1. The dominant driver is Growth Potential (GP=40% of OPP), while Market Momentum Index is the weakest component (9%) — however, Market Momentum Index (MMI, 9%) carries reduced reliability because the MMI was imputed with the national median due to sparse seller count. Logistics risk (LC_norm=0.694) penalises the opportunity score by 13.9%. TO's rank #15 is FRAGILE — trailing AC (#14) by 0.1 pts and leading DF (#16) by 1.5 EPS points. RF model partially supports this ranking (SHAP alignment=0.76): top predictive features are unique_sellers, category_diversity, population. Moderate alignment — unique_sellers is the strongest RF predictor for TO, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "TO ranks #15 with an EPS of 33.1/100. Growth Potential (40.1% contribution) drives opportunity, but a 13.9% logistics penalty reduces its score. SHAP alignment is medium, highlighting partial consistency with the dominant unique sellers feature.",
+      "gemini_narrative_full": "Tocantins (TO) ranks #15 with a fragile EPS of 33.1/100, trailing AC by 0.1 points. Growth Potential (norm=0.758) is the dominant driver, contributing 40.1% to opportunity, but high logistics costs (norm=0.694) impose a 13.9% penalty. TO lags AC due to lower Penetration Gap contribution (0.132 vs 0.204), but stays ahead of DF due to superior Market Momentum. Increasing MMI by 0.10 would elevate TO to #10 (+4.6 points). SHAP alignment is MEDIUM (0.761); the Random Forest model highlights 'unique_sellers' as the primary driver, confirming the EPS ranking with minor divergence on Growth Potential. Action: Invest in local seller onboarding to mitigate logistics risk.",
+      "rank_percentile": 44.44444444444444,
+      "above_national_avg": true
+    },
+    {
+      "state": "DF",
+      "rank": 16,
+      "tier": "MID",
+      "eps_score": 31.68709315622949,
+      "opp_score": 0.4573900570530636,
+      "components": {
+        "PD": {
+          "norm": 0.4195597404067219,
+          "weight": 0.29390782005763966,
+          "contrib": 0.12331188868688882,
+          "contrib_pct": 26.959897091200414,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.8159141005072018,
+          "weight": 0.25609217994236044,
+          "contrib": 0.2089492206445995,
+          "contrib_pct": 45.68293897572821,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.3872454690600226,
+          "weight": 0.3,
+          "contrib": 0.11617364071800677,
+          "contrib_pct": 25.39924926801131,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.0597020466904565,
+          "weight": 0.15,
+          "contrib": 0.008955307003568475,
+          "contrib_pct": 1.9579146650600527,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "GP",
+      "weakest_component": "MMI",
+      "lc_norm": 0.4856593569069676,
+      "risk_adj_factor": 0.9028681286186064,
+      "risk_penalty_abs": 0.04442715219280643,
+      "risk_penalty_pct": 9.713187138139352,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": false,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "TO",
+          "primary_component": "MMI",
+          "diff": 0.03513815563675659,
+          "narrative": "falls behind TO primarily because MMI contribution is lower by 0.035 (0.009 vs 0.044), despite holding a logistics cost advantage"
+        },
+        "vs_below": {
+          "state": "AP",
+          "primary_component": "GP",
+          "diff": 0.1482781624888825,
+          "narrative": "ranks above AP primarily because GP contribution exceeds AP by 0.148 (0.209 vs 0.061), despite AP holding a logistics cost advantage"
+        },
+        "narrative_contrastive": "DF falls behind TO primarily because MMI contribution is lower by 0.035 (0.009 vs 0.044), despite holding a logistics cost advantage. DF ranks above AP primarily because GP contribution exceeds AP by 0.148 (0.209 vs 0.061), despite AP holding a logistics cost advantage."
+      },
+      "margin": {
+        "gap_to_above": 1.4612867715793634,
+        "gap_to_below": 2.435217139229305,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "DF's rank #16 is FRAGILE — trailing TO (#15) by 1.5 pts and leading AP (#17) by 2.4 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.849026928486676,
+        "new_rank": 13,
+        "narrative_whatif": "If DF's MMI_norm improved by 0.10, EPS would increase by ~4.8 pts; rank becomes #13 (gap to SC is 0.2 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "revenue_lag_4"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7384,
+        "alignment_insight": "Moderate alignment — unique_sellers is the strongest RF predictor for DF, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "DF (Rank #16, EPS=31.7) — primary driver: Growth Potential (46% of OPP). Logistics penalty is 9.7%. [SHAP: MEDIUM, 0.74]",
+      "full_narrative": "DF ranks #16 with EPS=31.7. The dominant driver is Growth Potential (GP=46% of OPP), while Market Momentum Index is the weakest component (2%). Logistics risk (LC_norm=0.486) penalises the opportunity score by 9.7%. DF's rank #16 is FRAGILE — trailing TO (#15) by 1.5 pts and leading AP (#17) by 2.4 EPS points. RF model partially supports this ranking (SHAP alignment=0.74): top predictive features are unique_sellers, category_diversity, revenue_lag_4. Moderate alignment — unique_sellers is the strongest RF predictor for DF, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "DF ranks #16 with an EPS of 31.7/100, showing moderate opportunity. While Growth Potential is high (norm 0.816), extremely weak Market Momentum (norm 0.060) and a 9.7% logistics risk penalty drag it down. Action: Target localized marketing. RF alignment is medium, highlighting unique sellers.",
+      "gemini_narrative_full": "DF ranks #16 of 27 states with a fragile EPS of 31.7/100 (OPP: 0.4574). Growth Potential is the dominant driver at 45.7% of OPP (norm: 0.816), but overall opportunity is suppressed by a 9.7% logistics risk penalty and very weak Market Momentum (norm: 0.060, contributing only 2.0%). DF's rank is fragile, trailing TO by 1.5 points due to a lower MMI contribution, but leading AP by 2.4 points. The Random Forest model shows medium alignment (score: 0.738), indicating partial consistency; its dominant feature, unique_sellers, validates DF's potential but signals some divergence in GP. Strategic action: Focus on expanding seller density to boost momentum. A 0.10 improvement in normalized momentum would lift EPS by 4.8 points, elevating DF to rank #13.",
+      "rank_percentile": 40.74074074074074,
+      "above_national_avg": false
+    },
+    {
+      "state": "AP",
+      "rank": 17,
+      "tier": "MID",
+      "eps_score": 29.251876017000185,
+      "opp_score": 0.4332889845508187,
+      "components": {
+        "PD": {
+          "norm": 0.2265248351778446,
+          "weight": 0.29390782005763966,
+          "contrib": 0.06657742049603643,
+          "contrib_pct": 15.365592680611487,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.236911014500218,
+          "weight": 0.25609217994236044,
+          "contrib": 0.060671058155716995,
+          "contrib_pct": 14.002446477750494,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.8731568108624675,
+          "weight": 0.3,
+          "contrib": 0.26194704325874024,
+          "contrib_pct": 60.45550489364392,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.2939564176021671,
+          "weight": 0.15,
+          "contrib": 0.044093462640325064,
+          "contrib_pct": 10.176455947994107,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "PG",
+      "weakest_component": "MMI",
+      "lc_norm": 0.3130414859973227,
+      "risk_adj_factor": 0.9373917028005354,
+      "risk_penalty_abs": 0.027127485518011855,
+      "risk_penalty_pct": 6.260829719946454,
+      "data_sparse": true,
+      "pg_saturated": false,
+      "high_lc_flag": false,
+      "mmi_imputed": true,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "DF",
+          "primary_component": "GP",
+          "diff": 0.1482781624888825,
+          "narrative": "falls behind DF primarily because GP contribution is lower by 0.148 (0.061 vs 0.209), despite holding a logistics cost advantage"
+        },
+        "vs_below": {
+          "state": "MG",
+          "primary_component": "PG",
+          "diff": 0.2535221407859613,
+          "narrative": "ranks above MG primarily because PG contribution exceeds MG by 0.254 (0.262 vs 0.008)"
+        },
+        "narrative_contrastive": "AP falls behind DF primarily because GP contribution is lower by 0.148 (0.061 vs 0.209), despite holding a logistics cost advantage. AP ranks above MG primarily because PG contribution exceeds MG by 0.254 (0.262 vs 0.008)."
+      },
+      "margin": {
+        "gap_to_above": 2.435217139229305,
+        "gap_to_below": 1.8317846619500244,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "AP's rank #17 is FRAGILE — trailing DF (#16) by 2.4 pts and leading MG (#18) by 1.8 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 5.034442410305438,
+        "new_rank": 14,
+        "narrative_whatif": "If AP's MMI_norm improved by 0.10, EPS would increase by ~5.0 pts; rank becomes #14 (gap to CE is 1.4 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "population"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7485,
+        "alignment_insight": "Moderate alignment — unique_sellers is the strongest RF predictor for AP, partially consistent with EPS component weights. Some divergence in PG component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "AP (Rank #17, EPS=29.3) — primary driver: Penetration Gap (60% of OPP). Logistics penalty is 6.3%. [SHAP: MEDIUM, 0.75]",
+      "full_narrative": "AP ranks #17 with EPS=29.3. The dominant driver is Penetration Gap (PG=60% of OPP), while Market Momentum Index is the weakest component (10%) — however, Market Momentum Index (MMI, 10%) carries reduced reliability because it falls in the bottom 5th percentile of historical revenue (data_sparse=True), meaning the signal is extrapolated rather than observed. Logistics risk (LC_norm=0.313) penalises the opportunity score by 6.3%. AP's rank #17 is FRAGILE — trailing DF (#16) by 2.4 pts and leading MG (#18) by 1.8 EPS points. RF model partially supports this ranking (SHAP alignment=0.75): top predictive features are unique_sellers, category_diversity, population. Moderate alignment — unique_sellers is the strongest RF predictor for AP, partially consistent with EPS component weights. Some divergence in PG component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "AP ranks #17 with an EPS of 29.3/100, driven by a strong Penetration Gap (60.5% of opportunity) but restricted by sparse data. A 6.3% logistics penalty applies. Medium RF model alignment (0.749) validates the rank but indicates divergence, highlighting 'unique_sellers' as a key predictor.",
+      "gemini_narrative_full": "AP ranks #17 (EPS 29.3/100), reflecting a fragile position trailing DF by 2.4 points. This score is heavily driven by a strong Penetration Gap contributing 60.5% of opportunity (norm 0.873 vs. 0.431 national median). However, growth is weak (GP norm 0.237 vs. 0.703 median), and logistics costs penalize the EPS by 6.3%. Critically, AP's sparse data quality requires cautious investment. The RF model shows medium alignment (0.749), validating the ranking but highlighting a divergence. While the EPS formula relies heavily on the penetration gap, the machine learning model identifies 'unique_sellers' as the dominant driver. Consequently, expansion plans should prioritize developing local merchant diversity to successfully unlock AP's latent market potential.",
+      "rank_percentile": 37.03703703703704,
+      "above_national_avg": false
+    },
+    {
+      "state": "MG",
+      "rank": 18,
+      "tier": "MID",
+      "eps_score": 27.42009135505016,
+      "opp_score": 0.4459701226485763,
+      "components": {
+        "PD": {
+          "norm": 0.5435717331112346,
+          "weight": 0.29390782005763966,
+          "contrib": 0.15975998312367606,
+          "contrib_pct": 35.82302378797843,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.908324977860724,
+          "weight": 0.25609217994236044,
+          "contrib": 0.2326149236764491,
+          "contrib_pct": 52.159306613404965,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.0280830082425965,
+          "weight": 0.3,
+          "contrib": 0.00842490247277895,
+          "contrib_pct": 1.8891181370501269,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.3011354225044803,
+          "weight": 0.15,
+          "contrib": 0.04517031337567204,
+          "contrib_pct": 10.128551461566444,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "GP",
+      "weakest_component": "PG",
+      "lc_norm": 0.5036736635477977,
+      "risk_adj_factor": 0.8992652672904404,
+      "risk_penalty_abs": 0.04492468110145382,
+      "risk_penalty_pct": 10.073473270955956,
+      "data_sparse": false,
+      "pg_saturated": true,
+      "high_lc_flag": false,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "AP",
+          "primary_component": "PG",
+          "diff": 0.2535221407859613,
+          "narrative": "falls behind AP primarily because PG contribution is lower by 0.254 (0.008 vs 0.262)"
+        },
+        "vs_below": {
+          "state": "RO",
+          "primary_component": "GP",
+          "diff": 0.07847264934626852,
+          "narrative": "ranks above RO primarily because GP contribution exceeds RO by 0.078 (0.233 vs 0.154)"
+        },
+        "narrative_contrastive": "MG falls behind AP primarily because PG contribution is lower by 0.254 (0.008 vs 0.262). MG ranks above RO primarily because GP contribution exceeds RO by 0.078 (0.233 vs 0.154)."
+      },
+      "margin": {
+        "gap_to_above": 1.8317846619500244,
+        "gap_to_below": 0.3441662715373539,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "MG's rank #18 is FRAGILE — trailing AP (#17) by 1.8 pts and leading RO (#19) by 0.3 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.829677053979815,
+        "new_rank": 16,
+        "narrative_whatif": "If MG's MMI_norm improved by 0.10, EPS would increase by ~4.8 pts; rank becomes #16 (gap to TO is 0.9 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "revenue_lag_4"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7828,
+        "alignment_insight": "Moderate alignment — unique_sellers is the strongest RF predictor for MG, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "MG (Rank #18, EPS=27.4) — primary driver: Growth Potential (52% of OPP). Logistics penalty is 10.1%. [SHAP: MEDIUM, 0.78]",
+      "full_narrative": "MG ranks #18 with EPS=27.4. The dominant driver is Growth Potential (GP=52% of OPP), while Penetration Gap is the weakest component (2%) — however, Penetration Gap (PG, 2%) carries reduced reliability — PG=0 reflects market saturation, not a data quality issue; further penetration yield diminishes without seller network deepening. Logistics risk (LC_norm=0.504) penalises the opportunity score by 10.1%. MG's rank #18 is FRAGILE — trailing AP (#17) by 1.8 pts and leading RO (#19) by 0.3 EPS points. RF model partially supports this ranking (SHAP alignment=0.78): top predictive features are unique_sellers, category_diversity, revenue_lag_4. Moderate alignment — unique_sellers is the strongest RF predictor for MG, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "MG ranks #18 with a 27.4 EPS. While Growth Potential drives 52.2% of opportunity, a saturated Penetration Gap (1.9%) and 10.1% logistics penalty drag it down. RF alignment is MEDIUM, highlighting unique sellers. Action: Stimulate market momentum by 0.10 to lift EPS by 4.8 points.",
+      "gemini_narrative_full": "Minas Gerais (MG) ranks #18 with a fragile EPS of 27.4/100, trailing AP by 1.8 points. High Growth Potential (norm=0.908) drives 52.2% of its pre-risk opportunity, but severe market saturation (Penetration Gap is 1.9%, norm=0.028) and a 10.1% logistics penalty drag it down. The Random Forest model shows MEDIUM alignment (0.783), identifying 'unique_sellers' as the primary predictor. This validates MG’s ranking but notes divergence in Growth Potential, hinting at unmodeled signals. To secure MG's fragile lead over RO (+0.3 pts), tactical intervention is needed. A what-if analysis reveals that boosting Market Momentum by 0.10 would increase EPS by ~4.8 points, elevating MG to rank #16. Focus on expanding market momentum to offset saturation.",
+      "rank_percentile": 33.33333333333333,
+      "above_national_avg": false
+    },
+    {
+      "state": "RO",
+      "rank": 19,
+      "tier": "LOW",
+      "eps_score": 27.075925083512807,
+      "opp_score": 0.4706533282892829,
+      "components": {
+        "PD": {
+          "norm": 0.388976582805851,
+          "weight": 0.29390782005763966,
+          "contrib": 0.11432325950593764,
+          "contrib_pct": 24.290332742674213,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.6019015276642727,
+          "weight": 0.25609217994236044,
+          "contrib": 0.15414227433018057,
+          "contrib_pct": 32.750703132271994,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.526981106042799,
+          "weight": 0.3,
+          "contrib": 0.1580943318128397,
+          "contrib_pct": 33.59039919838162,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.2939564176021671,
+          "weight": 0.15,
+          "contrib": 0.044093462640325064,
+          "contrib_pct": 9.368564926672187,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "PG",
+      "weakest_component": "MMI",
+      "lc_norm": 0.7496932126063326,
+      "risk_adj_factor": 0.8500613574787335,
+      "risk_penalty_abs": 0.07056912114181109,
+      "risk_penalty_pct": 14.99386425212665,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": true,
+      "mmi_imputed": true,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "MG",
+          "primary_component": "GP",
+          "diff": 0.07847264934626852,
+          "narrative": "falls behind MG primarily because GP contribution is lower by 0.078 (0.154 vs 0.233)"
+        },
+        "vs_below": {
+          "state": "GO",
+          "primary_component": "PG",
+          "diff": 0.06706843515135413,
+          "narrative": "ranks above GO primarily because PG contribution exceeds GO by 0.067 (0.158 vs 0.091), despite GO holding a logistics cost advantage"
+        },
+        "narrative_contrastive": "RO falls behind MG primarily because GP contribution is lower by 0.078 (0.154 vs 0.233). RO ranks above GO primarily because PG contribution exceeds GO by 0.067 (0.158 vs 0.091), despite GO holding a logistics cost advantage."
+      },
+      "margin": {
+        "gap_to_above": 0.3441662715373539,
+        "gap_to_below": 1.33694149462654,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "RO's rank #19 is FRAGILE — trailing MG (#18) by 0.3 pts and leading GO (#20) by 1.3 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.565417998165085,
+        "new_rank": 17,
+        "narrative_whatif": "If RO's MMI_norm improved by 0.10, EPS would increase by ~4.6 pts; rank becomes #17 (gap to DF is 0.0 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "population"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7909,
+        "alignment_insight": "Moderate alignment — unique_sellers is the strongest RF predictor for RO, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "RO (Rank #19, EPS=27.1) — primary driver: Penetration Gap (34% of OPP). Logistics penalty is 15.0%. [SHAP: MEDIUM, 0.79]",
+      "full_narrative": "RO ranks #19 with EPS=27.1. The dominant driver is Penetration Gap (PG=34% of OPP), while Market Momentum Index is the weakest component (9%) — however, Market Momentum Index (MMI, 9%) carries reduced reliability because the MMI was imputed with the national median due to sparse seller count. Logistics risk (LC_norm=0.750) penalises the opportunity score by 15.0%. RO's rank #19 is FRAGILE — trailing MG (#18) by 0.3 pts and leading GO (#20) by 1.3 EPS points. RF model partially supports this ranking (SHAP alignment=0.79): top predictive features are unique_sellers, category_diversity, population. Moderate alignment — unique_sellers is the strongest RF predictor for RO, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "RO ranks #19 with an EPS of 27.1/100, driven by its Penetration Gap (33.6%) but penalized 15.0% by high logistics costs. Medium SHAP alignment (0.791) confirms this fragile position. Action: Onboard local sellers to address logistics barriers and secure market share.",
+      "gemini_narrative_full": "Rondônia (RO) holds a fragile #19 rank (EPS: 27.1/100), trailing MG by just 0.3 points. RO's primary driver is its Penetration Gap (33.6% of opportunity; norm=0.527), but its Growth Potential contribution lags MG by 0.078. High logistics costs (LC_norm=0.750) trigger a heavy 15.0% EPS penalty. The Random Forest model shows MEDIUM alignment (0.791) with EPS; 'unique_sellers' is the dominant predictor, confirming the importance of merchant density, though GP divergence suggests untapped market signals. What-If analysis indicates that a 0.10 improvement in Market Momentum would boost EPS by ~4.6 points, pushing RO to rank #17. Action: Mitigate logistics risk by establishing local distributor partnerships and recruiting regional sellers to close the penetration gap.",
+      "rank_percentile": 29.629629629629626,
+      "above_national_avg": false
+    },
+    {
+      "state": "GO",
+      "rank": 20,
+      "tier": "LOW",
+      "eps_score": 25.738983588886267,
+      "opp_score": 0.4532595355757377,
+      "components": {
+        "PD": {
+          "norm": 0.411747844995828,
+          "weight": 0.29390782005763966,
+          "contrib": 0.12101591153615472,
+          "contrib_pct": 26.699032681670626,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.7778804575162294,
+          "weight": 0.25609217994236044,
+          "contrib": 0.19920910209989187,
+          "contrib_pct": 43.95033892598711,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.3034196555382852,
+          "weight": 0.3,
+          "contrib": 0.09102589666148556,
+          "contrib_pct": 20.082511125962956,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.2800575018547038,
+          "weight": 0.15,
+          "contrib": 0.04200862527820557,
+          "contrib_pct": 9.2681172663793,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "GP",
+      "weakest_component": "MMI",
+      "lc_norm": 0.6277785254127972,
+      "risk_adj_factor": 0.8744442949174406,
+      "risk_penalty_abs": 0.05690932057460519,
+      "risk_penalty_pct": 12.555570508255945,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": false,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "RO",
+          "primary_component": "PG",
+          "diff": 0.06706843515135413,
+          "narrative": "falls behind RO primarily because PG contribution is lower by 0.067 (0.091 vs 0.158), despite holding a logistics cost advantage"
+        },
+        "vs_below": {
+          "state": "SE",
+          "primary_component": "PG",
+          "diff": 0.0360288979218366,
+          "narrative": "ranks above SE primarily because PG contribution exceeds SE by 0.036 (0.091 vs 0.055)"
+        },
+        "narrative_contrastive": "GO falls behind RO primarily because PG contribution is lower by 0.067 (0.091 vs 0.158), despite holding a logistics cost advantage. GO ranks above SE primarily because PG contribution exceeds SE by 0.036 (0.091 vs 0.055)."
+      },
+      "margin": {
+        "gap_to_above": 1.33694149462654,
+        "gap_to_below": 1.75402463825435,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "GO's rank #20 is FRAGILE — trailing RO (#19) by 1.3 pts and leading SE (#21) by 1.8 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.696371245267233,
+        "new_rank": 17,
+        "narrative_whatif": "If GO's MMI_norm improved by 0.10, EPS would increase by ~4.7 pts; rank becomes #17 (gap to DF is 1.3 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "revenue_lag_4"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7646,
+        "alignment_insight": "Moderate alignment — unique_sellers is the strongest RF predictor for GO, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "GO (Rank #20, EPS=25.7) — primary driver: Growth Potential (44% of OPP). Logistics penalty is 12.6%. [SHAP: MEDIUM, 0.76]",
+      "full_narrative": "GO ranks #20 with EPS=25.7. The dominant driver is Growth Potential (GP=44% of OPP), while Market Momentum Index is the weakest component (9%). Logistics risk (LC_norm=0.628) penalises the opportunity score by 12.6%. GO's rank #20 is FRAGILE — trailing RO (#19) by 1.3 pts and leading SE (#21) by 1.8 EPS points. RF model partially supports this ranking (SHAP alignment=0.76): top predictive features are unique_sellers, category_diversity, revenue_lag_4. Moderate alignment — unique_sellers is the strongest RF predictor for GO, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "Goiás ranks #20 with a fragile EPS of 25.7/100. Strong Growth Potential (norm 0.778) is offset by weak Market Momentum (norm 0.280) and a 12.6% logistics penalty. We must expand local seller networks to boost momentum and secure this vulnerable position.",
+      "gemini_narrative_full": "Goiás ranks #20 with a fragile EPS of 25.7/100, trailing Rondônia by 1.3 points due to a lower Penetration Gap contribution (0.091 vs 0.158). GO's primary strength is Growth Potential (norm 0.778, above the 0.703 median), but the score is suppressed by a 12.6% logistics risk penalty and low Market Momentum (norm 0.280). Random Forest SHAP analysis indicates MEDIUM alignment (0.765), with 'unique_sellers' as the dominant predictor. This divergence suggests the EPS formula may undervalue Growth Potential by overlooking seller-side dynamics. To improve, GO should focus on boosting Market Momentum; a 0.10 increase in MMI_norm would raise EPS by 4.7 points, elevating GO to rank #17. Action: Prioritize local seller recruitment to drive momentum.",
+      "rank_percentile": 25.925925925925924,
+      "above_national_avg": false
+    },
+    {
+      "state": "SE",
+      "rank": 21,
+      "tier": "LOW",
+      "eps_score": 23.984958950631917,
+      "opp_score": 0.4597625102691917,
+      "components": {
+        "PD": {
+          "norm": 0.410232901818076,
+          "weight": 0.29390782005763966,
+          "contrib": 0.12057065788927043,
+          "contrib_pct": 26.224551849318058,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.8229253949311602,
+          "weight": 0.25609217994236044,
+          "contrib": 0.21074475831784872,
+          "contrib_pct": 45.837743097943616,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.1833233291321632,
+          "weight": 0.3,
+          "contrib": 0.05499699873964896,
+          "contrib_pct": 11.962045080067126,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.4896673021494908,
+          "weight": 0.15,
+          "contrib": 0.07345009532242361,
+          "contrib_pct": 15.975659972671208,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "GP",
+      "weakest_component": "PG",
+      "lc_norm": 0.7428963046318617,
+      "risk_adj_factor": 0.8514207390736277,
+      "risk_penalty_abs": 0.06831117397745018,
+      "risk_penalty_pct": 14.857926092637236,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": true,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "GO",
+          "primary_component": "PG",
+          "diff": 0.0360288979218366,
+          "narrative": "falls behind GO primarily because PG contribution is lower by 0.036 (0.055 vs 0.091)"
+        },
+        "vs_below": {
+          "state": "PE",
+          "primary_component": "GP",
+          "diff": 0.05928504369355783,
+          "narrative": "ranks above PE primarily because GP contribution exceeds PE by 0.059 (0.211 vs 0.151)"
+        },
+        "narrative_contrastive": "SE falls behind GO primarily because PG contribution is lower by 0.036 (0.055 vs 0.091). SE ranks above PE primarily because GP contribution exceeds PE by 0.059 (0.211 vs 0.151)."
+      },
+      "margin": {
+        "gap_to_above": 1.75402463825435,
+        "gap_to_below": 6.447607002057367,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "SE's rank #21 is FRAGILE — trailing GO (#20) by 1.8 pts and leading PE (#22) by 6.4 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "PG",
+        "delta_eps": 9.145437528572895,
+        "new_rank": 16,
+        "narrative_whatif": "If SE's PG_norm improved by 0.10, EPS would increase by ~9.1 pts; rank becomes #16 (gap to TO is 0.0 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "population"
+        ],
+        "alignment_verdict": "HIGH",
+        "alignment_score": 0.8023,
+        "alignment_insight": "SHAP drivers align with EPS ranking — unique_sellers consistently supports the GP signal."
+      },
+      "summary": "SE (Rank #21, EPS=24.0) — primary driver: Growth Potential (46% of OPP). Logistics penalty is 14.9%. [SHAP: HIGH, 0.80]",
+      "full_narrative": "SE ranks #21 with EPS=24.0. The dominant driver is Growth Potential (GP=46% of OPP), while Penetration Gap is the weakest component (12%). Logistics risk (LC_norm=0.743) penalises the opportunity score by 14.9%. SE's rank #21 is FRAGILE — trailing GO (#20) by 1.8 pts and leading PE (#22) by 6.4 EPS points. RF model confirms this ranking — unique_sellers is the strongest predictive signal (SHAP alignment=0.80). SHAP drivers align with EPS ranking — unique_sellers consistently supports the GP signal.",
+      "gemini_narrative_brief": "Sergipe (SE) ranks #21 with an EPS of 24.0/100. Strong Growth Potential (45.8% of OPP, norm=0.823) is severely offset by weak market penetration (12.0% of OPP) and a 14.9% logistics risk penalty. High SHAP alignment (0.802) validates this, suggesting focused local seller onboarding.",
+      "gemini_narrative_full": "Sergipe (SE) ranks #21 of 27 with a fragile EPS of 24.0/100, trailing Goiás by 1.8 points. SE’s main driver is its high Growth Potential (norm=0.823, contributing 45.8% of OPP). However, the overall score is severely limited by a low Penetration Gap (norm=0.183, contributing just 12.0%) and a high 14.9% logistics risk penalty (LC norm=0.743). A high SHAP alignment score of 0.802 validates this ranking, with the dominant feature, unique_sellers, strongly supporting the growth potential signal. What-if analysis shows that improving the penetration gap by 0.10 would boost EPS by 9.1 points, lifting SE to rank #16. Strategic actions should focus on recruiting local merchants to bridge the penetration gap while optimizing delivery routes to mitigate high logistical costs.",
+      "rank_percentile": 22.22222222222222,
+      "above_national_avg": false
+    },
+    {
+      "state": "PE",
+      "rank": 22,
+      "tier": "LOW",
+      "eps_score": 17.53735194857455,
+      "opp_score": 0.4415885740597987,
+      "components": {
+        "PD": {
+          "norm": 0.4010191211418745,
+          "weight": 0.29390782005763966,
+          "contrib": 0.11786265569623884,
+          "contrib_pct": 26.6906035662685,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.5914265506208759,
+          "weight": 0.25609217994236044,
+          "contrib": 0.1514597146242909,
+          "contrib_pct": 34.29883006977002,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.4308319727809696,
+          "weight": 0.3,
+          "contrib": 0.12924959183429086,
+          "contrib_pct": 29.26923372269778,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.2867774126998539,
+          "weight": 0.15,
+          "contrib": 0.04301661190497808,
+          "contrib_pct": 9.741332641263696,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "GP",
+      "weakest_component": "MMI",
+      "lc_norm": 0.7715891673937654,
+      "risk_adj_factor": 0.845682166521247,
+      "risk_penalty_abs": 0.06814499203788003,
+      "risk_penalty_pct": 15.431783347875308,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": true,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "SE",
+          "primary_component": "GP",
+          "diff": 0.05928504369355783,
+          "narrative": "falls behind SE primarily because GP contribution is lower by 0.059 (0.151 vs 0.211)"
+        },
+        "vs_below": {
+          "state": "BA",
+          "primary_component": "MMI",
+          "diff": 0.020497543657363258,
+          "narrative": "ranks above BA primarily because MMI contribution exceeds BA by 0.020 (0.043 vs 0.023), despite BA holding a logistics cost advantage"
+        },
+        "narrative_contrastive": "PE falls behind SE primarily because GP contribution is lower by 0.059 (0.151 vs 0.211). PE ranks above BA primarily because MMI contribution exceeds BA by 0.020 (0.043 vs 0.023), despite BA holding a logistics cost advantage."
+      },
+      "margin": {
+        "gap_to_above": 6.447607002057367,
+        "gap_to_below": 4.290664126547441,
+        "rank_stability": "MODERATE",
+        "narrative_margin": "PE's rank #22 is MODERATE — trailing SE (#21) by 6.4 pts and leading BA (#23) by 4.3 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.54189867729961,
+        "new_rank": 22,
+        "narrative_whatif": "If PE's MMI_norm improved by 0.10, EPS would increase by ~4.5 pts; rank remains #22."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "revenue_lag_4"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7747,
+        "alignment_insight": "Moderate alignment — unique_sellers is the strongest RF predictor for PE, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "PE (Rank #22, EPS=17.5) — primary driver: Growth Potential (34% of OPP). Logistics penalty is 15.4%. [SHAP: MEDIUM, 0.77]",
+      "full_narrative": "PE ranks #22 with EPS=17.5. The dominant driver is Growth Potential (GP=34% of OPP), while Market Momentum Index is the weakest component (10%). Logistics risk (LC_norm=0.772) penalises the opportunity score by 15.4%. PE's rank #22 is MODERATE — trailing SE (#21) by 6.4 pts and leading BA (#23) by 4.3 EPS points. RF model partially supports this ranking (SHAP alignment=0.77): top predictive features are unique_sellers, category_diversity, revenue_lag_4. Moderate alignment — unique_sellers is the strongest RF predictor for PE, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "PE ranks #22 with a low EPS of 17.5/100. Growth Potential (34.3%) drives opportunity, but a severe 15.4% logistics penalty suppresses its score. Machine learning indicates medium alignment, highlighting unique sellers as a key lever. Action: Resolve logistics bottlenecks and onboard local sellers.",
+      "gemini_narrative_full": "PE ranks #22 with an EPS of 17.5/100, trailing SE by 6.4 points and leading BA by 4.3. While Growth Potential is PE's primary opportunity driver (34.3%), it falls below the national median, and high logistics costs (0.772) trigger a severe 15.4% EPS penalty. Market Momentum is the weakest driver at 9.7%. Improving momentum by 0.10 would raise EPS by 4.5 points but won't shift its rank. Random Forest models show medium alignment (0.775), identifying unique sellers as the dominant predictor but suggesting the model captures growth signals beyond the standard formula. Action: Mitigate the logistics penalty by optimizing regional distribution lanes, and recruit local merchants to boost market momentum.",
+      "rank_percentile": 18.51851851851852,
+      "above_national_avg": false
+    },
+    {
+      "state": "BA",
+      "rank": 23,
+      "tier": "LOW",
+      "eps_score": 13.24668782202711,
+      "opp_score": 0.4119948697963802,
+      "components": {
+        "PD": {
+          "norm": 0.4238686747517828,
+          "weight": 0.29390782005763966,
+          "contrib": 0.12457831818701717,
+          "contrib_pct": 30.237832390628405,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.5810218922629034,
+          "weight": 0.25609217994236044,
+          "contrib": 0.1487951629838422,
+          "contrib_pct": 36.1157805332336,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.38700773459302,
+          "weight": 0.3,
+          "contrib": 0.116102320377906,
+          "contrib_pct": 28.180525751518974,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.1501271216507655,
+          "weight": 0.15,
+          "contrib": 0.022519068247614824,
+          "contrib_pct": 5.465861324619017,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "GP",
+      "weakest_component": "MMI",
+      "lc_norm": 0.6132945111063065,
+      "risk_adj_factor": 0.8773410977787387,
+      "risk_penalty_abs": 0.05053483845001548,
+      "risk_penalty_pct": 12.26589022212613,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": false,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "PE",
+          "primary_component": "MMI",
+          "diff": 0.020497543657363258,
+          "narrative": "falls behind PE primarily because MMI contribution is lower by 0.020 (0.023 vs 0.043), despite holding a logistics cost advantage"
+        },
+        "vs_below": {
+          "state": "RR",
+          "primary_component": "GP",
+          "diff": 0.1487951629838422,
+          "narrative": "ranks above RR primarily because GP contribution exceeds RR by 0.149 (0.149 vs 0.000), despite RR holding a logistics cost advantage"
+        },
+        "narrative_contrastive": "BA falls behind PE primarily because MMI contribution is lower by 0.020 (0.023 vs 0.043), despite holding a logistics cost advantage. BA ranks above RR primarily because GP contribution exceeds RR by 0.149 (0.149 vs 0.000), despite RR holding a logistics cost advantage."
+      },
+      "margin": {
+        "gap_to_above": 4.290664126547441,
+        "gap_to_below": 6.21803301050944,
+        "rank_stability": "MODERATE",
+        "narrative_margin": "BA's rank #23 is MODERATE — trailing PE (#22) by 4.3 pts and leading RR (#24) by 6.2 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.7119290370680424,
+        "new_rank": 22,
+        "narrative_whatif": "If BA's MMI_norm improved by 0.10, EPS would increase by ~4.7 pts; rank becomes #22 (gap to SE is 6.0 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "population"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.751,
+        "alignment_insight": "Moderate alignment — unique_sellers is the strongest RF predictor for BA, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "BA (Rank #23, EPS=13.2) — primary driver: Growth Potential (36% of OPP). Logistics penalty is 12.3%. [SHAP: MEDIUM, 0.75]",
+      "full_narrative": "BA ranks #23 with EPS=13.2. The dominant driver is Growth Potential (GP=36% of OPP), while Market Momentum Index is the weakest component (5%). Logistics risk (LC_norm=0.613) penalises the opportunity score by 12.3%. BA's rank #23 is MODERATE — trailing PE (#22) by 4.3 pts and leading RR (#24) by 6.2 EPS points. RF model partially supports this ranking (SHAP alignment=0.75): top predictive features are unique_sellers, category_diversity, population. Moderate alignment — unique_sellers is the strongest RF predictor for BA, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "BA ranks #23 (EPS 13.2/100). Growth Potential is its strongest driver (36.1% of OPP), but a 12.3% logistics penalty and weak Market Momentum (5.5%) hold it back. SHAP alignment is medium (0.751), identifying unique sellers as key. Action: Build seller density.",
+      "gemini_narrative_full": "BA ranks #23 out of 27 states with an EPS of 13.2/100 (OPP 0.4120). Growth Potential is its strongest driver (36.1% of OPP, norm=0.581), but overall score is constrained by its weakest component, Market Momentum (5.5% of OPP, norm=0.150), and a 12.3% logistics risk penalty. BA trails PE by 4.3 points due to lower MMI. The Random Forest model shows medium alignment (SHAP score 0.751) and highlights unique_sellers as the dominant predictor, suggesting some formulaic divergence in Growth Potential. Action: Prioritize local merchant acquisition to boost unique sellers and improve market momentum. Increasing MMI_norm by 0.10 would raise EPS by ~4.7 points, allowing BA to overtake PE for rank #22.",
+      "rank_percentile": 14.814814814814813,
+      "above_national_avg": false
+    },
+    {
+      "state": "RR",
+      "rank": 24,
+      "tier": "LOW",
+      "eps_score": 7.0286548115176695,
+      "opp_score": 0.3440934625621364,
+      "components": {
+        "PD": {
+          "norm": 0.0,
+          "weight": 0.29390782005763966,
+          "contrib": 0.0,
+          "contrib_pct": 0.0,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.0,
+          "weight": 0.25609217994236044,
+          "contrib": 0.0,
+          "contrib_pct": 0.0,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.9999999997393716,
+          "weight": 0.3,
+          "contrib": 0.2999999999218115,
+          "contrib_pct": 87.18561453856086,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.2939564176021671,
+          "weight": 0.15,
+          "contrib": 0.044093462640325064,
+          "contrib_pct": 12.814385461439176,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "PG",
+      "weakest_component": "PD",
+      "lc_norm": 0.0,
+      "risk_adj_factor": 1.0,
+      "risk_penalty_abs": 0.0,
+      "risk_penalty_pct": 0.0,
+      "data_sparse": true,
+      "pg_saturated": false,
+      "high_lc_flag": false,
+      "mmi_imputed": true,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "BA",
+          "primary_component": "GP",
+          "diff": 0.1487951629838422,
+          "narrative": "falls behind BA primarily because GP contribution is lower by 0.149 (0.000 vs 0.149), despite holding a logistics cost advantage"
+        },
+        "vs_below": {
+          "state": "PB",
+          "primary_component": "PG",
+          "diff": 0.25674456451646704,
+          "narrative": "ranks above PB primarily because PG contribution exceeds PB by 0.257 (0.300 vs 0.043)"
+        },
+        "narrative_contrastive": "RR falls behind BA primarily because GP contribution is lower by 0.149 (0.000 vs 0.149), despite holding a logistics cost advantage. RR ranks above PB primarily because PG contribution exceeds PB by 0.257 (0.300 vs 0.043)."
+      },
+      "margin": {
+        "gap_to_above": 6.21803301050944,
+        "gap_to_below": 3.914526089657607,
+        "rank_stability": "MODERATE",
+        "narrative_margin": "RR's rank #24 is MODERATE — trailing BA (#23) by 6.2 pts and leading PB (#25) by 3.9 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "PD",
+        "delta_eps": 10.523256267748202,
+        "new_rank": 22,
+        "narrative_whatif": "If RR's PD_norm improved by 0.10, EPS would increase by ~10.5 pts; rank becomes #22 (gap to SE is 6.4 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "population",
+          "category_diversity"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.6778,
+        "alignment_insight": "Critical misalignment on PG component (EPS weight=0.87, SHAP weight=0.24) — EPS assigns high importance to PG but RF finds negligible signal for RR. This state may be overranked on PG due to data sparsity."
+      },
+      "summary": "RR (Rank #24, EPS=7.0) — primary driver: Penetration Gap (87% of OPP). Logistics penalty is 0.0%. [SHAP: MEDIUM, 0.68]",
+      "full_narrative": "RR ranks #24 with EPS=7.0. The dominant driver is Penetration Gap (PG=87% of OPP), while Predicted Demand is the weakest component (0%) — however, Predicted Demand (PD, 0%) carries reduced reliability because it falls in the bottom 5th percentile of historical revenue (data_sparse=True), meaning the signal is extrapolated rather than observed. Logistics risk (LC_norm=0.000) penalises the opportunity score by 0.0%. RR's rank #24 is MODERATE — trailing BA (#23) by 6.2 pts and leading PB (#25) by 3.9 EPS points. RF model partially supports this ranking (SHAP alignment=0.68): top predictive features are unique_sellers, population, category_diversity. Critical misalignment on PG component (EPS weight=0.87, SHAP weight=0.24) — EPS assigns high importance to PG but RF finds negligible signal for RR. This state may be overranked on PG due to data sparsity.",
+      "gemini_narrative_brief": "Roraima (RR) ranks #24 with a low EPS of 7.0/100, driven almost entirely by its Penetration Gap (87.2%). High data sparsity and medium model alignment suggest potential overranking on PG. We recommend monitoring with caution rather than immediate expansion.",
+      "gemini_narrative_full": "Roraima (RR) ranks #24 of 27 states with a low EPS of 7.0/100. Its score is driven almost entirely by its Penetration Gap (87.2% of OPP), while Growth Potential and Predicted Demand contribute 0.0%. Due to data sparsity, this ranking is highly unstable. RR trails BA (#23) by 6.2 points because of zero growth, but leads PB (#25) by 3.9 points. Random Forest features like 'unique_sellers' show only MEDIUM alignment (0.678) with EPS. There is a critical misalignment on the PG component, where EPS weight is 0.87 but the RF model finds negligible signal (SHAP weight 0.24). This suggests RR is overranked on PG due to sparse data. We recommend holding on expansion and verifying local demand.",
+      "rank_percentile": 11.11111111111111,
+      "above_national_avg": false
+    },
+    {
+      "state": "PB",
+      "rank": 25,
+      "tier": "LOW",
+      "eps_score": 3.1141287218600624,
+      "opp_score": 0.4151255566674587,
+      "components": {
+        "PD": {
+          "norm": 0.3947325926438856,
+          "weight": 0.29390782005763966,
+          "contrib": 0.1160149958096647,
+          "contrib_pct": 27.946965429208664,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.5512288591135465,
+          "weight": 0.25609217994236044,
+          "contrib": 0.1411654001775284,
+          "contrib_pct": 34.00547085339066,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.1441847846844814,
+          "weight": 0.3,
+          "contrib": 0.04325543540534442,
+          "contrib_pct": 10.419843999148119,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.7645981684994749,
+          "weight": 0.15,
+          "contrib": 0.11468972527492123,
+          "contrib_pct": 27.627719718252568,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "GP",
+      "weakest_component": "PG",
+      "lc_norm": 0.9872328259191194,
+      "risk_adj_factor": 0.8025534348161761,
+      "risk_penalty_abs": 0.08196511528401257,
+      "risk_penalty_pct": 19.74465651838239,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": true,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "RR",
+          "primary_component": "PG",
+          "diff": 0.25674456451646704,
+          "narrative": "falls behind RR primarily because PG contribution is lower by 0.257 (0.043 vs 0.300)"
+        },
+        "vs_below": {
+          "state": "ES",
+          "primary_component": "MMI",
+          "diff": 0.06871398934170553,
+          "narrative": "ranks above ES primarily because MMI contribution exceeds ES by 0.069 (0.115 vs 0.046), despite ES holding a logistics cost advantage"
+        },
+        "narrative_contrastive": "PB falls behind RR primarily because PG contribution is lower by 0.257 (0.043 vs 0.300). PB ranks above ES primarily because MMI contribution exceeds ES by 0.069 (0.115 vs 0.046), despite ES holding a logistics cost advantage."
+      },
+      "margin": {
+        "gap_to_above": 3.914526089657607,
+        "gap_to_below": 0.26838955531967335,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "PB's rank #25 is FRAGILE — trailing RR (#24) by 3.9 pts and leading ES (#26) by 0.3 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "PG",
+        "delta_eps": 8.62053495432945,
+        "new_rank": 24,
+        "narrative_whatif": "If PB's PG_norm improved by 0.10, EPS would increase by ~8.6 pts; rank becomes #24 (gap to BA is 1.5 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "population",
+          "category_diversity"
+        ],
+        "alignment_verdict": "HIGH",
+        "alignment_score": 0.8431,
+        "alignment_insight": "SHAP drivers align with EPS ranking — unique_sellers consistently supports the GP signal."
+      },
+      "summary": "PB (Rank #25, EPS=3.1) — primary driver: Growth Potential (34% of OPP). Logistics penalty is 19.7%. [SHAP: HIGH, 0.84]",
+      "full_narrative": "PB ranks #25 with EPS=3.1. The dominant driver is Growth Potential (GP=34% of OPP), while Penetration Gap is the weakest component (10%). Logistics risk (LC_norm=0.987) penalises the opportunity score by 19.7%. PB's rank #25 is FRAGILE — trailing RR (#24) by 3.9 pts and leading ES (#26) by 0.3 EPS points. RF model confirms this ranking — unique_sellers is the strongest predictive signal (SHAP alignment=0.84). SHAP drivers align with EPS ranking — unique_sellers consistently supports the GP signal.",
+      "gemini_narrative_brief": "PB ranks #25 with an EPS of 3.1/100. Extreme logistics costs penalize the score by 19.7%, while a weak penetration gap remains its primary constraint. Although growth potential contributes 34.0%, we recommend holding major expansion efforts until logistics and penetration improve.",
+      "gemini_narrative_full": "PB ranks #25 with a low EPS of 3.1/100. Growth Potential is the primary driver (34.0% of opportunity), but the score is heavily dragged down by a weak Penetration Gap (norm=0.144, contributing 10.4%) and a severe 19.7% logistics penalty (LC_norm=0.987). This ranking is fragile, leading ES by only 0.3 points. A high SHAP alignment score of 0.843 validates this ranking, with the RF model confirming the GP signal via the dominant 'unique_sellers' feature. What-if analysis reveals that improving PB's PG_norm by 0.10 would boost EPS by ~8.6 points to secure rank #24. For now, monitor logistics costs and defer active expansion.",
+      "rank_percentile": 7.4074074074074066,
+      "above_national_avg": false
+    },
+    {
+      "state": "ES",
+      "rank": 26,
+      "tier": "LOW",
+      "eps_score": 2.845739166540389,
+      "opp_score": 0.3751802110653533,
+      "components": {
+        "PD": {
+          "norm": 0.3995401601174547,
+          "weight": 0.29390782005763966,
+          "contrib": 0.11742797748560141,
+          "contrib_pct": 31.29908615173374,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.6426289034121778,
+          "weight": 0.25609217994236044,
+          "contrib": 0.1645722367687932,
+          "contrib_pct": 43.86484998808374,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.1573475362591435,
+          "weight": 0.3,
+          "contrib": 0.04720426087774305,
+          "contrib_pct": 12.581756576047251,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.306504906221438,
+          "weight": 0.15,
+          "contrib": 0.045975735933215696,
+          "contrib_pct": 12.254307284135276,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "GP",
+      "weakest_component": "MMI",
+      "lc_norm": 0.5699842808185973,
+      "risk_adj_factor": 0.8860031438362805,
+      "risk_penalty_abs": 0.042769364556291,
+      "risk_penalty_pct": 11.399685616371947,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": false,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "PB",
+          "primary_component": "MMI",
+          "diff": 0.06871398934170553,
+          "narrative": "falls behind PB primarily because MMI contribution is lower by 0.069 (0.046 vs 0.115), despite holding a logistics cost advantage"
+        },
+        "vs_below": {
+          "state": "PI",
+          "primary_component": "GP",
+          "diff": 0.029383386115109378,
+          "narrative": "ranks above PI primarily because GP contribution exceeds PI by 0.029 (0.165 vs 0.135)"
+        },
+        "narrative_contrastive": "ES falls behind PB primarily because MMI contribution is lower by 0.069 (0.046 vs 0.115), despite holding a logistics cost advantage. ES ranks above PI primarily because GP contribution exceeds PI by 0.029 (0.165 vs 0.135)."
+      },
+      "margin": {
+        "gap_to_above": 0.26838955531967335,
+        "gap_to_below": 2.845739166540389,
+        "rank_stability": "FRAGILE",
+        "narrative_margin": "ES's rank #26 is FRAGILE — trailing PB (#25) by 0.3 pts and leading PI (#27) by 2.8 EPS points."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.7584501830158406,
+        "new_rank": 24,
+        "narrative_whatif": "If ES's MMI_norm improved by 0.10, EPS would increase by ~4.8 pts; rank becomes #24 (gap to BA is 5.6 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "revenue_lag_4"
+        ],
+        "alignment_verdict": "HIGH",
+        "alignment_score": 0.8087,
+        "alignment_insight": "SHAP drivers align with EPS ranking — unique_sellers consistently supports the GP signal."
+      },
+      "summary": "ES (Rank #26, EPS=2.8) — primary driver: Growth Potential (44% of OPP). Logistics penalty is 11.4%. [SHAP: HIGH, 0.81]",
+      "full_narrative": "ES ranks #26 with EPS=2.8. The dominant driver is Growth Potential (GP=44% of OPP), while Market Momentum Index is the weakest component (12%). Logistics risk (LC_norm=0.570) penalises the opportunity score by 11.4%. ES's rank #26 is FRAGILE — trailing PB (#25) by 0.3 pts and leading PI (#27) by 2.8 EPS points. RF model confirms this ranking — unique_sellers is the strongest predictive signal (SHAP alignment=0.81). SHAP drivers align with EPS ranking — unique_sellers consistently supports the GP signal.",
+      "gemini_narrative_brief": "Espírito Santo (ES) ranks #26 with a weak EPS of 2.8/100. Growth Potential drives 43.9% of opportunity, highly validated by seller volume models. However, low penetration and an 11.4% logistics penalty severely suppress scores. Action: De-prioritize active investment, focusing instead on reviving local market momentum.",
+      "gemini_narrative_full": "Espírito Santo (ES) ranks #26 of 27 states with an EPS of 2.8/100, trailing Paraíba by just 0.3 points. Growth Potential is the primary driver (43.9%), backed by unique seller volume—a signal highly validated by our Random Forest model (80.9% alignment). However, ES is held back by extremely low penetration (0.157 vs. 0.431 national median) and weak Market Momentum (12.3% contribution), alongside an 11.4% logistics risk penalty. Contrastive analysis shows ES lags Paraíba due to lower momentum. Action: Maintain a defensive posture. However, targeted local marketing to improve market momentum by 0.10 would yield a 4.8-point EPS increase, lifting ES to rank #24.",
+      "rank_percentile": 3.7037037037037033,
+      "above_national_avg": false
+    },
+    {
+      "state": "PI",
+      "rank": 27,
+      "tier": "LOW",
+      "eps_score": 0.0,
+      "opp_score": 0.405578598600548,
+      "components": {
+        "PD": {
+          "norm": 0.3659809700388795,
+          "weight": 0.29390782005763966,
+          "contrib": 0.10756466908670742,
+          "contrib_pct": 26.521288218328117,
+          "label": "PD"
+        },
+        "GP": {
+          "norm": 0.52789136585159,
+          "weight": 0.25609217994236044,
+          "contrib": 0.13518885065368383,
+          "contrib_pct": 33.33234325483493,
+          "label": "GP"
+        },
+        "PG": {
+          "norm": 0.4656588406636964,
+          "weight": 0.3,
+          "contrib": 0.1396976521991089,
+          "contrib_pct": 34.4440393751388,
+          "label": "PG"
+        },
+        "MMI": {
+          "norm": 0.1541828444069855,
+          "weight": 0.15,
+          "contrib": 0.023127426661047824,
+          "contrib_pct": 5.702329151698137,
+          "label": "MMI"
+        }
+      },
+      "dominant_driver": "PG",
+      "weakest_component": "MMI",
+      "lc_norm": 0.9999999997947028,
+      "risk_adj_factor": 0.8000000000410594,
+      "risk_penalty_abs": 0.08111571970345678,
+      "risk_penalty_pct": 19.999999995894058,
+      "data_sparse": false,
+      "pg_saturated": false,
+      "high_lc_flag": true,
+      "mmi_imputed": false,
+      "national_stats": {
+        "PD": {
+          "min": 0.0,
+          "max": 0.9999999998442156,
+          "median": 0.3995401601174547
+        },
+        "GP": {
+          "min": 0.0,
+          "max": 0.9999999997754548,
+          "median": 0.7028240080308483
+        },
+        "PG": {
+          "min": 0.0,
+          "max": 0.9999999997393716,
+          "median": 0.4308319727809696
+        },
+        "MMI": {
+          "min": 0.0,
+          "max": 0.9999999997537352,
+          "median": 0.2939564176021671
+        },
+        "LC": {
+          "min": 0.0,
+          "max": 0.9999999997947028,
+          "median": 0.6132945111063065
+        },
+        "eps": {
+          "mean": 32.68392917372942,
+          "std": 20.03945404128022
+        }
+      },
+      "contrastive": {
+        "vs_above": {
+          "state": "ES",
+          "primary_component": "GP",
+          "diff": 0.029383386115109378,
+          "narrative": "falls behind ES primarily because GP contribution is lower by 0.029 (0.135 vs 0.165)"
+        },
+        "vs_below": null,
+        "narrative_contrastive": "PI falls behind ES primarily because GP contribution is lower by 0.029 (0.135 vs 0.165)."
+      },
+      "margin": {
+        "gap_to_above": 2.845739166540389,
+        "gap_to_below": null,
+        "rank_stability": "MODERATE",
+        "narrative_margin": "PI's rank #27 is MODERATE — trailing ES (#26) by 2.8 pts."
+      },
+      "whatif": {
+        "counterfactual_component": "MMI",
+        "delta_eps": 4.296553759362543,
+        "new_rank": 25,
+        "narrative_whatif": "If PI's MMI_norm improved by 0.10, EPS would increase by ~4.3 pts; rank becomes #25 (gap to RR is 2.7 pts)."
+      },
+      "shap_context": {
+        "dominant_feature": "unique_sellers",
+        "top_3_features": [
+          "unique_sellers",
+          "category_diversity",
+          "population"
+        ],
+        "alignment_verdict": "MEDIUM",
+        "alignment_score": 0.7997,
+        "alignment_insight": "Moderate alignment — unique_sellers is the strongest RF predictor for PI, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula."
+      },
+      "summary": "PI (Rank #27, EPS=0.0) — primary driver: Penetration Gap (34% of OPP). Logistics penalty is 20.0%. [SHAP: MEDIUM, 0.80]",
+      "full_narrative": "PI ranks #27 with EPS=0.0. The dominant driver is Penetration Gap (PG=34% of OPP), while Market Momentum Index is the weakest component (6%). Logistics risk (LC_norm=1.000) penalises the opportunity score by 20.0%. PI's rank #27 is MODERATE — trailing ES (#26) by 2.8 pts. RF model partially supports this ranking (SHAP alignment=0.80): top predictive features are unique_sellers, category_diversity, population. Moderate alignment — unique_sellers is the strongest RF predictor for PI, partially consistent with EPS component weights. Some divergence in GP component suggests the model captures signals beyond the EPS formula.",
+      "gemini_narrative_brief": "PI ranks last (#27) with a 0.0/100 EPS, heavily penalized by a 20.0% logistics risk adjustment (LC_norm 1.000). Despite a strong Penetration Gap (34.4% of opportunity), weak momentum (norm 0.154) holds it back. Recommendation: Deprioritize expansion until logistics infrastructure improves.",
+      "gemini_narrative_full": "PI ranks last (#27) with an EPS of 0.0/100, trailing ES (#26) by 2.8 points. A maximum logistics penalty of 20.0% (LC_norm 1.000) drags down its opportunity score (OPP 0.4056). While the Penetration Gap is the dominant driver (34.4%), Market Momentum is critically weak (norm 0.154 vs. 0.294 national median). If momentum improved by 0.10, EPS would rise by 4.3 points to rank #25. Random Forest SHAP alignment is MEDIUM (0.800); its dominant predictor, unique_sellers, confirms that seller scarcity limits Piauí's growth potential, partially diverging from the EPS Growth Potential component. Action: Hold expansion; prioritize seller acquisition and logistics partnerships before entering.",
+      "rank_percentile": 0.0,
+      "above_national_avg": false
+    }
+  ],
+  "fidelity_evidence": {
+    "method": "Monte Carlo weight perturbation + OAT sweep (expansion_scoring.py)",
+    "mc_verdict": "ROBUST",
+    "note": "Pre-computed from 10,000 simulations. See sensitivity_results.json.",
+    "interpretation": "Rank assignments are stable under weight perturbation (mean Spearman rho > 0.95 across 10,000 simulations), confirming explanations reflect genuine score structure rather than optimisation artefacts."
+  },
+  "sensitivity_summary": {
+    "gamma_sensitivity": "Gamma controls risk penalty. Denser Southeastern states are highly robust, whereas Northern states like AM and RR are highly sensitive due to massive freight cost adjustments.",
+    "robustness_verdict": "ROBUST"
+  },
+  "shap_integration": {
+    "method": "SHAP TreeExplainer on Random Forest (shap_explainer.py)",
+    "profiles_path": "outputs/eps_v2/shap/shap_state_profiles.json",
+    "description": "Each state explanation is enriched with SHAP-EPS Alignment Score, computed as the weighted agreement between RF feature attribution weights and EPS component weights. HIGH alignment confirms EPS ranking is corroborated by the forecasting model. Critical misalignment flags states where EPS and RF diverge, indicating potential data quality issues or formula revision candidates."
+  }
+}
