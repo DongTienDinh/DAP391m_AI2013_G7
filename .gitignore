@@ -1,23 +1,62 @@
-# virtual env
-.venv/
-venv/
-
-# python cache
+# --- Python ---
 __pycache__/
 *.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# jupyter
-.ipynb_checkpoints/
+# --- Virtual Environment ---
+.venv/
+venv/
+ENV/
+env/
 
-# os
-.DS_Store
-Thumbs.db
+# --- Data & Artifacts ---
+# Ignore all processed data and raw Olist data (downloaded via script)
+data/processed/
+data/raw/olist/
 
-# logs
+# Keep external data (IBGE, GeoJSON) as they are foundational and small
+# !data/external/
+
+# Ignore pipeline outputs and generated reports
+outputs/
+reports/
+
+# CatBoost generated info
+catboost_info/
+
+# --- IDEs ---
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# --- Logs ---
 logs/
 *.log
 
-# data
-data/external/*
-data/processed/*
-data/raw/*
+# --- Secrets ---
+.env
+
+# --- Notebook Artifacts ---
+# Ignore specific artifacts often generated in notebooks
+notebooks/*.csv
+notebooks/*.png
+notebooks/*.json
+notebooks/.ipynb_checkpoints/

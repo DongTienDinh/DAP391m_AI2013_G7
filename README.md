@@ -1,4 +1,4 @@
-# 🛒 Olist Brazil — Weekly Revenue Forecasting & Market Expansion Scoring
+# Olist Brazil — Weekly Revenue Forecasting & Market Expansion Scoring
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.3%2B-F7931E?style=flat&logo=scikitlearn&logoColor=white)](https://scikit-learn.org/)
@@ -28,60 +28,56 @@ Next-week revenue forecasts per state, an EPS ranking visualized as a **dynamic 
 
 ## 3. Key Features
 
-- 📊 **Weekly revenue forecasting** across 27 Brazilian states using Walk-Forward Cross-Validation
-- 🤖 **Benchmarking of 9 regression models** — from Linear and Ridge to Random Forest, XGBoost, LightGBM, and CatBoost
-- 🧩 **35 engineered features** including lag, rolling window, cyclical encoding, and macroeconomic indicators
-- 🗺️ **Expansion Potential Score (EPS)** — a composite index combining Opportunity metrics (Demand, Growth, Momentum) and Risk (Logistics Cost)
-- 🎛️ **Interactive Streamlit Dashboard** — real-time what-if scenario testing (Gamma penalty sweeps, Monte Carlo simulations) with a Dark Mode UI
-- 🧠 **COMPASS-XAI Explanations** — integrating SHAP values to generate human-readable strategic narratives for market selection
+- **Weekly revenue forecasting** across 27 Brazilian states using Walk-Forward Cross-Validation
+- **Benchmarking of 9 regression models** — from Linear and Ridge to Random Forest, XGBoost, LightGBM, and CatBoost
+- **35 engineered features** including lag, rolling window, cyclical encoding, and macroeconomic indicators
+- **Expansion Potential Score (EPS)** — a composite index combining Opportunity metrics (Demand, Growth, Momentum) and Risk (Logistics Cost)
+- **Interactive Streamlit Dashboard** — real-time what-if scenario testing (Gamma penalty sweeps, Monte Carlo simulations) with a Dark Mode UI
+- **COMPASS-XAI Explanations** — integrating SHAP values to generate human-readable strategic narratives for market selection
 
 ---
 
 ## 4. Dataset / Input Data
 
 - **Olist E-Commerce Dataset (Kaggle)**: Transaction data covering 2016–2018.  
-  > 🔗 [kaggle.com/datasets/olistbr/brazilian-ecommerce](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
+  > [kaggle.com/datasets/olistbr/brazilian-ecommerce](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
 
 - **IBGE Socioeconomic Data (External)**: Population and GDP metrics by state.  
-  > 🔗 Population: [br_ibge_populacao](https://basedosdados.org/dataset/d30222ad-7a5c-4778-a1ec-f0785371d1ca?table=b99f0017-e587-477e-8cfb-05fb5d1005b8)  
-  > 🔗 GDP: [br_ibge_pib](https://basedosdados.org/dataset/fcf025ca-8b19-4131-8e2d-5ddb12492347?table=93007431-7ce9-42ee-8740-8c2274d345ad)
+  > Population: [br_ibge_populacao](https://basedosdados.org/dataset/d30222ad-7a5c-4778-a1ec-f0785371d1ca?table=b99f0017-e587-477e-8cfb-05fb5d1005b8)  
+  > GDP: [br_ibge_pib](https://basedosdados.org/dataset/fcf025ca-8b19-4131-8e2d-5ddb12492347?table=93007431-7ce9-42ee-8740-8c2274d345ad)
 
 - **Brazil Geographic Boundaries (External)**: GeoJSON polygons for all 27 states.  
-  > 🔗 [github.com/luizpedone/municipal-brazilian-geodata](https://github.com/ipeaGIT/geobr)
+  > [github.com/luizpedone/municipal-brazilian-geodata](https://github.com/ipeaGIT/geobr)
 
 ---
 
 ## 5. Project Structure
 
 ```text
-├── app/
-│   ├── streamlit_app.py              # Main interactive Streamlit dashboard
-│   └── map_component/                # Custom Folium/GeoJSON mapping components
+├── configs/                  # Centralized YAML configuration
+│   ├── paths.yaml            # Data and artifact paths
+│   ├── training.yaml         # Model hyperparams and feature selection
+│   └── inference.yaml        # EPS scoring and XAI parameters
 │
-├── data/
-│   ├── raw/olist/                    # Raw Olist CSV files from Kaggle
-│   ├── external/                     # IBGE socioeconomic data + GeoJSON boundaries
-│   └── processed/olist/              # Cleaned tables, engineered features, and forecasts
+├── scripts/                  # Executable entrypoints
+│   ├── run_cleaning.py       # Step 1: Data Cleaning
+│   ├── run_features.py       # Step 2: Feature Engineering
+│   ├── run_training.py       # Step 3: Model Training & Evaluation
+│   ├── run_scoring.py        # Step 4: EPS Expansion Scoring
+│   └── run_xai.py            # Step 5: XAI Narrative Generation
 │
-├── src/
-│   ├── data/data_cleaning.py         # Bootstrap and clean all raw tables
-│   ├── features/feature.py           # Build weekly state-level feature panel
-│   ├── models/train_model.py         # Walk-forward CV, model selection, SHAP generation
-│   └── analysis/expansion_scoring.py # EPS scoring, sensitivity analysis, XAI report
+├── src/olist_pipeline/       # Namespaced reusable library code
+│   ├── analysis/             # Scoring and XAI logic
+│   ├── data/                 # Cleaning and loading logic
+│   ├── features/             # Engineering logic
+│   ├── models/               # Training and model definitions
+│   └── utils/                # Shared utilities (math, config, logging)
 │
-├── outputs/eps/
-│   ├── eps_results.csv               # Final EPS rankings and component scores
-│   ├── eps_xai_report.json           # LLM/XAI generated narrative reports for each state
-│   └── w_star.json                   # Optimal component weights
-│
-├── reports/
-│   ├── model_leaderboard.csv         # Table of model metrics (RMSE, MAE, etc.)
-│   └── figures/
-│       ├── cv_metrics_boxplot.png    # 5-fold CV variance boxplots
-│       ├── fig2_choropleth.png       # Static map output
-│       └── shap_rf.png               # SHAP feature importance for Random Forest
-│
-└── requirements.txt
+├── app/                      # Streamlit Dashboard
+├── data/                     # Data storage (Raw/Processed/External)
+├── outputs/                  # Scoring and XAI results
+├── reports/                  # Metrics and visualizations
+└── notebooks/                # Experimental work archive
 ```
 
 ---
@@ -115,20 +111,23 @@ data/external/       ← br_ibge_populacao_uf.csv, br_ibge_pib_uf.csv, br_states
 
 ### Data Pipeline & Modeling
 
-Execute the pipeline steps in order to process data and generate outputs:
+Execute the pipeline steps in order using the scripts in the `scripts/` directory:
 
 ```bash
 # Step 1 — Clean and validate all raw tables
-python src/data/data_cleaning.py
+python scripts/run_cleaning.py
 
 # Step 2 — Build weekly state × week feature panel
-python src/features/feature.py
+python scripts/run_features.py
 
 # Step 3 — Train models, run walk-forward CV, and generate forecasts
-python src/models/train_model.py
+python scripts/run_training.py
 
-# Step 4 — Compute EPS rankings, run Monte Carlo/OAT, and generate XAI narratives
-python src/analysis/expansion_scoring.py
+# Step 4 — Run EPS weight optimization and scoring
+python scripts/run_scoring.py
+
+# Step 5 — Generate strategic XAI narrative reports
+python scripts/run_xai.py
 ```
 
 ### Interactive Streamlit Dashboard
@@ -198,7 +197,7 @@ This entropy-maximization objective ensures that the resulting EPS ranking **spr
 | **MMI** (Market Momentum) | **0.1500** | [0.05, 0.15] | Revenue efficiency per seller |
 | **γ** (Risk Penalty) | **0.20** | — | Logistics cost penalty coefficient |
 
-> 📌 These weights are saved in [`w_star.json`](outputs/eps/w_star.json) and validated via **Monte Carlo simulation** (10,000 iterations) and **OAT sensitivity sweeps** to confirm ranking robustness.
+> These weights are saved in [`w_star.json`](configs/inference.yaml) and validated via **Monte Carlo simulation** (10,000 iterations) and **OAT sensitivity sweeps** to confirm ranking robustness.
 
 ---
 

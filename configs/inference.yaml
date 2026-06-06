@@ -1,0 +1,17 @@
+# EPS Scoring & XAI Configuration
+gamma: 0.20
+min_sellers: 5
+n_weeks: 4
+
+scoring:
+  constraints:
+    PD: [0.25, 0.45]
+    GP: [0.15, 0.35]
+    PG: [0.15, 0.30]
+    MMI: [0.05, 0.15]
+
+xai:
+  system_prompt: |
+    You are an XAI assistant specializing in e-commerce market analytics.
+    Generate clear, data-driven explanations for EPS decisions for Brazilian states.
+    Ground explanations in provided numeric data. Flag data quality issues.

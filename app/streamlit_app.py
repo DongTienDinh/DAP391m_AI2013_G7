@@ -42,10 +42,10 @@ except ImportError:
     gpd = None
 
 # Load environment variables
-load_dotenv(project_root / ".env")
+load_dotenv(Path.cwd() / ".env")
 
 # Import XAI explainer functions
-from src.analysis.eps_xai_explainer import format_narrative, call_gemini_narrative, assign_tier
+from src.olist_pipeline.analysis.xai import format_narrative, call_gemini_narrative, assign_tier
 
 # ── State and Indicator Mapping Dictionaries ───────────────────────────────
 STATE_MAP = {
@@ -131,15 +131,19 @@ components.html(
     height=0, width=0,
 )
 
+from src.olist_pipeline.utils.config_loader import Config
+
+# ... rest of imports ...
+
 # ── Data Loading & Helper Functions ───────────────────────────────────────────
 @st.cache_data
 def load_base_data() -> Tuple[pd.DataFrame, Dict[str, Any], Dict[str, Any]]:
     """
     Loads results and configurations from disk.
     """
-    eps_path = project_root / "outputs" / "eps" / "eps_results.csv"
-    w_star_path = project_root / "outputs" / "eps" / "w_star.json"
-    report_json_path = project_root / "outputs" / "eps" / "eps_xai_report.json"
+    eps_path = Config.get_path("outputs", "eps_results")
+    w_star_path = Config.get_path("outputs", "w_star")
+    report_json_path = Config.get_path("outputs", "xai_report_json")
 
     if not eps_path.exists() or not w_star_path.exists() or not report_json_path.exists():
         st.error("Error: Output results not found. Make sure to run the main scoring and explainer pipeline first.")
@@ -224,7 +228,7 @@ def plot_dynamic_map(df_recalc: pd.DataFrame) -> Optional[plt.Figure]:
     if gpd is None:
         return None
         
-    geo_path = project_root / "data" / "external" / "br_states.geojson"
+    geo_path = Config.get_path("data", "external_geojson")
     if not geo_path.exists():
         return None
         
@@ -376,7 +380,7 @@ def draw_plotly_brazil_map(df_recalc: pd.DataFrame, selected_state: str, selecte
     vibrant selected state, crisp dark charcoal state borders,
     and 2-letter state abbreviation labels at centroids.
     """
-    geo_path = project_root / "data" / "external" / "br_states.geojson"
+    geo_path = Config.get_path("data", "external_geojson")
     
     # Load GeoJSON as raw dict for choropleth
     with open(geo_path, "r", encoding="utf-8") as f:
@@ -1048,11 +1052,11 @@ with tab3:
     
     if is_optimal:
         st.subheader("Optimized Spatial Prioritization Map")
-        map_path = project_root / "reports" / "figures" / "fig2_choropleth.png"
+        map_path = Config.get_path("reports", "figures_dir") / "fig2_choropleth.png"
         if map_path.exists():
             st.image(str(map_path), caption="Choropleth Maps showing EPS Score, Opportunity Score (OPP), and Logistics Cost (LC)")
         else:
-            st.warning("Pre-rendered choropleth map not found at reports/figures/fig2_choropleth.png")
+            st.warning("Pre-rendered choropleth map not found.")
     else:
         st.subheader("Recalculated EPS Score Map (Dynamic)")
         st.info("Weights adjusted. Rendering real-time map using GeoPandas...")
@@ -1060,13 +1064,13 @@ with tab3:
         if fig:
             st.pyplot(fig)
         else:
-            st.warning("GeoJSON geometry file data/external/br_states.geojson or geopandas package is not available. Showing pre-rendered map.")
-            map_path = project_root / "reports" / "figures" / "fig2_choropleth.png"
+            st.warning("GeoJSON geometry file or geopandas package is not available. Showing pre-rendered map.")
+            map_path = Config.get_path("reports", "figures_dir") / "fig2_choropleth.png"
             if map_path.exists():
                 st.image(str(map_path), caption="Pre-rendered Choropleth Map (Optimized scenario)")
 
     st.subheader("Opportunity Component Correlations")
-    corr_path = project_root / "reports" / "figures" / "fig3b_correlation_heatmap.png"
+    corr_path = Config.get_path("reports", "figures_dir") / "fig3b_correlation_heatmap.png"
     if corr_path.exists():
         st.image(str(corr_path), caption="Pearson Correlation Heatmap between normalized indicators")
 
@@ -1083,17 +1087,17 @@ with tab4:
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("Monte Carlo Simulation")
-        mc_path = project_root / "reports" / "figures" / "fig4_monte_carlo.png"
+        mc_path = Config.get_path("reports", "figures_dir") / "fig4_monte_carlo.png"
         if mc_path.exists():
             st.image(str(mc_path), caption="Spearman rank correlation distribution under component noise")
     with col2:
         st.subheader("OAT Weight Sweeps")
-        oat_path = project_root / "reports" / "figures" / "fig5_oat_sweep.png"
+        oat_path = Config.get_path("reports", "figures_dir") / "fig5_oat_sweep.png"
         if oat_path.exists():
             st.image(str(oat_path), caption="Rank change profiles for individual weights sweeps")
             
     st.subheader("Logistics Cost Penalty (Gamma) Sweep")
-    gamma_path = project_root / "reports" / "figures" / "fig6_gamma_sweep.png"
+    gamma_path = Config.get_path("reports", "figures_dir") / "fig6_gamma_sweep.png"
     if gamma_path.exists():
         st.image(str(gamma_path), caption="State rankings progression under varying Gamma values")
 
@@ -1124,7 +1128,7 @@ with tab5:
     **Evaluation Metrics**: RMSE, MAE, WAPE, sMAPE, and MASE. Models are evaluated based on their Skill Score relative to the Baseline Linear Regression.
     """)
 
-    leaderboard_path = project_root / "reports" / "model_leaderboard.csv"
+    leaderboard_path = Config.get_path("reports", "leaderboard")
     if leaderboard_path.exists():
         st.markdown("#### Model Loss Evaluation & Leaderboard")
         df_lb = pd.read_csv(leaderboard_path)
@@ -1141,21 +1145,22 @@ with tab5:
         df_lb = df_lb.rename(columns=rename_dict)
         st.dataframe(df_lb, hide_index=True, use_container_width=True)
 
-    cv_path = project_root / "reports" / "figures" / "cv_metrics_boxplot.png"
+    cv_path = Config.get_path("reports", "figures_dir") / "cv_metrics_boxplot.png"
     if cv_path.exists():
         st.image(str(cv_path), caption="Cross-Validation Metric Variance (5-Fold Walk-Forward)")
-        
-    rp_path = project_root / "reports" / "figures" / "relative_performance.png"
+
+    rp_path = Config.get_path("reports", "figures_dir") / "relative_performance.png"
     if rp_path.exists():
         st.image(str(rp_path), caption="Relative Performance: MASE & Skill Score")
 
     st.markdown("""
     ### 3. Final Model Selection & SHAP Explanations
     The best-performing model (typically an ensemble method like XGBoost or LightGBM) is selected and evaluated on an unseen test set (e.g., the last 4 weeks of data). 
-    
+
     Finally, **TreeExplainer SHAP** (SHapley Additive exPlanations) values are extracted from the final model to understand the global and local importance of each feature in predicting the demand, which directly informs the COMPASS-XAI alignment narratives.
     """)
 
-    shap_rf_path = project_root / "reports" / "figures" / "shap_rf.png"
+    shap_rf_path = Config.get_path("reports", "figures_dir") / "shap_rf.png"
+
     if shap_rf_path.exists():
         st.image(str(shap_rf_path), caption="SHAP Feature Importance (Random Forest Explicit)")
