@@ -1,0 +1,193 @@
+{
+  "state_explanations": [
+    {
+      "state": "AM",
+      "rank": 1,
+      "score": 99.99999967411172,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "PR",
+      "rank": 2,
+      "score": 65.96965674239142,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "AC",
+      "rank": 3,
+      "score": 62.058937823721394,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "SE",
+      "rank": 4,
+      "score": 56.042647144529056,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "MG",
+      "rank": 5,
+      "score": 51.76177394668413,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "SP",
+      "rank": 6,
+      "score": 51.40236036954465,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "SC",
+      "rank": 7,
+      "score": 51.16714611524068,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "TO",
+      "rank": 8,
+      "score": 50.08590977414147,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "RJ",
+      "rank": 9,
+      "score": 41.00311669828498,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "GO",
+      "rank": 10,
+      "score": 38.84521270418235,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "PA",
+      "rank": 11,
+      "score": 38.0558622924166,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "MT",
+      "rank": 12,
+      "score": 33.33000737145307,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "DF",
+      "rank": 13,
+      "score": 33.08827068740535,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "RS",
+      "rank": 14,
+      "score": 30.428393482904337,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "ES",
+      "rank": 15,
+      "score": 25.587853109346188,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "BA",
+      "rank": 16,
+      "score": 24.30070601495381,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "AP",
+      "rank": 17,
+      "score": 22.420230599257582,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "RO",
+      "rank": 18,
+      "score": 20.366546362566886,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "MS",
+      "rank": 19,
+      "score": 18.90945206718284,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "RR",
+      "rank": 20,
+      "score": 17.820460969065437,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "PE",
+      "rank": 21,
+      "score": 15.824050180144155,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "AL",
+      "rank": 22,
+      "score": 15.363216931266004,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "PI",
+      "rank": 23,
+      "score": 9.697722892789155,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "RN",
+      "rank": 24,
+      "score": 8.98259340071007,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "MA",
+      "rank": 25,
+      "score": 8.055188773905687,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "CE",
+      "rank": 26,
+      "score": 1.3728107182818778,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    },
+    {
+      "state": "PB",
+      "rank": 27,
+      "score": 0.0,
+      "brief": "API Key missing",
+      "full": "API Key missing"
+    }
+  ]
+}

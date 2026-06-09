@@ -1,20 +1,11 @@
-import sys
-from pathlib import Path
+from src.olist_pipeline.models.training import ModelingService
+from src.olist_pipeline.pipeline import OlistPipeline
 
-# Add src to sys.path
-project_root = Path(__file__).resolve().parents[1]
-sys.path.append(str(project_root))
-
-from src.olist_pipeline.models.training import run_training_pipeline
-from src.olist_pipeline.utils.config_loader import Config
 
 def main():
-    data_path = Config.get_path("data", "processed_olist") / "features_weekly.csv"
-    pred_path = Config.get_path("data", "processed_olist") / "prediction_data.csv"
-    reports_dir = Config.get_path("reports", "figures_dir")
-    data_dir = Config.get_path("data", "processed_olist")
-    
-    run_training_pipeline(data_path, pred_path, reports_dir, data_dir, Config.training)
+    p = OlistPipeline()
+    svc = ModelingService(p.config.training.model_dump(), p.paths.reports.figures_dir.parent)
+    svc.run_training_pipeline(p.paths.data.processed_olist / "features_weekly.csv")
 
 if __name__ == "__main__":
     main()

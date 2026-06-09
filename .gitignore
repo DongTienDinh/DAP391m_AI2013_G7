@@ -26,37 +26,39 @@ venv/
 ENV/
 env/
 
-# --- Data & Artifacts ---
-# Ignore all processed data and raw Olist data (downloaded via script)
-data/processed/
-data/raw/olist/
-
-# Keep external data (IBGE, GeoJSON) as they are foundational and small
-# !data/external/
-
-# Ignore pipeline outputs and generated reports
-outputs/
-reports/
-
-# CatBoost generated info
-catboost_info/
-
 # --- IDEs ---
 .idea/
 .vscode/
 *.swp
 *.swo
 
-# --- Logs ---
-logs/
-*.log
-
 # --- Secrets ---
 .env
 
+# --- Project Specific Artifacts ---
+# Exclude all data, outputs, reports, and logs
+data/
+outputs/
+reports/
+logs/
+catboost_info/
+
+# Allow .gitkeep files so the directory structure is preserved in Git
+!**/
+!**/.gitkeep
+
+# Note: external data (IBGE/GeoJSON) and raw datasets should be downloaded 
+# via the provided scripts (scripts/download_geojson.py, scripts/run_cleaning.py, etc.)
+
 # --- Notebook Artifacts ---
-# Ignore specific artifacts often generated in notebooks
 notebooks/*.csv
 notebooks/*.png
 notebooks/*.json
 notebooks/.ipynb_checkpoints/
+
+# --- Testing & Coverage ---
+.coverage
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/

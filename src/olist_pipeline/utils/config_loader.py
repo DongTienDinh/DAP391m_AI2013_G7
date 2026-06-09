@@ -1,34 +1,53 @@
-import yaml
+"""
+Backward compatibility wrapper for the new configuration system.
+"""
+
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
-def get_project_root() -> Path:
-    """Returns the project root directory."""
-    return Path(__file__).resolve().parents[3]
 
-def load_config(config_name: str) -> Dict[str, Any]:
+from src.olist_pipeline.core.config import get_config, get_project_root
+
+
+class _ConfigMeta(type):
+    """Metaclass to support class-level property access for backward compatibility."""
+
+    @property
+    def paths(cls) -> dict[str, Any]:
+        return get_config().paths.model_dump()
+
+    @property
+    def training(cls) -> dict[str, Any]:
+        return get_config().training.model_dump()
+
+    @property
+    def inference(cls) -> dict[str, Any]:
+        return get_config().inference.model_dump()
+
+
+class Config(metaclass=_ConfigMeta):
     """
-    Loads a YAML configuration file from the configs/ directory.
+    Centralized configuration accessor.
+    Refactored to use the validated core.config system.
     """
-    root = get_project_root()
-    config_path = root / "configs" / f"{config_name}.yaml"
-    
-    if not config_path.exists():
-        raise FileNotFoundError(f"Configuration file not found: {config_path}")
-        
-    with open(config_path, 'r') as f:
-        return yaml.safe_load(f)
 
-class Config:
-    """Centralized configuration accessor."""
-    paths = load_config("paths")
-    training = load_config("training")
-    inference = load_config("inference")
-    
     @classmethod
     def get_path(cls, *keys: str) -> Path:
         """Helper to get a path and resolve it against project root."""
-        val = cls.paths
+        config = get_config()
+        # Navigate the nested structure
+        data = config.paths
         for k in keys:
-            val = val[k]
-        return get_project_root() / val
+            if hasattr(data, k):
+                data = getattr(data, k)
+            elif isinstance(data, dict) and k in data:
+                data = data[k]
+            else:
+                # Fallback to dict if it's a sub-model or dict
+                data = data.model_dump()[k]
+
+        if isinstance(data, Path):
+            return data
+        # If it's a sub-model or dict, and we still have a key, we might have an issue.
+        # But for the base case, if it's a string, return Path.
+        return get_project_root() / str(data)

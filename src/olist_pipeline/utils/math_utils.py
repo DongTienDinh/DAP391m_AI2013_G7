@@ -1,13 +1,19 @@
 import numpy as np
 import pandas as pd
-from typing import Optional
+
+from src.olist_pipeline.core.exceptions import DataValidationError
+
 
 def softclip_positive(x: np.ndarray, k: float = 3.0) -> np.ndarray:
     """
     Smooth approximation of max(x, 0): ln(1 + exp(k * x)) / k.
     Clips input value inside exp to avoid overflow.
     """
+    if k <= 0:
+        raise DataValidationError(f"Parameter k must be positive, got {k}")
+
     return np.log1p(np.exp(np.clip(k * x, -50, 50))) / k
+
 
 def normalize_zscore_to_01(series: pd.Series) -> pd.Series:
     """

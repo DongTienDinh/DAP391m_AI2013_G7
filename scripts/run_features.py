@@ -1,21 +1,15 @@
-import sys
-from pathlib import Path
+from src.olist_pipeline.features.engineering import FeatureEngineeringService
+from src.olist_pipeline.pipeline import OlistPipeline
 
-# Add src to sys.path
-project_root = Path(__file__).resolve().parents[1]
-sys.path.append(str(project_root))
-
-from src.olist_pipeline.features.engineering import run_feature_engineering_pipeline
-from src.olist_pipeline.utils.config_loader import Config
 
 def main():
-    processed_dir = Config.get_path("data", "processed_olist")
-    pop_file = Config.get_path("data", "external_pop")
-    gdp_file = Config.get_path("data", "external_gdp")
-    output_file = Config.get_path("data", "processed_olist") / "features_weekly.csv"
-    pred_file = Config.get_path("data", "processed_olist") / "prediction_data.csv"
-    
-    run_feature_engineering_pipeline(processed_dir, pop_file, gdp_file, output_file, pred_file)
+    p = OlistPipeline()
+    svc = FeatureEngineeringService(
+        p.paths.data.processed_olist,
+        p.paths.data.processed_olist / "features_weekly.csv",
+        p.paths.data.processed_olist / "prediction_data.csv"
+    )
+    svc.run_feature_pipeline(p.paths.data.external_pop, p.paths.data.external_gdp)
 
 if __name__ == "__main__":
     main()
