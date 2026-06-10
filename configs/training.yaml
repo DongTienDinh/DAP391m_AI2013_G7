@@ -1,0 +1,61 @@
+# Model Training & Evaluation Configuration
+random_state: 42
+n_splits: 5
+log_target: true
+
+feature_selection:
+  exclude:
+    - "customer_state"
+    - "year_week"
+    - "target_next_revenue"
+    - "sales_per_capita"
+    - "orders_per_capita"
+    - "payment_value"
+    - "unique_customers"
+    - "item_count"
+    - "customers_lag_1"
+    - "purchasing_power_index"
+    - "customer_penetration"
+    - "revenue_ewm_4"
+    - "revenue_ewm_8"
+    - "revenue_rolling_12"
+
+models:
+  ridge:
+    alpha: 10.0
+  elastic_net:
+    alpha: 0.1
+    l1_ratio: 0.5
+  huber:
+    epsilon: 1.35
+    max_iter: 500
+  random_forest:
+    n_estimators: 300
+    max_depth: 12
+    min_samples_leaf: 5
+    max_features: 0.6
+  gradient_boosting:
+    n_estimators: 300
+    learning_rate: 0.05
+    max_depth: 5
+    subsample: 0.8
+  xgboost:
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    subsample: 0.8
+    colsample_bytree: 0.8
+  lightgbm:
+    n_estimators: 500
+    learning_rate: 0.05
+    num_leaves: 31
+    max_depth: 6
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.1
+    reg_lambda: 0.1
+    min_child_samples: 10
+  catboost:
+    iterations: 500
+    learning_rate: 0.05
+    depth: 6

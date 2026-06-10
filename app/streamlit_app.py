@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Streamlit Application for E-Commerce Expansion Priority Score (EPS) Dashboard
 
@@ -8,18 +7,16 @@ spatial maps, and sensitivity analysis, with real-time recalculation and
 COMPASS-XAI explanations.
 """
 
-import os
-import sys
 import json
-import base64
+import sys
 from pathlib import Path
-from typing import Dict, Any, Tuple, Optional
+from typing import Any
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import streamlit as st
 import streamlit.components.v1 as components
-import matplotlib.pyplot as plt
 
 # Declare custom map component
 parent_dir = Path(__file__).resolve().parent
@@ -27,8 +24,8 @@ component_dir = parent_dir / "map_component"
 map_selector = components.declare_component("map_selector", path=str(component_dir))
 import plotly.express as px
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 from dotenv import load_dotenv
+from plotly.subplots import make_subplots
 
 # Resolve project root path and insert into sys.path
 project_root = Path(__file__).resolve().parent.parent
@@ -42,10 +39,10 @@ except ImportError:
     gpd = None
 
 # Load environment variables
-load_dotenv(project_root / ".env")
+load_dotenv(Path.cwd() / ".env")
 
 # Import XAI explainer functions
-from src.analysis.eps_xai_explainer import format_narrative, call_gemini_narrative, assign_tier
+from src.olist_pipeline.analysis.xai import assign_tier, call_gemini_narrative, format_narrative
 
 # ── State and Indicator Mapping Dictionaries ───────────────────────────────
 STATE_MAP = {
@@ -131,24 +128,28 @@ components.html(
     height=0, width=0,
 )
 
+from src.olist_pipeline.utils.config_loader import Config
+
+# ... rest of imports ...
+
 # ── Data Loading & Helper Functions ───────────────────────────────────────────
 @st.cache_data
-def load_base_data() -> Tuple[pd.DataFrame, Dict[str, Any], Dict[str, Any]]:
+def load_base_data() -> tuple[pd.DataFrame, dict[str, Any], dict[str, Any]]:
     """
     Loads results and configurations from disk.
     """
-    eps_path = project_root / "outputs" / "eps" / "eps_results.csv"
-    w_star_path = project_root / "outputs" / "eps" / "w_star.json"
-    report_json_path = project_root / "outputs" / "eps" / "eps_xai_report.json"
+    eps_path = Config.get_path("outputs", "eps_results")
+    w_star_path = Config.get_path("outputs", "w_star")
+    report_json_path = Config.get_path("outputs", "xai_report_json")
 
     if not eps_path.exists() or not w_star_path.exists() or not report_json_path.exists():
         st.error("Error: Output results not found. Make sure to run the main scoring and explainer pipeline first.")
         st.stop()
 
     df = pd.read_csv(eps_path)
-    with open(w_star_path, "r", encoding="utf-8") as f:
+    with open(w_star_path, encoding="utf-8") as f:
         w_config = json.load(f)
-    with open(report_json_path, "r", encoding="utf-8") as f:
+    with open(report_json_path, encoding="utf-8") as f:
         xai_report = json.load(f)
 
     return df, w_config, xai_report
@@ -167,7 +168,7 @@ def recalculate_eps(
     Recalculates EPS scores and ranks in-memory.
     """
     res = df.copy()
-    
+
     # Calculate Opportunity score (weighted sum of normalized components)
     opp_score = (
         res['PD_norm'] * w_pd +
@@ -175,77 +176,77 @@ def recalculate_eps(
         res['PG_norm'] * w_pg +
         res['MMI_norm'] * w_mmi
     )
-    
+
     # Logistics risk adjustment factor
     risk_adj = 1.0 - gamma * res['LC_norm']
     eps_raw = opp_score * risk_adj
-    
+
     # Rescale raw EPS to [0, 100]
     eps_min = eps_raw.min()
     eps_max = eps_raw.max()
     eps_score = (eps_raw - eps_min) / (eps_max - eps_min + 1e-9) * 100.0
-    
+
     res['EPS_score'] = eps_score
     res['OPP_score'] = opp_score
     res['Risk_Adj'] = risk_adj
     res['EPS_rank'] = pd.Series(eps_score).rank(ascending=False).astype(int).values
-    
+
     # Recalculate component absolute and percentage contributions
     COMP = ['PD', 'GP', 'PG', 'MMI']
     weights = {'PD': w_pd, 'GP': w_gp, 'PG': w_pg, 'MMI': w_mmi}
     for c in COMP:
         res[f'contrib_{c}'] = weights[c] * res[f'{c}_norm']
-        
+
     res['risk_penalty_abs'] = res['OPP_score'] * gamma * res['LC_norm']
     res['risk_penalty_pct'] = gamma * res['LC_norm'] * 100
-    
+
     for c in COMP:
         res[f'contrib_pct_{c}'] = np.where(
             res['OPP_score'] > 1e-9,
             (res[f'contrib_{c}'] / res['OPP_score']) * 100,
             0.0
         )
-        
+
     res['dominant_component'] = res[[f'contrib_{c}' for c in COMP]].idxmax(axis=1).str.replace('contrib_', '')
     res['weakest_component'] = res[[f'contrib_{c}' for c in COMP]].idxmin(axis=1).str.replace('contrib_', '')
-    
+
     # Recalculate priority tier
     res['tier'] = res['EPS_rank'].apply(lambda r: assign_tier(r, len(res)))
-    
+
     # Re-sort by recalculated rank
     return res.sort_values('EPS_rank').reset_index(drop=True)
 
 
 # Render a dynamic choropleth map using GeoPandas
-def plot_dynamic_map(df_recalc: pd.DataFrame) -> Optional[plt.Figure]:
+def plot_dynamic_map(df_recalc: pd.DataFrame) -> plt.Figure | None:
     """
     Loads geojson and renders dynamic matplotlib figure.
     """
     if gpd is None:
         return None
-        
-    geo_path = project_root / "data" / "external" / "br_states.geojson"
+
+    geo_path = Config.get_path("data", "external_geojson")
     if not geo_path.exists():
         return None
-        
+
     try:
         gdf_states = gpd.read_file(geo_path)
         # Find abbreviation column (size 2)
         candidates = [c for c in gdf_states.columns if gdf_states[c].astype(str).str.len().max() == 2]
         state_key = candidates[0] if candidates else 'sigla'
-        
+
         gdf_states[state_key] = gdf_states[state_key].astype(str).str.upper().str.strip()
-        
+
         res_copy = df_recalc.copy()
         res_copy['customer_state'] = res_copy['customer_state'].astype(str).str.upper().str.strip()
-        
+
         gdf = gdf_states.merge(res_copy, left_on=state_key, right_on='customer_state', how='left')
-        
+
         fig, ax = plt.subplots(figsize=(8, 6))
         # Match slate-900 theme background
         fig.patch.set_facecolor('#0f172a')
         ax.set_facecolor('#0f172a')
-        
+
         gdf.plot(
             column='EPS_score', ax=ax, cmap='YlOrRd',
             legend=True,
@@ -253,7 +254,7 @@ def plot_dynamic_map(df_recalc: pd.DataFrame) -> Optional[plt.Figure]:
             missing_kwds={'color': '#1e293b', 'label': 'No data'},
             edgecolor='#1e293b', linewidth=0.5
         )
-        
+
         # Annotate state abbreviations
         for _, row in gdf.iterrows():
             if pd.notnull(row.get('EPS_score')) and row.geometry is not None:
@@ -268,7 +269,7 @@ def plot_dynamic_map(df_recalc: pd.DataFrame) -> Optional[plt.Figure]:
                     )
                 except Exception:
                     pass
-                    
+
         ax.axis('off')
         plt.tight_layout()
         return fig
@@ -286,11 +287,11 @@ def plot_single_state_radar(state_row: pd.Series, color: str = '#3b82f6') -> plt
     n_vars = len(labels)
     angles = np.linspace(0, 2 * np.pi, n_vars, endpoint=False).tolist()
     angles += angles[:1]
-    
+
     fig, ax = plt.subplots(figsize=(5, 4.5), subplot_kw=dict(polar=True))
     fig.patch.set_facecolor('#FFFFFF') # Match white theme container background
     ax.set_facecolor('#F8F9FA')        # Match light grid background
-    
+
     vals = [
         float(state_row['PD_norm']),
         float(state_row['GP_norm']),
@@ -299,21 +300,21 @@ def plot_single_state_radar(state_row: pd.Series, color: str = '#3b82f6') -> plt
         1.0 - float(state_row['LC_norm'])
     ]
     vals += vals[:1]
-    
+
     ax.plot(angles, vals, color=color, linewidth=2.5)
     ax.fill(angles, vals, color=color, alpha=0.3)
-    
+
     ax.set_theta_offset(np.pi / 2)
     ax.set_theta_direction(-1)
     ax.set_thetagrids(np.degrees(angles[:-1]), labels, fontsize=8, color='#2C3E50')
     ax.set_ylim(0, 1)
     ax.set_yticks([0.25, 0.5, 0.75, 1.0])
     ax.set_yticklabels(['0.25','0.50','0.75','1.00'], fontsize=6, color='#64748B')
-    
+
     # Style radial grid lines
     ax.grid(color='#E2E8F0', alpha=0.8)
     ax.spines['polar'].set_color('#CBD5E1')
-    
+
     plt.tight_layout()
     return fig
 
@@ -324,14 +325,14 @@ def plot_combo_chart(df: pd.DataFrame, w_pd: float, w_gp: float, w_pg: float, w_
     and the risk adjustment factor (line) across states.
     """
     fig = make_subplots(specs=[[{"secondary_y": True}]])
-    
+
     # Sort descending by EPS_score
     df_sorted = df.sort_values("EPS_score", ascending=False)
     x_labels = df_sorted['state_display']
-    
+
     # Distinct pastel/muted palette for the components
     colors = {"PD": "#60a5fa", "GP": "#34d399", "PG": "#fbbf24", "MMI": "#a78bfa"}
-    
+
     # Add grouped bars for component contributions
     fig.add_trace(go.Bar(
         x=x_labels, y=df_sorted['contrib_PD'], name=f"PD (w={w_pd:.2f})", marker_color=colors["PD"]
@@ -345,14 +346,14 @@ def plot_combo_chart(df: pd.DataFrame, w_pd: float, w_gp: float, w_pg: float, w_
     fig.add_trace(go.Bar(
         x=x_labels, y=df_sorted['contrib_MMI'], name=f"MMI (w={w_mmi:.2f})", marker_color=colors["MMI"]
     ), secondary_y=False)
-    
+
     # Add secondary Y-axis line chart for Risk Adjustment
     fig.add_trace(go.Scatter(
         x=x_labels, y=df_sorted['Risk_Adj'], name="Risk Adjustment",
         mode='lines+markers', line=dict(color='#0f172a', dash='dash', width=2),
         marker=dict(size=6, color='#0f172a')
     ), secondary_y=True)
-    
+
     fig.update_layout(
         barmode='group',
         paper_bgcolor="rgba(0,0,0,0)",
@@ -361,51 +362,58 @@ def plot_combo_chart(df: pd.DataFrame, w_pd: float, w_gp: float, w_pg: float, w_
         margin=dict(l=20, r=20, t=60, b=20),
         legend=dict(orientation="h", yanchor="bottom", y=1.05, xanchor="right", x=1)
     )
-    
+
     fig.update_yaxes(title_text="Weighted Component Score", secondary_y=False)
     fig.update_yaxes(title_text="Risk Adj (1 - γ*LC)", secondary_y=True, range=[0, 1.05])
-    
+
     return fig
 
 
 # Render an interactive Plotly map showing state borders, supporting hover and click
-def draw_plotly_brazil_map(df_recalc: pd.DataFrame, selected_state: str, selected_state_2: Optional[str] = None, height: int = 520) -> go.Figure:
+def draw_plotly_brazil_map(df_recalc: pd.DataFrame, selected_state: str, selected_state_2: str | None = None, height: int = 520) -> go.Figure:
     """
     Renders an interactive Plotly MapLibre choropleth map highlighting selection.
     Uses a bright, light map style with teal-blue Brazil base color,
     vibrant selected state, crisp dark charcoal state borders,
     and 2-letter state abbreviation labels at centroids.
     """
-    geo_path = project_root / "data" / "external" / "br_states.geojson"
-    
+    geo_path = Config.get_path("data", "external_geojson")
+
     # Load GeoJSON as raw dict for choropleth
-    with open(geo_path, "r", encoding="utf-8") as f:
+    if not geo_path.exists():
+        st.error(f"GeoJSON file not found at {geo_path}. Please run 'python scripts/download_geojson.py' first.")
+        return go.Figure()
+
+    with open(geo_path, encoding="utf-8") as f:
         geojson_data = json.load(f)
-    
+
     # Also read via geopandas for merging data
     gdf_states = gpd.read_file(geo_path)
-    
+
+    # Detect state abbreviation column (abbrev_state, UF_05, sigla, etc.)
     candidates = [c for c in gdf_states.columns if gdf_states[c].astype(str).str.len().max() == 2]
     state_key = candidates[0] if candidates else 'sigla'
     gdf_states[state_key] = gdf_states[state_key].astype(str).str.upper().str.strip()
-    
+
     gdf = gdf_states.merge(df_recalc, left_on=state_key, right_on='customer_state', how='left')
-    
+
     # Assign unique feature IDs in GeoJSON matching state codes
     for i, feature in enumerate(geojson_data["features"]):
-        abbrev = feature["properties"].get("abbrev_state", "").upper().strip()
+        props = feature["properties"]
+        # Fallback through common Brazil GeoJSON property names
+        abbrev = (props.get("abbrev_state") or props.get("UF_05") or props.get("sigla") or props.get("UF") or "").upper().strip()
         feature["id"] = abbrev
-    
+
     # ── Color Palette (Bright Theme) ──
     BRAZIL_BASE = "#7ecec1"        # Pleasant light teal-blue
     SELECTED_BLUE = "#2563eb"      # Vibrant saturated medium-blue
     COMPARISON_ORANGE = "#ea580c"  # Vibrant orange
-    
+
     # Build color array based on selection
     colors = []
     customdata_list = []
     state_codes_list = []
-    
+
     for _, row in gdf.iterrows():
         sc = row['customer_state'] if pd.notnull(row.get('customer_state')) else ''
         if sc == selected_state:
@@ -414,15 +422,15 @@ def draw_plotly_brazil_map(df_recalc: pd.DataFrame, selected_state: str, selecte
             colors.append(COMPARISON_ORANGE)
         else:
             colors.append(BRAZIL_BASE)
-        
+
         state_name = f"{STATE_MAP.get(sc, sc)} ({sc})" if sc else "Unknown"
         eps_score = row['EPS_score'] if pd.notnull(row.get('EPS_score')) else 0
         eps_rank = row['EPS_rank'] if pd.notnull(row.get('EPS_rank')) else '-'
         tier = row['tier'] if pd.notnull(row.get('tier')) else '-'
-        
+
         customdata_list.append([sc, state_name, eps_score, eps_rank, tier])
         state_codes_list.append(sc)
-    
+
     # Use Choroplethmap (MapLibre, free — replaces deprecated Choroplethmapbox)
     fig = go.Figure(go.Choroplethmap(
         geojson=geojson_data,
@@ -438,20 +446,20 @@ def draw_plotly_brazil_map(df_recalc: pd.DataFrame, selected_state: str, selecte
         hovertemplate="<b>%{customdata[1]}</b><br>Priority Score (EPS): %{customdata[2]:.1f}/100<br>Rank: #%{customdata[3]} (%{customdata[4]} Tier)<extra></extra>",
         selectedpoints=[],
     ))
-    
+
     # Override fill colors per-state using indexed colorscale
     fig.update_traces(
         marker_opacity=0.92,
         z=list(range(len(colors))),
         colorscale=[[i / max(len(colors) - 1, 1), c] for i, c in enumerate(colors)],
     )
-    
+
     # ── State Abbreviation Labels ──
     centroids = gdf.geometry.centroid
     label_lats = [c.y for c in centroids]
     label_lons = [c.x for c in centroids]
     label_abbrevs = gdf[state_key].tolist()
-    
+
     # Halo trace (white outline — larger font rendered behind main labels)
     fig.add_trace(go.Scattermap(
         lat=label_lats,
@@ -465,7 +473,7 @@ def draw_plotly_brazil_map(df_recalc: pd.DataFrame, selected_state: str, selecte
         hoverinfo="skip",
         showlegend=False,
     ))
-    
+
     # Main label trace (dark bold text on top of halo)
     fig.add_trace(go.Scattermap(
         lat=label_lats,
@@ -479,7 +487,7 @@ def draw_plotly_brazil_map(df_recalc: pd.DataFrame, selected_state: str, selecte
         hoverinfo="skip",
         showlegend=False,
     ))
-    
+
     # Bright light map with clear Brazil focus (uses MapLibre — no token needed)
     fig.update_layout(
         map=dict(
@@ -495,7 +503,7 @@ def draw_plotly_brazil_map(df_recalc: pd.DataFrame, selected_state: str, selecte
         clickmode="event+select",
         height=height,
     )
-    
+
     return fig
 
 
@@ -575,30 +583,33 @@ def render_xai_narrative(state_row: pd.Series):
         "high_lc_flag": bool(state_row['LC_norm'] > 0.7),
         "mmi_imputed": is_mmi_imputed
     }
-    
+
     if is_optimal:
         opt_exp = None
         for exp in xai_report["state_explanations"]:
             if exp["state"] == state_code:
                 opt_exp = exp
                 break
-                
+
         if opt_exp:
             st.markdown("#### COMPASS-XAI Narrative")
-            st.write(opt_exp.get("gemini_narrative_full", opt_exp.get("full_narrative")))
-            with st.expander("Show Rule-Based Explanation"):
-                st.write(opt_exp["full_narrative"])
-        else:
-            brief = format_narrative(custom_exp, style='brief')
-            full = format_narrative(custom_exp, style='full')
-            st.info(brief)
-            st.write(full)
+            full_narrative = opt_exp.get("gemini_narrative_full") or opt_exp.get("full_narrative")
+            if full_narrative:
+                st.write(full_narrative)
+                with st.expander("Show Rule-Based Explanation"):
+                    # Use fallback if full_narrative was gemini, otherwise it's already rule-based
+                    st.write(full_narrative)
+            else:
+                brief = format_narrative(custom_exp, style='brief')
+                full = format_narrative(custom_exp, style='full')
+                st.info(brief)
+                st.write(full)
     else:
         brief = format_narrative(custom_exp, style='brief')
         full = format_narrative(custom_exp, style='full')
         st.info(brief)
         st.write(full)
-        
+
         st.markdown("#### Dynamic LLM Explanation")
         st.caption("Request COMPASS-XAI to synthesize a narrative for this custom weights scenario.")
         if st.button(f"Generate custom COMPASS-XAI explanation for {state_code}", key=f"gemini_btn_{state_code}", icon=":material/psychology:"):
@@ -621,7 +632,7 @@ st.markdown("Interactive decision support platform using COMPASS-XAI (COMPosite 
 with st.popover("⚙️ Adjust Model Weights & Settings: Click to tune parameters and recalculate Priority Scores.", use_container_width=False):
     st.markdown("### Opportunity Component Weights")
     st.caption("Change values to recalculate Priority Scores in real-time.")
-    
+
     # Slide adjusters using state sessions
     if "w_pd" not in st.session_state:
         st.session_state["w_pd"] = float(w_star_opt["PD"])
@@ -638,10 +649,10 @@ with st.popover("⚙️ Adjust Model Weights & Settings: Click to tune parameter
     w_gp = st.slider("Growth Potential (GP)", 0.0, 1.0, key="w_gp", step=0.01)
     w_pg = st.slider("Penetration Gap (PG)", 0.0, 1.0, key="w_pg", step=0.01)
     w_mmi = st.slider("Market Momentum Index (MMI)", 0.0, 1.0, key="w_mmi", step=0.01)
-    
+
     st.markdown("### Logistics Risk Multiplier")
     gamma = st.slider("Risk Penalty (gamma)", 0.0, 1.0, key="gamma", step=0.01)
-    
+
     # Calculate normalization summary
     w_sum = w_pd + w_gp + w_pg + w_mmi
     if w_sum > 0:
@@ -651,14 +662,14 @@ with st.popover("⚙️ Adjust Model Weights & Settings: Click to tune parameter
         w_mmi_norm = w_mmi / w_sum
     else:
         w_pd_norm = w_gp_norm = w_pg_norm = w_mmi_norm = 0.25
-        
+
     st.markdown("---")
     st.markdown("### Normalized Weights (Sum to 1.0)")
     st.caption(f"- **PD**: {w_pd_norm:.2%} (Optimized: {w_star_opt['PD']:.2%})")
     st.caption(f"- **GP**: {w_gp_norm:.2%} (Optimized: {w_star_opt['GP']:.2%})")
     st.caption(f"- **PG**: {w_pg_norm:.2%} (Optimized: {w_star_opt['PG']:.2%})")
     st.caption(f"- **MMI**: {w_mmi_norm:.2%} (Optimized: {w_star_opt['MMI']:.2%})")
-    
+
     # Reset button
     is_optimal = (
         np.isclose(w_pd, w_star_opt["PD"]) and
@@ -667,7 +678,7 @@ with st.popover("⚙️ Adjust Model Weights & Settings: Click to tune parameter
         np.isclose(w_mmi, w_star_opt["MMI"]) and
         np.isclose(gamma, gamma_opt)
     )
-    
+
     if not is_optimal:
         st.info("Weights adjusted. Displaying custom EPS scenario.")
         if st.button("Reset to Optimal Weights", icon=":material/refresh:"):
@@ -700,7 +711,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 # ── TAB 1: National Overview ──────────────────────────────────────────────────
 with tab1:
     st.header("National Performance Overview")
-    
+
     # ── Methodology Banner ──
     with st.container(border=True):
         st.subheader("Expansion Priority Score (EPS) Methodology")
@@ -769,38 +780,38 @@ with tab1:
                 - $LC_{\text{norm}}$: Normalized freight cost score.
                 - A lower Risk Adj multiplier heavily reduces the final EPS score.
                 """)
-    
+
     # Compute aggregates
     top_row = df_recalc.iloc[0]
     saturated_count = (df_recalc['PG_norm'] < 0.1).sum()
     high_lc_count = (df_recalc['LC_norm'] > 0.7).sum()
     avg_eps = df_recalc['EPS_score'].mean()
-    
+
     # Horizontal KPI Cards Row
     top_state_display = f"{STATE_MAP.get(top_row['customer_state'], top_row['customer_state'])} ({top_row['customer_state']})"
     with st.container(horizontal=True):
         st.metric(
-            label="Top Expansion State", 
-            value=top_state_display, 
-            delta=f"EPS: {top_row['EPS_score']:.1f}", 
+            label="Top Expansion State",
+            value=top_state_display,
+            delta=f"EPS: {top_row['EPS_score']:.1f}",
             border=True
         )
         st.metric(
-            label="National Avg EPS", 
-            value=f"{avg_eps:.1f}/100", 
+            label="National Avg EPS",
+            value=f"{avg_eps:.1f}/100",
             border=True
         )
         st.metric(
-            label="Saturated Markets", 
-            value=f"{saturated_count} states", 
-            delta="PG < 0.1", 
+            label="Saturated Markets",
+            value=f"{saturated_count} states",
+            delta="PG < 0.1",
             delta_color="off",
             border=True
         )
         st.metric(
-            label="High Logistics Cost", 
-            value=f"{high_lc_count} states", 
-            delta="LC > 0.7", 
+            label="High Logistics Cost",
+            value=f"{high_lc_count} states",
+            delta="LC > 0.7",
             delta_color="off",
             border=True
         )
@@ -828,18 +839,18 @@ with tab1:
     st.subheader("Component Contributions & Risk Adjustment by State")
     fig_combo = plot_combo_chart(df_recalc, w_pd_norm, w_gp_norm, w_pg_norm, w_mmi_norm)
     st.plotly_chart(fig_combo, use_container_width=True)
-    
+
     # ── Data Table ──
     st.subheader("Expansion Priority rankings")
     df_display = df_recalc[[
-        'EPS_rank', 'state_display', 'EPS_score', 'OPP_score', 
+        'EPS_rank', 'state_display', 'EPS_score', 'OPP_score',
         'Risk_Adj', 'dominant_component', 'weakest_component', 'tier', 'data_sparse'
     ]].copy()
-    
+
     # Translate column contents to full descriptions
     df_display['dominant_component'] = df_display['dominant_component'].map(METRIC_NAMES)
     df_display['weakest_component'] = df_display['weakest_component'].map(METRIC_NAMES)
-    
+
     with st.container(border=True):
         st.dataframe(
             df_display,
@@ -861,27 +872,26 @@ with tab1:
 # ── TAB 2: State Deep-Dive & XAI ──────────────────────────────────────────────
 with tab2:
     st.header("State-Level Deep-Dive & Comparison")
-    
+
     compare_mode = st.toggle("Enable Comparison Mode", value=False, key="compare_mode")
     state_codes = df_recalc['customer_state'].tolist()
-    
+
     # FIFO Selection Queue Initialization
     if "selection_queue" not in st.session_state:
         st.session_state["selection_queue"] = ["SP"]
-        
+
     queue = st.session_state["selection_queue"]
-    
+
     # Enforce queue lengths and defaults
     if compare_mode:
         if len(queue) < 2:
             default_state_2 = "AM" if queue[0] != "AM" else "SP"
             queue.append(default_state_2)
             st.session_state["selection_queue"] = queue
-    else:
-        if len(queue) > 1:
-            queue = queue[:1]
-            st.session_state["selection_queue"] = queue
-            
+    elif len(queue) > 1:
+        queue = queue[:1]
+        st.session_state["selection_queue"] = queue
+
     # Render selectboxes using index mapping (no key bound to prevent Streamlit widget lock issues)
     if compare_mode:
         col_sel1, col_sel2 = st.columns(2)
@@ -900,7 +910,7 @@ with tab2:
                     queue[1] = "AM" if queue[0] != "AM" else "SP"
                 st.session_state["selection_queue"] = queue
                 st.rerun()
-                
+
         with col_sel2:
             if len(queue) > 1:
                 selected_idx_2 = state_codes.index(queue[1]) if queue[1] in state_codes else 1
@@ -944,7 +954,7 @@ with tab2:
         selected_state_2 = None
 
     st.markdown("---")
-    
+
     # ── BENTO BOX LAYOUT ──
     # Prepare rendering queue based on compare_mode
     states_to_render = []
@@ -952,91 +962,90 @@ with tab2:
         states_to_render = [(queue[0], "#3b82f6", "Primary"), (queue[1], "#ea580c", "Comparison")]
     else:
         states_to_render = [(queue[0], "#3b82f6", "Selected")]
-    
+
     # ROW 1 (Top Section): Map (Left, 60-65%) and Profiles (Right, 35-40%)
     row1_col1, row1_col2 = st.columns([0.62, 0.38], gap="medium")
-    
+
     with row1_col1:
         with st.container(border=True):
             st.subheader("Interactive Map Selector")
             st.caption("Click directly on any state in the map below to select it. Hover to inspect values.")
-            
+
             # Build the Plotly figure for display
             fig_map_interactive = draw_plotly_brazil_map(df_recalc, queue[0], queue[1] if len(queue) > 1 else None, height=750)
             fig_json = fig_map_interactive.to_json()
-            
+
             # Render component and get selection dictionary
             map_click_data = map_selector(fig_json=fig_json, key="plotly_brazil_map")
-            
+
             # Initialize click timestamp tracking in session state
             if "last_map_click_ts" not in st.session_state:
                 st.session_state["last_map_click_ts"] = 0
-                
+
             # Process map clicks securely
             if map_click_data and isinstance(map_click_data, dict):
                 click_state = map_click_data.get("state")
                 click_ts = map_click_data.get("timestamp", 0)
-                
+
                 if click_ts > st.session_state["last_map_click_ts"]:
                     st.session_state["last_map_click_ts"] = click_ts
-                    
+
                     if click_state and click_state in state_codes:
                         if compare_mode:
                             if click_state in queue:
                                 if len(queue) > 1:
                                     queue.remove(click_state)
+                            elif len(queue) < 2:
+                                queue.append(click_state)
                             else:
-                                if len(queue) < 2:
-                                    queue.append(click_state)
-                                else:
-                                    queue = [queue[1], click_state]
+                                queue = [queue[1], click_state]
                         else:
                             queue = [click_state]
-                        
+
                         st.session_state["selection_queue"] = queue
                         st.rerun()
-            
+
             # Visual selection status indicator
             if compare_mode and len(queue) > 1:
                 st.caption(f"🔵 Primary: {STATE_MAP.get(queue[0], queue[0])} ({queue[0]})  ·  🟠 Comparison: {STATE_MAP.get(queue[1], queue[1])} ({queue[1]})")
             else:
                 st.caption(f"🔵 Selected: {STATE_MAP.get(queue[0], queue[0])} ({queue[0]})")
-                
+
     with row1_col2:
         if len(states_to_render) > 1:
             tabs_r1 = st.tabs([f"{STATE_MAP.get(s[0], s[0])} ({s[0]})" for s in states_to_render])
         else:
             tabs_r1 = [st.container()]
-            
+
         for idx, (sc, color, label) in enumerate(states_to_render):
             with tabs_r1[idx]:
                 state_row = df_recalc[df_recalc['customer_state'] == sc].iloc[0]
-                
+
                 with st.container(border=True):
                     render_ranking_card(state_row, color)
-                    
+
                 with st.container(border=True):
                     render_radar_chart_section(state_row, color)
 
     # ── ROW 2 (Bottom Section): Indicator Scores (Left, 40-50%) and XAI Narrative (Right, 50-60%) ──
     row2_col1, row2_col2 = st.columns([0.45, 0.55], gap="medium")
-    
+
     if len(states_to_render) > 1:
         tabs_r2_c1 = row2_col1.tabs([f"{STATE_MAP.get(s[0], s[0])} ({s[0]})" for s in states_to_render])
         tabs_r2_c2 = row2_col2.tabs([f"{STATE_MAP.get(s[0], s[0])} ({s[0]})" for s in states_to_render])
     else:
         tabs_r2_c1 = [row2_col1.container()]
         tabs_r2_c2 = [row2_col2.container()]
-        
+
     for idx, (sc, color, label) in enumerate(states_to_render):
         state_row = df_recalc[df_recalc['customer_state'] == sc].iloc[0]
-        
+
         with tabs_r2_c1[idx]:
             with st.container(border=True):
                 st.subheader("Indicator Scores & Weights")
                 render_indicator_scores(state_row)
                 render_warnings(state_row)
-                
+
         with tabs_r2_c2[idx]:
             with st.container(border=True):
                 st.subheader("Explainable AI (XAI) Narrative")
@@ -1045,14 +1054,14 @@ with tab2:
 # ── TAB 3: Geospatial Maps ────────────────────────────────────────────────────
 with tab3:
     st.header("Geospatial & Component Relationships")
-    
+
     if is_optimal:
         st.subheader("Optimized Spatial Prioritization Map")
-        map_path = project_root / "reports" / "figures" / "fig2_choropleth.png"
+        map_path = Config.get_path("reports", "figures_dir") / "fig2_choropleth.png"
         if map_path.exists():
             st.image(str(map_path), caption="Choropleth Maps showing EPS Score, Opportunity Score (OPP), and Logistics Cost (LC)")
         else:
-            st.warning("Pre-rendered choropleth map not found at reports/figures/fig2_choropleth.png")
+            st.warning("Pre-rendered choropleth map not found.")
     else:
         st.subheader("Recalculated EPS Score Map (Dynamic)")
         st.info("Weights adjusted. Rendering real-time map using GeoPandas...")
@@ -1060,13 +1069,13 @@ with tab3:
         if fig:
             st.pyplot(fig)
         else:
-            st.warning("GeoJSON geometry file data/external/br_states.geojson or geopandas package is not available. Showing pre-rendered map.")
-            map_path = project_root / "reports" / "figures" / "fig2_choropleth.png"
+            st.warning("GeoJSON geometry file or geopandas package is not available. Showing pre-rendered map.")
+            map_path = Config.get_path("reports", "figures_dir") / "fig2_choropleth.png"
             if map_path.exists():
                 st.image(str(map_path), caption="Pre-rendered Choropleth Map (Optimized scenario)")
 
     st.subheader("Opportunity Component Correlations")
-    corr_path = project_root / "reports" / "figures" / "fig3b_correlation_heatmap.png"
+    corr_path = Config.get_path("reports", "figures_dir") / "fig3b_correlation_heatmap.png"
     if corr_path.exists():
         st.image(str(corr_path), caption="Pearson Correlation Heatmap between normalized indicators")
 
@@ -1079,28 +1088,28 @@ with tab4:
     - **One-At-A-Time (OAT) Sweeps**: Sequentially sweeps individual weights between [0,1] to detect threshold sensitivity.
     - **Gamma Penalty Sweeps**: Modifies the logistics risk multiplier (gamma) from 0.0 to 1.0 to check ranking shifts.
     """)
-    
+
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("Monte Carlo Simulation")
-        mc_path = project_root / "reports" / "figures" / "fig4_monte_carlo.png"
+        mc_path = Config.get_path("reports", "figures_dir") / "fig4_monte_carlo.png"
         if mc_path.exists():
             st.image(str(mc_path), caption="Spearman rank correlation distribution under component noise")
     with col2:
         st.subheader("OAT Weight Sweeps")
-        oat_path = project_root / "reports" / "figures" / "fig5_oat_sweep.png"
+        oat_path = Config.get_path("reports", "figures_dir") / "fig5_oat_sweep.png"
         if oat_path.exists():
             st.image(str(oat_path), caption="Rank change profiles for individual weights sweeps")
-            
+
     st.subheader("Logistics Cost Penalty (Gamma) Sweep")
-    gamma_path = project_root / "reports" / "figures" / "fig6_gamma_sweep.png"
+    gamma_path = Config.get_path("reports", "figures_dir") / "fig6_gamma_sweep.png"
     if gamma_path.exists():
         st.image(str(gamma_path), caption="State rankings progression under varying Gamma values")
 
 # ── TAB 5: PD Model Training ──────────────────────────────────────────────────
 with tab5:
     st.header("Predicted Demand (PD) Model Training")
-    st.markdown("""
+    st.markdown(r"""
     The **Predicted Demand (PD)** formula evaluates short-term demand scale by blending recent actual revenue with future forecasted revenue.
     The forecasting component relies on advanced machine learning models trained on historical data.
 
@@ -1124,7 +1133,7 @@ with tab5:
     **Evaluation Metrics**: RMSE, MAE, WAPE, sMAPE, and MASE. Models are evaluated based on their Skill Score relative to the Baseline Linear Regression.
     """)
 
-    leaderboard_path = project_root / "reports" / "model_leaderboard.csv"
+    leaderboard_path = Config.get_path("reports", "leaderboard")
     if leaderboard_path.exists():
         st.markdown("#### Model Loss Evaluation & Leaderboard")
         df_lb = pd.read_csv(leaderboard_path)
@@ -1141,21 +1150,22 @@ with tab5:
         df_lb = df_lb.rename(columns=rename_dict)
         st.dataframe(df_lb, hide_index=True, use_container_width=True)
 
-    cv_path = project_root / "reports" / "figures" / "cv_metrics_boxplot.png"
+    cv_path = Config.get_path("reports", "figures_dir") / "cv_metrics_boxplot.png"
     if cv_path.exists():
         st.image(str(cv_path), caption="Cross-Validation Metric Variance (5-Fold Walk-Forward)")
-        
-    rp_path = project_root / "reports" / "figures" / "relative_performance.png"
+
+    rp_path = Config.get_path("reports", "figures_dir") / "relative_performance.png"
     if rp_path.exists():
         st.image(str(rp_path), caption="Relative Performance: MASE & Skill Score")
 
     st.markdown("""
     ### 3. Final Model Selection & SHAP Explanations
     The best-performing model (typically an ensemble method like XGBoost or LightGBM) is selected and evaluated on an unseen test set (e.g., the last 4 weeks of data). 
-    
+
     Finally, **TreeExplainer SHAP** (SHapley Additive exPlanations) values are extracted from the final model to understand the global and local importance of each feature in predicting the demand, which directly informs the COMPASS-XAI alignment narratives.
     """)
 
-    shap_rf_path = project_root / "reports" / "figures" / "shap_rf.png"
+    shap_rf_path = Config.get_path("reports", "figures_dir") / "shap_rf.png"
+
     if shap_rf_path.exists():
         st.image(str(shap_rf_path), caption="SHAP Feature Importance (Random Forest Explicit)")

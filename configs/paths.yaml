@@ -1,0 +1,20 @@
+# Centralized Paths Configuration
+data:
+  raw_olist: "data/raw/olist"
+  processed_olist: "data/processed/olist"
+  external_pop: "data/external/br_ibge_populacao_uf.csv"
+  external_gdp: "data/external/br_ibge_pib_uf.csv"
+  external_geojson: "data/external/br_states.geojson"
+
+outputs:
+  eps_dir: "outputs/eps"
+  eps_results: "outputs/eps/eps_results.csv"
+  w_star: "outputs/eps/w_star.json"
+  xai_report_json: "outputs/eps/eps_xai_report.json"
+  xai_report_csv: "outputs/eps/eps_xai_report.csv"
+  shap_profiles: "outputs/eps/shap/shap_state_profiles.json"
+  shap_dir: "outputs/eps/shap"
+
+reports:
+  figures_dir: "reports/figures"
+  leaderboard: "reports/model_leaderboard.csv"

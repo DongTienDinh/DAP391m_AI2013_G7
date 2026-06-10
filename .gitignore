@@ -1,23 +1,65 @@
-# virtual env
-.venv/
-venv/
-
-# python cache
+# --- Python ---
 __pycache__/
 *.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+src/*.egg-info/
+.installed.cfg
+*.egg
 
-# jupyter
-.ipynb_checkpoints/
+# --- Virtual Environment ---
+.venv/
+venv/
+ENV/
+env/
 
-# os
-.DS_Store
-Thumbs.db
+# --- IDEs ---
+.idea/
+.vscode/
+*.swp
+*.swo
 
-# logs
+# --- Secrets ---
+.env
+
+# --- Project Specific Artifacts ---
+# Exclude all data, outputs, reports, and logs
+data/
+outputs/
+reports/
 logs/
-*.log
+catboost_info/
 
-# data
-data/external/*
-data/processed/*
-data/raw/*
+# Allow .gitkeep files so the directory structure is preserved in Git
+!**/
+!**/.gitkeep
+
+# Note: external data (IBGE/GeoJSON) and raw datasets should be downloaded 
+# via the provided scripts (scripts/download_geojson.py, scripts/run_cleaning.py, etc.)
+
+# --- Notebook Artifacts ---
+notebooks/*.csv
+notebooks/*.png
+notebooks/*.json
+notebooks/.ipynb_checkpoints/
+
+# --- Testing & Coverage ---
+.coverage
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
