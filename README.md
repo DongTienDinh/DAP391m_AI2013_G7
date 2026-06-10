@@ -46,8 +46,8 @@ The project follows a modular, script-based pipeline:
 ### 1. Installation
 ```bash
 # Clone the repository
-git clone <repo-url>
-cd <repo-name>
+git clone https://github.com/DongTienDinh/DAP391m_AI2013_G7
+cd DAP391m_AI2013_G7
 
 # Setup virtual environment
 python -m venv .venv
