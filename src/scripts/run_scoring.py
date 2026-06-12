@@ -17,7 +17,7 @@ def main():
         p.paths.data.processed_olist / "features_weekly.csv",
         p.paths.data.processed_olist / "prediction_data.csv"
     )
-    print("  ✅ EPS Scoring completed.")
+    print("  [OK] EPS Scoring completed.")
 
 if __name__ == "__main__":
     main()

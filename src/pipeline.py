@@ -3,7 +3,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src.orchestrator import OlistPipeline  # noqa: F401 — backward compat for run_*.py
+from src.orchestrator import OlistPipeline  # noqa: F401
 
 
 def _print_header(title: str) -> None:
@@ -13,105 +13,88 @@ def _print_header(title: str) -> None:
     print("=" * 70)
 
 
-def _print_subheader(title: str) -> None:
-    print(f"\n  ▶ {title}")
-    print("  " + "-" * (len(title) + 4))
+def _trunc(text: str, n: int = 60) -> str:
+    return str(text)[:n] + "..." if len(str(text)) > n else str(text)
 
 
-def _show_file(path: Path, head: int = 5) -> None:
-    if path.exists():
-        import pandas as pd
-        df = pd.read_csv(path)
-        print(f"     File: {path}")
-        print(f"     Shape: {df.shape[0]} rows × {df.shape[1]} cols")
-        print(f"     Columns: {', '.join(df.columns[:8])}{'...' if len(df.columns) > 8 else ''}")
-        print(f"     Preview (top {head}):")
-        print(df.head(head).to_string(index=False))
-    else:
-        print(f"     (file not found: {path})")
+def _show_file(path: Path, head: int = 3, skip_cols: list[str] | None = None) -> None:
+    if not path.exists():
+        return
+    import pandas as pd
+    df = pd.read_csv(path)
+    skip = skip_cols or []
+    show_cols = [c for c in df.columns if c not in skip][:5]
+    print(f"     [{df.shape[0]} rows x {df.shape[1]} cols]")
+    for _, r in df.head(head).iterrows():
+        for c in show_cols:
+            print(f"       {c}: {_trunc(r[c], 60)}")
+        print()
 
 
 def _show_leaderboard(path: Path) -> None:
     if not path.exists():
-        print(f"     (file not found: {path})")
         return
     import pandas as pd
     df = pd.read_csv(path)
-    print(f"     File: {path}")
-    print(f"     Models: {len(df)}")
-    for _, r in df.iterrows():
-        if r["model"] == df.iloc[0]["model"]:
-            tag = "  🥇"
-        elif r["model"] == df.iloc[1]["model"]:
-            tag = "  🥈"
-        elif r["model"] == df.iloc[2]["model"]:
-            tag = "  🥉"
-        else:
-            tag = "    "
-        print(f"     {tag} {r['model']:35s}  RMSE={r['RMSE']:>10,.2f}  MAE={r['MAE']:>10,.2f}  SS={r.get('SS_RMSE', 0):>+.3f}")
+    print(f"     {'Rank':>4s}  {'Model':<30s}  {'RMSE':>12s}  {'MAE':>10s}  {'Skill':>8s}")
+    print(f"     {'----':>4s}  {'----':<30s}  {'----':>12s}  {'----':>10s}  {'----':>8s}")
+    for i, (_, r) in enumerate(df.iterrows(), 1):
+        ss = r.get("SS_RMSE", 0)
+        rank = f"#{i}" if i <= 3 else "   "
+        print(f"     {rank:>4s}  {r['model']:<30s}  {r['RMSE']:>12,.2f}  {r['MAE']:>10,.2f}  {ss:>+8.3f}")
 
 
 def _show_top_states(path: Path, n: int = 10) -> None:
     if not path.exists():
-        print(f"     (file not found: {path})")
         return
     import pandas as pd
     df = pd.read_csv(path)
-    cols = ["EPS_rank", "customer_state", "EPS_score", "tier", "dominant_component", "state_display"]
+    cols = ["EPS_rank", "customer_state", "EPS_score", "tier", "dominant_component"]
     cols = [c for c in cols if c in df.columns]
-    print(f"     Top {n} states by EPS:")
-    print(df.head(n)[cols].to_string(index=False))
+    print(f"     {'Rank':>4s}  {'State':>6s}  {'Score':>6s}  {'Tier':<6s}  {'Driver':<10s}")
+    print(f"     {'----':>4s}  {'----':>6s}  {'----':>6s}  {'----':<6s}  {'------':<10s}")
+    for _, r in df.head(n).iterrows():
+        print(f"     {int(r['EPS_rank']):>4d}  {r['customer_state']:>6s}  {r['EPS_score']:>6.1f}  {r.get('tier',''):<6s}  {r.get('dominant_component',''):<10s}")
 
 
 def _show_weights(path: Path) -> None:
     if not path.exists():
-        print(f"     (file not found: {path})")
         return
     import json
     with open(path) as f:
         cfg = json.load(f)
     w = cfg.get("w_star", {})
-    print(f"     Optimal weights (gamma={cfg.get('gamma', '?')}):")
+    print(f"     gamma={cfg.get('gamma', '?')}")
     for c, v in w.items():
         print(f"       w({c:3s}) = {v:.4f}")
 
 
 def _show_ranking_comparison(path: Path) -> None:
     if not path.exists():
-        print(f"     (file not found: {path})")
         return
-    with open(path) as f:
-        print(f.read())
+    print(f"     (see full report: {path})")
+    for line in open(path):
+        line = line.rstrip()
+        if any(k in line for k in ["Spearman", "Top-5 overlap", "Max rank", "Mean rank"]):
+            print(f"     {line}")
 
 
 def _show_predicted(path: Path, head: int = 5) -> None:
     if not path.exists():
-        print(f"     (file not found: {path})")
         return
     import pandas as pd
     df = pd.read_csv(path)
     pred_col = [c for c in df.columns if "predicted" in c]
-    if pred_col:
-        print(f"     Top {head} predicted states:")
-        print(df.head(head).to_string(index=False))
-
-
-def _run_step(number: int, label: str, desc: str, main_fn, results_fn=None) -> None:
-    _print_header(f"Step {number}: {label}")
-    print(f"  {desc}")
-    ans = input("\n  Run this step? (y/n) [y]: ").strip().lower()
-    if ans == "n":
-        print("  ⏭ Skipped.")
+    if not pred_col:
         return
-    print("  Running...")
-    main_fn()
-    print("  ✅ Done.")
-    if results_fn:
-        results_fn()
+    print(f"     Top {head} predicted states:")
+    for _, r in df.head(head).iterrows():
+        print(f"       {r['customer_state']}: {r[pred_col[0]]:.2f}")
 
+
+# ── Pipeline ──────────────────────────────────────────────────────────────────
 
 def run_all() -> None:
-    """Run the complete pipeline non-interactively."""
     from src.scripts.run_cleaning import main as clean_main
     from src.scripts.run_features import main as feat_main
     from src.scripts.run_training import main as train_main
@@ -132,132 +115,106 @@ def run_all() -> None:
 
 
 def run_interactive() -> None:
-    """Interactive step-by-step pipeline."""
     from src.core.config import get_config
     cfg = get_config()
     P = cfg.paths
 
     print()
-    print("╔" + "═" * 68 + "╗")
-    print("║  COMPASS-XAI: Interactive Pipeline (DAP391m 10-Step Framework)  ║")
-    print("╚" + "═" * 68 + "╝")
+    print("=" * 70)
+    print("  COMPASS-XAI: Interactive Pipeline (DAP391m 10-Step Framework)")
+    print("=" * 70)
 
-    # ── Step 0: GeoJSON Download ──────────────────────────────────────────
-    _print_header("Step 0: Download Brazil GeoJSON boundaries")
-    print("  Required for choropleth maps in the dashboard.")
-    print()
-    ans = input("  Download GeoJSON now? (y/n) [y]: ").strip().lower()
+    # Step 0
+    _print_header("Step 0: Download Brazil GeoJSON")
+    ans = input("  Run? (y/n) [y]: ").strip().lower()
     if ans != "n":
         from src.scripts.download_geojson import download_geojson
-        print("  Downloading...")
         download_geojson()
     else:
-        print("  ⏭ Skipped.")
+        print("  -- Skipped.")
 
-    # ── Part 1: Problem & Data Understanding ──────────────────────────────
-    _print_header("PART 1 — Problem & Data Understanding (Steps 1-5)")
-    print("  This section covers business understanding, data collection,")
-    print("  schema validation, and cleaning of the Olist e-commerce dataset.")
-    print()
-
-    ans = input("  Run Part 1 (Data Cleaning)? (y/n) [y]: ").strip().lower()
+    # Part 1
+    _print_header("PART 1 -- Data Collection & Cleaning (Steps 1-5)")
+    ans = input("  Run? (y/n) [y]: ").strip().lower()
     if ans != "n":
         from src.scripts.run_cleaning import main as clean_main
         clean_main()
-        _print_subheader("Results: Data Cleaning")
-        _show_file(P.data.processed_olist / "orders.csv", head=3)
-        print(f"     → 8 cleaned files saved to {P.data.processed_olist}")
+        print("  -> Results:")
+        print(f"     8 tables saved to {P.data.processed_olist}")
     else:
-        print("  ⏭ Skipped.")
+        print("  -- Skipped.")
 
-    # ── Part 2: Feature Engineering ────────────────────────────────────────
-    _print_header("PART 2 — Feature Engineering (Step 6)")
-    print("  Engineering 35+ features: seasonality, lags, rolling windows,")
-    print("  IBGE demographics, growth rates, and penetration metrics.")
-    print()
-
-    ans = input("  Run Part 2 (Feature Engineering)? (y/n) [y]: ").strip().lower()
+    # Part 2
+    _print_header("PART 2 -- Feature Engineering (Step 6)")
+    ans = input("  Run? (y/n) [y]: ").strip().lower()
     if ans != "n":
         from src.scripts.run_features import main as feat_main
-        _print_subheader("Running: Feature Engineering")
         feat_main()
-        _print_subheader("Results: Feature Engineering")
-        _show_file(P.data.processed_olist / "features_weekly.csv", head=3)
-        _show_file(P.data.processed_olist / "prediction_data.csv", head=3)
     else:
-        print("  ⏭ Skipped.")
+        print("  -- Skipped.")
 
-    # ── Part 3: Modeling & Evaluation ──────────────────────────────────────
-    _print_header("PART 3 — Modeling, Evaluation & Scoring (Steps 7-8-9)")
-    print("  Walk-forward CV of 9 models (Ridge → CatBoost), champion")
-    print("  selection, EPS scoring with SLSQP entropy optimization.")
-    print()
-
-    ans = input("  Run Part 3a (Model Training)? (y/n) [y]: ").strip().lower()
+    # Part 3a
+    _print_header("PART 3a -- Model Training (Steps 7-8)")
+    ans = input("  Run? (y/n) [y]: ").strip().lower()
     if ans != "n":
         from src.scripts.run_training import main as train_main
-        _print_subheader("Running: Model Training & Evaluation")
         train_main()
-        _print_subheader("Results: Model Leaderboard")
+        print("  -> Leaderboard:")
         _show_leaderboard(P.reports.leaderboard)
         _show_predicted(P.data.processed_olist / "predicted_next_week_revenue.csv")
     else:
-        print("  ⏭ Skipped.")
+        print("  -- Skipped.")
 
-    ans = input("  Run Part 3b (EPS Scoring)? (y/n) [y]: ").strip().lower()
+    # Part 3b
+    _print_header("PART 3b -- EPS Scoring (Step 9)")
+    ans = input("  Run? (y/n) [y]: ").strip().lower()
     if ans != "n":
         from src.scripts.run_scoring import main as score_main
-        _print_subheader("Running: EPS Scoring & Ranking")
         score_main()
-        _print_subheader("Results: EPS Rankings")
+        print("  -> Rankings:")
         _show_weights(P.outputs.w_star)
         _show_top_states(P.outputs.eps_results, n=10)
     else:
-        print("  ⏭ Skipped.")
+        print("  -- Skipped.")
 
-    ans = input("  Run Part 3c (Ranking Comparison)? (y/n) [y]: ").strip().lower()
+    # Part 3c
+    _print_header("PART 3c -- Ranking Comparison")
+    ans = input("  Run? (y/n) [y]: ").strip().lower()
     if ans != "n":
         from src.scripts.run_ranking_comparison import main as rc_main
-        _print_subheader("Running: EPS vs Baseline Comparison")
         rc_main()
-        _print_subheader("Results: Ranking Comparison")
         _show_ranking_comparison(P.reports.figures_dir.parent / "ranking_comparison_summary.txt")
     else:
-        print("  ⏭ Skipped.")
+        print("  -- Skipped.")
 
-    ans = input("  Run Part 3d (Generate Figures)? (y/n) [y]: ").strip().lower()
+    # Part 3d
+    _print_header("PART 3d -- Generate Figures")
+    ans = input("  Run? (y/n) [y]: ").strip().lower()
     if ans != "n":
         from src.scripts.run_figures import main as fig_main
-        _print_subheader("Running: Static Figure Generation")
         fig_main()
-        _print_subheader("Results: Figures Saved")
-        for f in ["fig1_component_bar.png", "fig2_choropleth.png", "fig3_radar.png", "fig3b_correlation_heatmap.png", "fig4_monte_carlo.png", "fig5_oat_sweep.png", "fig6_gamma_sweep.png"]:
-            p = P.reports.figures_dir / f
-            status = f"{p.stat().st_size / 1024:.0f} KB" if p.exists() else "missing"
-            print(f"     {f}: {status}")
     else:
-        print("  ⏭ Skipped.")
+        print("  -- Skipped.")
 
-    # ── Part 4: Conclusion & XAI ───────────────────────────────────────────
-    _print_header("PART 4 — Conclusion & AI Reflection (Step 10)")
-    print("  Generating XAI narratives (Gemini API or rule-based fallback),")
-    print("  SHAP alignment, and explanation reports.")
-    print()
-
-    ans = input("  Run Part 4 (XAI Narratives)? (y/n) [y]: ").strip().lower()
+    # Part 4
+    _print_header("PART 4 -- XAI Narratives (Step 10)")
+    ans = input("  Run? (y/n) [y]: ").strip().lower()
     if ans != "n":
         from src.scripts.run_xai import main as xai_main
-        _print_subheader("Running: XAI Narrative Generation")
         xai_main()
-        _print_subheader("Results: XAI Reports")
-        _show_file(P.outputs.xai_report_csv, head=5)
+        print("  -> Preview:")
+        if P.outputs.xai_report_csv.exists():
+            import pandas as pd
+            df = pd.read_csv(P.outputs.xai_report_csv)
+            print(f"     [{len(df)} states]")
+            for _, r in df.head(5).iterrows():
+                brief = _trunc(r.get("brief", r.get("narrative_brief", "")), 70)
+                print(f"       #{int(r['rank'])} {r['state']}: {brief}")
     else:
-        print("  ⏭ Skipped.")
+        print("  -- Skipped.")
 
-    # ── Done ───────────────────────────────────────────────────────────────
     _print_header("PIPELINE COMPLETED")
-    print("  All selected stages finished. You can now launch the dashboard:")
-    print()
+    print("  To launch the dashboard:")
     print("    streamlit run app/streamlit_app.py")
     print()
 

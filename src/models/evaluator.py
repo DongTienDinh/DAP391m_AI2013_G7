@@ -1,8 +1,13 @@
+import warnings
 from typing import Any
 
 import numpy as np
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 from sklearn.model_selection import TimeSeriesSplit
+
+warnings.filterwarnings("ignore", category=UserWarning)
+warnings.filterwarnings("ignore", message="No further splits")
+warnings.filterwarnings("ignore", message="does not have valid feature names")
 
 
 class ModelEvaluator:

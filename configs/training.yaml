@@ -58,6 +58,7 @@ models:
     reg_alpha: 0.1
     reg_lambda: 0.1
     min_child_samples: 10
+    verbose: -1
   catboost:
     iterations: 500
     learning_rate: 0.05

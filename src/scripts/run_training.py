@@ -18,7 +18,7 @@ def main():
         p.paths.data.processed_olist,
     )
     svc.run_training_pipeline(p.paths.data.processed_olist / "features_weekly.csv")
-    print("  ✅ Model training completed.")
+    print("  [OK] Model training completed.")
 
 
 if __name__ == "__main__":

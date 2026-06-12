@@ -370,12 +370,13 @@ def format_summary(df: pd.DataFrame, all_metrics: Dict[str, Dict]) -> str:
     lines.append("")
 
     # Notable rank shifts (|delta| >= 10)
-    lines.append("Notable rank shifts (|delta| >= 10):")
+    lines.append("Notable rank shifts (|delta| >= 10) -- State: EPS -> Baseline, delta")
+    lines.append("")
     rank_cols = [
-        ('delta_revenue',  'rank_revenue',  'Revenue-only'),
-        ('delta_forecast', 'rank_forecast', 'Forecast-only'),
-        ('delta_opp',      'rank_opp',      'OPP-only'),
-        ('delta_la',       'rank_la',       'LA-Revenue'),
+        ('delta_revenue',  'rank_revenue',  'Revenue'),
+        ('delta_forecast', 'rank_forecast', 'Forecast'),
+        ('delta_opp',      'rank_opp',      'OPP'),
+        ('delta_la',       'rank_la',       'LA-Rev'),
     ]
     found_notable = False
     for delta_col, rank_col, label in rank_cols:
@@ -383,9 +384,10 @@ def format_summary(df: pd.DataFrame, all_metrics: Dict[str, Dict]) -> str:
         for _, row in notable.iterrows():
             found_notable = True
             lines.append(
-                f"  {row['customer_state']}: EPS_rank={int(row['EPS_rank'])}, "
-                f"{label}_rank={int(row[rank_col])}, "
-                f"delta={int(row[delta_col])}"
+                f"  {row['customer_state']:<4s}  "
+                f"EPS#{int(row['EPS_rank']):>2d} -> "
+                f"{label}#{int(row[rank_col]):>2d}  "
+                f"delta={int(row[delta_col]):>+3d}"
             )
     if not found_notable:
         lines.append("  (none)")

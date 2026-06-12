@@ -18,7 +18,7 @@ def main():
         p.paths.data.processed_olist / "prediction_data.csv"
     )
     svc.run_feature_pipeline(p.paths.data.external_pop, p.paths.data.external_gdp)
-    print("  ✅ Feature Engineering completed.")
+    print("  [OK] Feature Engineering completed.")
 
 if __name__ == "__main__":
     main()

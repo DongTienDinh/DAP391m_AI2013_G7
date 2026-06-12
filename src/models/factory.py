@@ -1,3 +1,4 @@
+import warnings
 from typing import Any
 
 import lightgbm as lgb
@@ -8,6 +9,10 @@ from sklearn.linear_model import ElasticNet, HuberRegressor, LinearRegression, R
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from xgboost import XGBRegressor
+
+warnings.filterwarnings("ignore", category=UserWarning, module="sklearn")
+warnings.filterwarnings("ignore", message="No further splits with positive gain")
+warnings.filterwarnings("ignore", message="X does not have valid feature names")
 
 
 class ModelFactory:

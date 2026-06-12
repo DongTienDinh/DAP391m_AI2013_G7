@@ -17,7 +17,7 @@ def main():
     llm = GeminiProvider(api_key=os.getenv("GEMINI_API_KEY", ""))
     svc = XAIService(p.paths.outputs.eps_dir, llm_provider=llm)
     svc.run_xai_pipeline(p.paths.outputs.eps_results, p.paths.outputs.w_star)
-    print("  ✅ XAI narratives completed.")
+    print("  [OK] XAI narratives completed.")
 
 if __name__ == "__main__":
     main()

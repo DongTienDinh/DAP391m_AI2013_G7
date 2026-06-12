@@ -74,13 +74,13 @@ def plot_component_contributions(df, w_star, gamma):
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
     fig.savefig(FIGURES_DIR / "fig1_component_bar.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
-    print("  ✓ fig1_component_bar.png")
+    print("  -> fig1_component_bar.png")
 
 
 def plot_choropleth(df):
     """3 side-by-side choropleth maps: EPS, OPP, LC."""
     if gpd is None or not GEO_PATH.exists():
-        print("  ⚠ Skipping fig2_choropleth.png (geopandas or geojson missing)")
+        print("  [WARN] Skipping fig2_choropleth.png (geopandas or geojson missing)")
         return
 
     gdf_states = gpd.read_file(GEO_PATH)
@@ -119,7 +119,7 @@ def plot_choropleth(df):
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
     fig.savefig(FIGURES_DIR / "fig2_choropleth.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
-    print("  ✓ fig2_choropleth.png")
+    print("  -> fig2_choropleth.png")
 
 
 def plot_radar_profiles(df, top_n=6):
@@ -154,7 +154,7 @@ def plot_radar_profiles(df, top_n=6):
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
     fig.savefig(FIGURES_DIR / "fig3_radar.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
-    print("  ✓ fig3_radar.png")
+    print("  -> fig3_radar.png")
 
 
 def plot_correlation_heatmap(df):
@@ -162,7 +162,7 @@ def plot_correlation_heatmap(df):
     corr_cols = ["PD_norm", "GP_norm", "PG_norm", "MMI_norm", "LC_norm", "OPP_score", "EPS_score"]
     existing = [c for c in corr_cols if c in df.columns]
     if len(existing) < 2:
-        print("  ⚠ Skipping correlation heatmap (insufficient columns)")
+        print("  [WARN] Skipping correlation heatmap (insufficient columns)")
         return
 
     corr_matrix = df[existing].corr(method="pearson")
@@ -182,7 +182,7 @@ def plot_correlation_heatmap(df):
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
     fig.savefig(FIGURES_DIR / "fig3b_correlation_heatmap.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
-    print("  ✓ fig3b_correlation_heatmap.png")
+    print("  -> fig3b_correlation_heatmap.png")
 
 
 # ── Sensitivity Helpers ───────────────────────────────────────────────────────
@@ -232,7 +232,7 @@ def plot_monte_carlo(df, w_star, gamma, n_sim=10000, seed=42):
     plt.tight_layout()
     fig.savefig(FIGURES_DIR / "fig4_monte_carlo.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
-    print("  ✓ fig4_monte_carlo.png")
+    print("  -> fig4_monte_carlo.png")
 
 
 def plot_oat_sweep(df, w_star, gamma, n_steps=40):
@@ -277,7 +277,7 @@ def plot_oat_sweep(df, w_star, gamma, n_steps=40):
     plt.tight_layout()
     fig.savefig(FIGURES_DIR / "fig5_oat_sweep.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
-    print("  ✓ fig5_oat_sweep.png")
+    print("  -> fig5_oat_sweep.png")
 
 
 def plot_gamma_sweep(df, w_star, gamma):
@@ -318,7 +318,7 @@ def plot_gamma_sweep(df, w_star, gamma):
     plt.tight_layout()
     fig.savefig(FIGURES_DIR / "fig6_gamma_sweep.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
-    print("  ✓ fig6_gamma_sweep.png")
+    print("  -> fig6_gamma_sweep.png")
 
 
 def main():
@@ -345,7 +345,7 @@ def main():
     plot_gamma_sweep(df, w_star, gamma)
 
     rel = FIGURES_DIR.relative_to(Path.cwd().parent) if FIGURES_DIR.is_relative_to(Path.cwd().parent) else FIGURES_DIR
-    print(f"\n  ✅ All figures saved to {rel}")
+    print(f"\n  [OK] All figures saved to {rel}")
 
 
 if __name__ == "__main__":

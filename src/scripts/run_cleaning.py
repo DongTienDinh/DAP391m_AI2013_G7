@@ -15,7 +15,7 @@ def main():
     pipeline = OlistPipeline()
     svc = DataService(pipeline.paths.data.raw_olist, pipeline.paths.data.processed_olist)
     svc.run_cleaning_pipeline()
-    print("  ✅ Data Cleaning completed. 8 tables saved.")
+    print("  [OK] Data Cleaning completed.")
 
 if __name__ == "__main__":
     main()
