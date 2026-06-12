@@ -208,8 +208,10 @@ def run_interactive() -> None:
             df = pd.read_csv(P.outputs.xai_report_csv)
             print(f"     [{len(df)} states]")
             for _, r in df.head(5).iterrows():
-                brief = _trunc(r.get("brief", r.get("narrative_brief", "")), 70)
-                print(f"       #{int(r['rank'])} {r['state']}: {brief}")
+                brief = _trunc(r.get("narrative_brief", ""), 70)
+                rank = int(r.get("EPS_rank", r.get("rank", 0)))
+                state = r.get("customer_state", r.get("state", "?"))
+                print(f"       #{rank} {state}: {brief}")
     else:
         print("  -- Skipped.")
 
