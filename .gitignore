@@ -71,7 +71,7 @@ notebooks/.ipynb_checkpoints/
 htmlcov/
 
 # --- Trained model weights ---
-models/
+/models/
 
 # --- OS artifacts ---
 .DS_Store
