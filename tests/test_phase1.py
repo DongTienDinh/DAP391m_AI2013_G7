@@ -3,10 +3,10 @@ from pathlib import Path
 
 import numpy as np
 
-from src.olist_pipeline.core.config import AppConfig, get_config
-from src.olist_pipeline.core.exceptions import ConfigurationError, DataValidationError
-from src.olist_pipeline.utils.config_loader import Config as BackwardConfig
-from src.olist_pipeline.utils.math_utils import softclip_positive
+from src.core.config import AppConfig, get_config
+from src.core.exceptions import ConfigurationError, DataValidationError
+from src.utils.config_loader import Config as BackwardConfig
+from src.utils.math_utils import softclip_positive
 
 
 class TestPhase1(unittest.TestCase):
@@ -39,7 +39,7 @@ class TestPhase1(unittest.TestCase):
 
     def test_config_missing_file(self):
         """Test ConfigurationError when config file is missing."""
-        import src.olist_pipeline.core.config as config_mod
+        import src.core.config as config_mod
         original_root_fn = config_mod.get_project_root
 
         # Mock project root to a temp directory

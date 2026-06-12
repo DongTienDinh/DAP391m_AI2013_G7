@@ -42,7 +42,8 @@ except ImportError:
 load_dotenv(Path.cwd() / ".env")
 
 # Import XAI explainer functions
-from src.olist_pipeline.analysis.xai import assign_tier, call_gemini_narrative, format_narrative
+from src.analysis.xai import assign_tier, call_gemini_narrative, format_narrative
+from src.utils.chatbot import render_chatbot_ui, init_chatbot
 
 # ── State and Indicator Mapping Dictionaries ───────────────────────────────
 STATE_MAP = {
@@ -128,9 +129,10 @@ components.html(
     height=0, width=0,
 )
 
-from src.olist_pipeline.utils.config_loader import Config
+from src.utils.config_loader import Config
 
-# ... rest of imports ...
+# Initialize chatbot (safe to call even if API key missing)
+init_chatbot()
 
 # ── Data Loading & Helper Functions ───────────────────────────────────────────
 @st.cache_data
@@ -625,8 +627,15 @@ gamma_opt = w_config["gamma"]
 
 
 # ── Title Header ──────────────────────────────────────────────────────────────
-st.title("Brazil E-Commerce Expansion Priorities")
-st.markdown("Interactive decision support platform using COMPASS-XAI (COMPosite market expansion scoring with Aligned SHAP explanations).")
+col_title, col_chat = st.columns([0.85, 0.15])
+with col_title:
+    st.title("Brazil E-Commerce Expansion Priorities")
+    st.markdown("Interactive decision support platform using COMPASS-XAI (COMPosite market expansion scoring with Aligned SHAP explanations).")
+with col_chat:
+    st.write("")
+    st.write("")
+    with st.popover("💬 Ask AI", use_container_width=True):
+        render_chatbot_ui()
 
 # ── Settings & Weights (Collapsible Popover) ──────────────────────────────────
 with st.popover("⚙️ Adjust Model Weights & Settings: Click to tune parameters and recalculate Priority Scores.", use_container_width=False):

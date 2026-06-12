@@ -4,23 +4,26 @@ n_splits: 5
 log_target: true
 
 feature_selection:
-  exclude:
-    - "customer_state"
-    - "year_week"
-    - "target_next_revenue"
-    - "sales_per_capita"
-    - "orders_per_capita"
-    - "payment_value"
-    - "unique_customers"
-    - "item_count"
-    - "customers_lag_1"
-    - "purchasing_power_index"
-    - "customer_penetration"
-    - "revenue_ewm_4"
-    - "revenue_ewm_8"
-    - "revenue_rolling_12"
+    exclude:
+      - "customer_state"
+      - "year_week"
+      - "target_next_revenue"
+      - "sales_per_capita"
+      - "orders_per_capita"
+      - "payment_value"
+      - "unique_customers"
+      - "item_count"
+      - "customers_lag_1"
+      - "purchasing_power_index"
+      - "customer_penetration"
+      - "revenue_ewm_4"
+      - "revenue_ewm_8"
+      - "revenue_rolling_12"
+      - "gdp"
 
 models:
+  linear:
+    {}
   ridge:
     alpha: 10.0
   elastic_net:

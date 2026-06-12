@@ -2,7 +2,7 @@
 import pandas as pd
 import pytest
 
-from src.olist_pipeline.core.config import DataPaths
+from src.core.config import DataPaths
 
 
 @pytest.fixture

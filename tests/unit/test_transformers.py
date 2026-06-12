@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.olist_pipeline.features.transformers import FeatureTransformers
+from src.features.transformers import FeatureTransformers
 
 
 def test_add_seasonality(sample_feature_df):
