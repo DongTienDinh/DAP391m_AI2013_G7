@@ -19,7 +19,7 @@ An end-to-end machine learning and strategic decision-support platform for e-com
 |--------|-------------|
 | [Olist E-Commerce (Kaggle)](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) | ~100k delivered orders, Brazil, 2016–2018 |
 | [IBGE Population](https://basedosdados.org/dataset/d30222ad-7a5c-4778-a1ec-f0785371d1ca?table=b99f0017-e587-477e-8cfb-05fb5d1005b8) | State-level populations |
-| [IBGE GDP](https://basedosdados.org/dataset/fcfcf025ca-8b19-4131-8e2d-5ddb12492347?table=93007431-7ce9-42ee-8740-8c2274d345ad) | State-level GDP |
+| [IBGE GDP](https://basedosdados.org/dataset/fcf025ca-8b19-4131-8e2d-5ddb12492347?table=93007431-7ce9-42ee-8740-8c2274d345ad) | State-level GDP |
 | Brazil GeoJSON | State boundaries (auto-downloaded) |
 
 ---
@@ -146,16 +146,17 @@ $$\max_w -\sum p_j \log p_j, \quad \text{s.t. } \sum w_i = 1, \quad l_i \leq w_i
 
 | Rank | Model | RMSE | MAE | Skill Score |
 |:----:|-------|-----:|----:|:-----------:|
-| #1 | CatBoost | 50.11 | 22.28 | +0.999 |
-| #2 | LightGBM | 51.94 | 23.48 | +0.999 |
-| #3 | Gradient Boosting | 52.33 | 23.23 | +0.999 |
-| #4 | Random Forest | 53.37 | 23.93 | +0.999 |
-| #5 | XGBoost | 55.23 | 24.73 | +0.999 |
-| 6 | ElasticNet | 3,809,672.58 | 466,000.43 | +0.889 |
-| 7 | Ridge | 9,942,046.88 | 1,201,996.36 | +0.711 |
-| 8 | Huber | 262,323,614.33 | 23,254,81.62 | -6.628 |
+| #1 | Random Forest | 7,887 | 3,655 | +0.927 |
+| #2 | LightGBM | 8,115 | 3,834 | +0.925 |
+| #3 | CatBoost | 8,208 | 3,845 | +0.924 |
+| #4 | Gradient Boosting | 8,401 | 3,916 | +0.922 |
+| #5 | XGBoost | 8,823 | 4,143 | +0.918 |
+| 6 | Huber Regressor | 50,365 | 14,024 | +0.534 |
+| — | Linear Regression (Baseline) | 108,150 | 23,219 | 0.000 |
+| 7 | Ridge Regression | 133,250 | 27,723 | -0.232 |
+| 8 | ElasticNet | 531,326 | 94,294 | -3.913 |
 
-*Metrics on original scale after np.expm1 inverse transform. Walk-forward CV (5-fold).*
+*Metrics on original scale after np.expm1 inverse transform. Walk-forward CV (5-fold). Ordered by RMSE ascending.*
 
 ---
 
