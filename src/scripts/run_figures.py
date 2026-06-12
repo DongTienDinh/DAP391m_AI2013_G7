@@ -332,7 +332,8 @@ def main():
         return
 
     df, w_star, gamma = load_data()
-    print(f"  Loaded {len(df)} states, weights: {dict(zip(COMP_OPP, [round(w, 4) for w in w_star]))}")
+    w_display = {c: round(float(w), 4) for c, w in zip(COMP_OPP, w_star)}
+    print(f"  Loaded {len(df)} states, weights: {w_display}")
 
     plot_component_contributions(df, w_star, gamma)
     plot_choropleth(df)
@@ -343,7 +344,8 @@ def main():
     plot_oat_sweep(df, w_star, gamma)
     plot_gamma_sweep(df, w_star, gamma)
 
-    print(f"\n  ✅ All figures saved to {FIGURES_DIR}")
+    rel = FIGURES_DIR.relative_to(Path.cwd().parent) if FIGURES_DIR.is_relative_to(Path.cwd().parent) else FIGURES_DIR
+    print(f"\n  ✅ All figures saved to {rel}")
 
 
 if __name__ == "__main__":

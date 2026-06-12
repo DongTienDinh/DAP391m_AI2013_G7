@@ -8,6 +8,9 @@ from src.orchestrator import OlistPipeline
 
 
 def main():
+    print()
+    print("  >>> FEATURE ENGINEERING")
+    print("  >>> Building state-week panel with 35+ features...")
     p = OlistPipeline()
     svc = FeatureEngineeringService(
         p.paths.data.processed_olist,
@@ -15,6 +18,7 @@ def main():
         p.paths.data.processed_olist / "prediction_data.csv"
     )
     svc.run_feature_pipeline(p.paths.data.external_pop, p.paths.data.external_gdp)
+    print("  ✅ Feature Engineering completed.")
 
 if __name__ == "__main__":
     main()

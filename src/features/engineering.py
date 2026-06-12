@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from src.core.logging_setup import setup_logger
+from src.core.logging_setup import setup_logger, short_path
 from src.features.transformers import FeatureTransformers
 
 logger = setup_logger("feature_service")
@@ -309,7 +309,7 @@ class FeatureEngineeringService:
         )
         pred_df = df[pred_mask]
         pred_df.to_csv(self.pred_file, index=False)
-        logger.info(f"Saved {len(pred_df)} prediction rows to {self.pred_file}")
+        logger.info(f"Saved {len(pred_df)} prediction rows to {short_path(self.pred_file)}")
 
         # Training set: drop rows with NaN in core lags or target
         train_df = df.dropna(subset=["revenue_lag_1", "revenue_lag_2", "target_next_revenue"])
@@ -318,4 +318,4 @@ class FeatureEngineeringService:
         train_df = train_df[train_df["year_week"].dt.start_time >= "2017-01-16"]
 
         train_df.to_csv(self.output_file, index=False)
-        logger.info(f"Saved {len(train_df)} training rows to {self.output_file}")
+        logger.info(f"Saved {len(train_df)} training rows to {short_path(self.output_file)}")

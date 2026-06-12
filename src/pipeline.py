@@ -119,7 +119,9 @@ def run_all() -> None:
     from src.scripts.run_xai import main as xai_main
     from src.scripts.run_ranking_comparison import main as rc_main
     from src.scripts.run_figures import main as fig_main
+    from src.scripts.download_geojson import download_geojson
 
+    download_geojson()
     clean_main()
     feat_main()
     train_main()
@@ -140,6 +142,18 @@ def run_interactive() -> None:
     print("║  COMPASS-XAI: Interactive Pipeline (DAP391m 10-Step Framework)  ║")
     print("╚" + "═" * 68 + "╝")
 
+    # ── Step 0: GeoJSON Download ──────────────────────────────────────────
+    _print_header("Step 0: Download Brazil GeoJSON boundaries")
+    print("  Required for choropleth maps in the dashboard.")
+    print()
+    ans = input("  Download GeoJSON now? (y/n) [y]: ").strip().lower()
+    if ans != "n":
+        from src.scripts.download_geojson import download_geojson
+        print("  Downloading...")
+        download_geojson()
+    else:
+        print("  ⏭ Skipped.")
+
     # ── Part 1: Problem & Data Understanding ──────────────────────────────
     _print_header("PART 1 — Problem & Data Understanding (Steps 1-5)")
     print("  This section covers business understanding, data collection,")
@@ -149,7 +163,6 @@ def run_interactive() -> None:
     ans = input("  Run Part 1 (Data Cleaning)? (y/n) [y]: ").strip().lower()
     if ans != "n":
         from src.scripts.run_cleaning import main as clean_main
-        _print_subheader("Running: Data Collection & Cleaning")
         clean_main()
         _print_subheader("Results: Data Cleaning")
         _show_file(P.data.processed_olist / "orders.csv", head=3)

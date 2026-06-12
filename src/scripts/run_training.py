@@ -8,6 +8,9 @@ from src.orchestrator import OlistPipeline
 
 
 def main():
+    print()
+    print("  >>> MODEL TRAINING & EVALUATION")
+    print("  >>> Walk-forward CV of 9 models (Ridge → CatBoost)...")
     p = OlistPipeline()
     svc = ModelingService(
         p.config.training.model_dump(),
@@ -15,6 +18,7 @@ def main():
         p.paths.data.processed_olist,
     )
     svc.run_training_pipeline(p.paths.data.processed_olist / "features_weekly.csv")
+    print("  ✅ Model training completed.")
 
 
 if __name__ == "__main__":

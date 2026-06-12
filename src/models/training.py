@@ -4,7 +4,7 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from src.core.logging_setup import setup_logger
+from src.core.logging_setup import setup_logger, short_path
 from src.models.evaluator import ModelEvaluator
 from src.models.factory import ModelFactory
 
@@ -73,7 +73,7 @@ class ModelingService:
         lb_df = pd.DataFrame(results).sort_values("RMSE")
         lb_path = self.reports_dir / "model_leaderboard.csv"
         lb_df.to_csv(lb_path, index=False)
-        logger.info(f"Model leaderboard saved to {lb_path}")
+        logger.info(f"Model leaderboard saved to {short_path(lb_path)}")
 
     def _generate_predictions(
         self,
@@ -125,7 +125,7 @@ class ModelingService:
         df_result = df_result.sort_values("predicted_next_week_revenue", ascending=False).reset_index(drop=True)
 
         df_result.to_csv(pred_out_path, index=False)
-        logger.info(f"Saved predictions to {pred_out_path}")
+        logger.info(f"Saved predictions to {short_path(pred_out_path)}")
 
         # Log top 5
         top5 = df_result.head(5)

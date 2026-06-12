@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 from src.analysis.providers.base import LLMProvider
-from src.core.logging_setup import setup_logger
+from src.core.logging_setup import setup_logger, short_path
 
 logger = setup_logger("xai_service")
 
@@ -195,4 +195,4 @@ class XAIService:
                 "narrative_full": exp["gemini_narrative_full"],
             })
         pd.DataFrame(rows).to_csv(self.output_dir / "eps_xai_report.csv", index=False)
-        logger.info(f"Saved XAI reports to {self.output_dir}")
+        logger.info(f"Saved XAI reports to {short_path(self.output_dir)}")

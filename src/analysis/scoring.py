@@ -239,4 +239,9 @@ class ScoringService:
         df.to_csv(self.output_dir / "eps_results.csv", index=False)
         with open(self.output_dir / "w_star.json", "w") as f:
             json.dump({"w_star": w_star, "gamma": self.gamma}, f, indent=2)
-        logger.info(f"Saved EPS results and weights to {self.output_dir}")
+        try:
+            rel = self.output_dir.relative_to(Path.cwd())
+            loc = str(rel)
+        except ValueError:
+            loc = str(self.output_dir)
+        logger.info(f"Saved EPS results and weights to {loc}")

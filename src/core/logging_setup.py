@@ -1,42 +1,32 @@
 import logging
 import sys
+from pathlib import Path
+
+
+def short_path(p: Path) -> str:
+    """Return a short relative path for display."""
+    try:
+        return str(p.relative_to(Path.cwd()))
+    except ValueError:
+        return str(p)
 
 
 def setup_logger(
     name: str = "olist_pipeline", level: int = logging.INFO, log_format: str | None = None
 ) -> logging.Logger:
-    """
-    Sets up a standardized, structured logger for the project.
-
-    Args:
-        name: Name of the logger.
-        level: Logging level (e.g., logging.INFO).
-        log_format: Optional custom format string.
-
-    Returns:
-        A configured logging.Logger instance.
-    """
+    """Sets up a clean, human-readable logger for the CLI pipeline."""
     logger = logging.getLogger(name)
-
     if logger.hasHandlers():
         return logger
 
     logger.setLevel(level)
-
-    # Console Handler
     handler = logging.StreamHandler(sys.stdout)
     handler.setLevel(level)
 
-    # Default Production-ready format
     if not log_format:
-        log_format = (
-            "[%(asctime)s] %(levelname)-8s [%(name)s:%(funcName)s:%(lineno)d] - %(message)s"
-        )
+        log_format = "  %(message)s"
 
-    formatter = logging.Formatter(fmt=log_format, datefmt="%Y-%m-%d %H:%M:%S")
-    handler.setFormatter(formatter)
-
+    handler.setFormatter(logging.Formatter(fmt=log_format))
     logger.addHandler(handler)
     logger.propagate = False
-
     return logger

@@ -9,9 +9,13 @@ from src.orchestrator import OlistPipeline
 
 
 def main():
+    print()
+    print("  >>> DATA CLEANING")
+    print("  >>> Downloading & cleaning Olist data...")
     pipeline = OlistPipeline()
     svc = DataService(pipeline.paths.data.raw_olist, pipeline.paths.data.processed_olist)
     svc.run_cleaning_pipeline()
+    print("  ✅ Data Cleaning completed. 8 tables saved.")
 
 if __name__ == "__main__":
     main()
