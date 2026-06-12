@@ -118,13 +118,15 @@ def run_all() -> None:
     from src.scripts.run_scoring import main as score_main
     from src.scripts.run_xai import main as xai_main
     from src.scripts.run_ranking_comparison import main as rc_main
+    from src.scripts.run_figures import main as fig_main
 
     clean_main()
     feat_main()
     train_main()
     score_main()
-    xai_main()
     rc_main()
+    fig_main()
+    xai_main()
 
 
 def run_interactive() -> None:
@@ -207,6 +209,19 @@ def run_interactive() -> None:
         rc_main()
         _print_subheader("Results: Ranking Comparison")
         _show_ranking_comparison(P.reports.figures_dir.parent / "ranking_comparison_summary.txt")
+    else:
+        print("  ⏭ Skipped.")
+
+    ans = input("  Run Part 3d (Generate Figures)? (y/n) [y]: ").strip().lower()
+    if ans != "n":
+        from src.scripts.run_figures import main as fig_main
+        _print_subheader("Running: Static Figure Generation")
+        fig_main()
+        _print_subheader("Results: Figures Saved")
+        for f in ["fig1_component_bar.png", "fig2_choropleth.png", "fig3_radar.png", "fig3b_correlation_heatmap.png"]:
+            p = P.reports.figures_dir / f
+            status = f"{p.stat().st_size / 1024:.0f} KB" if p.exists() else "missing"
+            print(f"     {f}: {status}")
     else:
         print("  ⏭ Skipped.")
 
