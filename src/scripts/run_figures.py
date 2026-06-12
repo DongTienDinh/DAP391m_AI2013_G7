@@ -8,6 +8,7 @@ import matplotlib.ticker as mticker
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from scipy.stats import spearmanr
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 warnings.filterwarnings("ignore")
@@ -25,6 +26,7 @@ OUTPUT_DIR = P.outputs.eps_dir
 
 COMP_OPP = ["PD", "GP", "PG", "MMI"]
 COMP_COLORS = {"PD": "#4C72B0", "GP": "#DD8452", "PG": "#55A868", "MMI": "#C44E52"}
+CONSTRAINTS = {"PD": (0.25, 0.45), "GP": (0.15, 0.35), "PG": (0.15, 0.30), "MMI": (0.05, 0.15)}
 
 try:
     import geopandas as gpd
@@ -183,6 +185,142 @@ def plot_correlation_heatmap(df):
     print("  ✓ fig3b_correlation_heatmap.png")
 
 
+# ── Sensitivity Helpers ───────────────────────────────────────────────────────
+
+def compute_eps_from_weights(w, norm_df, gamma):
+    """Compute EPS scores from a weight vector and normalized data."""
+    opp = (norm_df[COMP_OPP].values * w).sum(axis=1)
+    eps_raw = opp * (1.0 - gamma * norm_df["LC"].values)
+    eps_min, eps_max = eps_raw.min(), eps_raw.max()
+    return (eps_raw - eps_min) / (eps_max - eps_min + 1e-9) * 100.0
+
+
+def plot_monte_carlo(df, w_star, gamma, n_sim=10000, seed=42):
+    """Monte Carlo: perturb weights, histogram of Spearman rank correlations."""
+    print("  → Monte Carlo simulation...")
+    rng = np.random.default_rng(seed)
+    bounds_lo = np.array([CONSTRAINTS[c][0] for c in COMP_OPP])
+    bounds_hi = np.array([CONSTRAINTS[c][1] for c in COMP_OPP])
+    rank_base = df["EPS_rank"].values
+    rho_list = []
+
+    for _ in range(n_sim):
+        w_sim = rng.dirichlet(w_star * 50)
+        w_sim = np.clip(w_sim, bounds_lo, bounds_hi)
+        w_sim /= w_sim.sum()
+        eps_sim = compute_eps_from_weights(w_sim, df, gamma)
+        rank_sim = pd.Series(eps_sim).rank(ascending=False).values
+        rho, _ = spearmanr(rank_base, rank_sim)
+        rho_list.append(rho)
+
+    rho_arr = np.array(rho_list)
+    mean_rho = rho_arr.mean()
+    pct_095 = (rho_arr > 0.95).mean() * 100
+    verdict = "ROBUST" if pct_095 >= 95 else ("MODERATE" if (rho_arr > 0.90).mean() * 100 >= 80 else "SENSITIVE")
+    print(f"     Mean ρ={mean_rho:.4f}, >0.95={pct_095:.0f}%, verdict={verdict}")
+
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.hist(rho_arr, bins=60, color="steelblue", edgecolor="white", alpha=0.85)
+    ax.axvline(0.95, color="darkred", linestyle="--", label="ρ=0.95 (ROBUST)")
+    ax.axvline(0.90, color="orange", linestyle="--", label="ρ=0.90 (MODERATE)")
+    ax.axvline(mean_rho, color="green", linestyle="-", linewidth=1.8, label=f"Mean ρ={mean_rho:.4f}")
+    ax.set_xlabel("Spearman ρ (rank correlation vs baseline)")
+    ax.set_ylabel("Count")
+    ax.set_title(f"Monte Carlo sensitivity (n={n_sim:,} simulations)")
+    ax.legend(fontsize=8)
+    ax.grid(alpha=0.3)
+    plt.tight_layout()
+    fig.savefig(FIGURES_DIR / "fig4_monte_carlo.png", dpi=150, bbox_inches="tight")
+    plt.close(fig)
+    print("  ✓ fig4_monte_carlo.png")
+
+
+def plot_oat_sweep(df, w_star, gamma, n_steps=40):
+    """OAT sweep: vary each weight, track Spearman ρ."""
+    print("  → OAT weight sweep...")
+    rank_base = df["EPS_rank"].values
+    fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+    fig.suptitle("OAT Weight Sweep — Spearman ρ vs weight value", fontsize=12)
+    axes = axes.flatten()
+
+    for i, comp in enumerate(COMP_OPP):
+        lo, hi = CONSTRAINTS[comp]
+        sweep = np.linspace(lo, hi, n_steps)
+        rho_list = []
+
+        for w_val in sweep:
+            w_new = w_star.copy()
+            w_new[i] = w_val
+            others = [j for j in range(len(COMP_OPP)) if j != i]
+            s_others = w_new[others].sum()
+            if s_others > 0:
+                w_new[others] *= (1.0 - w_val) / s_others
+
+            eps_sim = compute_eps_from_weights(w_new, df, gamma)
+            rank_sim = pd.Series(eps_sim).rank(ascending=False).values
+            rho, _ = spearmanr(rank_base, rank_sim)
+            rho_list.append(rho)
+
+        min_rho = min(rho_list)
+        ax = axes[i]
+        ax.plot(sweep, rho_list, marker="o", markersize=3, linestyle="-", color="teal")
+        ax.axhline(0.90, color="red", linestyle="--", linewidth=1, alpha=0.7, label="ρ=0.90")
+        ax.axvline(w_star[i], color="green", linestyle=":", linewidth=1.2, label=f"w*={w_star[i]:.3f}")
+        ax.set_xlim(lo, hi)
+        ax.set_ylim(min(0.80, min_rho - 0.02), 1.02)
+        ax.set_title(f"w({comp})  range=[{lo},{hi}]", fontsize=10)
+        ax.set_xlabel(f"w_{comp}")
+        ax.set_ylabel("Spearman ρ")
+        ax.legend(fontsize=7)
+        ax.grid(alpha=0.3)
+
+    plt.tight_layout()
+    fig.savefig(FIGURES_DIR / "fig5_oat_sweep.png", dpi=150, bbox_inches="tight")
+    plt.close(fig)
+    print("  ✓ fig5_oat_sweep.png")
+
+
+def plot_gamma_sweep(df, w_star, gamma):
+    """Gamma sweep: vary risk penalty, track ρ and rank shifts."""
+    print("  → Gamma sweep...")
+    rank_base = df["EPS_rank"].values
+    gamma_range = np.linspace(0.05, 0.40, 30)
+    rho_gamma = []
+    rank_shifts = []
+
+    for g in gamma_range:
+        eps_g = compute_eps_from_weights(w_star, df, gamma=g)
+        rank_g = pd.Series(eps_g).rank(ascending=False).values
+        rho, _ = spearmanr(rank_base, rank_g)
+        rho_gamma.append(rho)
+        rank_shifts.append((np.abs(rank_g - rank_base) >= 3).sum())
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 4))
+    fig.suptitle("Gamma (risk weight) sweep", fontsize=12)
+
+    ax1.plot(gamma_range, rho_gamma, color="steelblue", linewidth=2, marker="o", markersize=3)
+    ax1.axvline(gamma, color="green", linestyle="--", linewidth=1.5, label=f"γ={gamma} (current)")
+    ax1.axhline(0.90, color="red", linestyle="--", linewidth=1, alpha=0.7, label="ρ=0.90")
+    ax1.set_xlabel("γ (risk penalty weight)")
+    ax1.set_ylabel("Spearman ρ vs baseline")
+    ax1.set_title("Rank stability across γ values")
+    ax1.legend(fontsize=8)
+    ax1.grid(alpha=0.3)
+
+    ax2.plot(gamma_range, rank_shifts, color="coral", linewidth=2, marker="s", markersize=3)
+    ax2.axvline(gamma, color="green", linestyle="--", linewidth=1.5, label=f"γ={gamma} (current)")
+    ax2.set_xlabel("γ (risk penalty weight)")
+    ax2.set_ylabel("# states with |Δrank| ≥ 3")
+    ax2.set_title("States shifting ≥3 positions")
+    ax2.legend(fontsize=8)
+    ax2.grid(alpha=0.3)
+
+    plt.tight_layout()
+    fig.savefig(FIGURES_DIR / "fig6_gamma_sweep.png", dpi=150, bbox_inches="tight")
+    plt.close(fig)
+    print("  ✓ fig6_gamma_sweep.png")
+
+
 def main():
     print("=" * 60)
     print("  Generating static report figures")
@@ -200,6 +338,10 @@ def main():
     plot_choropleth(df)
     plot_radar_profiles(df)
     plot_correlation_heatmap(df)
+
+    plot_monte_carlo(df, w_star, gamma)
+    plot_oat_sweep(df, w_star, gamma)
+    plot_gamma_sweep(df, w_star, gamma)
 
     print(f"\n  ✅ All figures saved to {FIGURES_DIR}")
 

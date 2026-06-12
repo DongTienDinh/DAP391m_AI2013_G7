@@ -218,7 +218,7 @@ def run_interactive() -> None:
         _print_subheader("Running: Static Figure Generation")
         fig_main()
         _print_subheader("Results: Figures Saved")
-        for f in ["fig1_component_bar.png", "fig2_choropleth.png", "fig3_radar.png", "fig3b_correlation_heatmap.png"]:
+        for f in ["fig1_component_bar.png", "fig2_choropleth.png", "fig3_radar.png", "fig3b_correlation_heatmap.png", "fig4_monte_carlo.png", "fig5_oat_sweep.png", "fig6_gamma_sweep.png"]:
             p = P.reports.figures_dir / f
             status = f"{p.stat().st_size / 1024:.0f} KB" if p.exists() else "missing"
             print(f"     {f}: {status}")
