@@ -62,6 +62,10 @@ tests/                      # Unit & integration tests
 ## Getting Started
 
 ### 1. Installation
+```bash
+# Clone the repository
+git clone https://github.com/DongTienDinh/DAP391m_AI2013_G7
+cd DAP391m_AI2013_G7
 
 ```bash
 git clone https://github.com/DongTienDinh/DAP391m_AI2013_G7
