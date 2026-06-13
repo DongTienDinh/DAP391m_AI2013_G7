@@ -38,18 +38,24 @@ env/
 
 # --- Project Specific Artifacts ---
 # Exclude all data, outputs, reports, and logs
-data/
+data/*
+!data/external
+!data/raw
+!data/processed
+data/external/*
+!data/external/.gitkeep
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
 outputs/
 reports/
 logs/
 catboost_info/
 
-# Allow .gitkeep files so the directory structure is preserved in Git
-!**/
-!**/.gitkeep
-
 # Note: external data (IBGE/GeoJSON) and raw datasets should be downloaded 
-# via the provided scripts (scripts/download_geojson.py, scripts/run_cleaning.py, etc.)
+# via the provided scripts (src/scripts/download_geojson.py, src/scripts/run_cleaning.py, etc.)
+# Directory structure is preserved via .gitkeep files in data/external, data/raw, data/processed.
 
 # --- Notebook Artifacts ---
 notebooks/*.csv
@@ -63,3 +69,12 @@ notebooks/.ipynb_checkpoints/
 .mypy_cache/
 .ruff_cache/
 htmlcov/
+
+# --- Trained model weights ---
+/models/
+
+# --- OS artifacts ---
+.DS_Store
+
+# --- Log files ---
+*.log

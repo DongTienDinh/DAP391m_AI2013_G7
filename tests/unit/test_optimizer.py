@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.olist_pipeline.analysis.optimizer import EntropyOptimizer
+from src.analysis.optimizer import EntropyOptimizer
 
 
 def test_entropy_optimizer_sum_to_one():
